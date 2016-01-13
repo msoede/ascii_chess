@@ -12,11 +12,15 @@
 //
 package chess;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date 
+ * @date
  */
 public class Prints {
 
@@ -94,4 +98,6 @@ public class Prints {
                 + "| q        | quits the program then it is running                 |                                                      |\n"
                 + "+----------+------------------------------------------------------+------------------------------------------------------+");
     }
+
+  
 }
