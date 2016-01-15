@@ -12,21 +12,13 @@
 //
 package chess;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * @author Mikkel Soede
  * @version 1.0
- * @description
- * @date
+ * @description Handle many of the printouts used when the program starts up
+ * @date 
  */
 public class Prints {
-
-    public Prints() {
-
-    }
 
     /**
      * prints welcome message ascii art are generated from
@@ -99,5 +91,4 @@ public class Prints {
                 + "+----------+------------------------------------------------------+------------------------------------------------------+");
     }
 
-  
 }

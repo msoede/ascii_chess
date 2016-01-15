@@ -16,7 +16,7 @@ package chess;
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date 
+ * @date
  */
 public class Main {
 
@@ -39,7 +39,7 @@ public class Main {
         String input;
         while (true) {
             board.printBoard();
-            
+
             System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
             input = main.getInputFromUser();
 
@@ -70,5 +70,4 @@ public class Main {
         }
         return input;
     }
-
 }

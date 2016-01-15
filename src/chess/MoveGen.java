@@ -12,11 +12,13 @@
 //
 package chess;
 
+import java.util.ArrayList;
+
 /**
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date 
+ * @date
  */
 public class MoveGen {
 
@@ -28,6 +30,25 @@ public class MoveGen {
     private final int queenValue = 1000;
     private final int kingValue = 50000;
 
-   
+    /**
+     * generate all possible moves from a given position
+     *
+     * @param pos
+     * @return
+     */
+    public ArrayList<Move> generateAllMoves(Board pos) {
+
+        ArrayList<Move> moveList = new ArrayList<>();
+        
+        //Move m = new Move(rookValue, rookValue, rookValue, rookValue, true, true, true, true, true, true)
+        
+        //check for pawn moves forward
+        //check for pawn moves attack
+        //check for pawn moves dobblet move
+        //check for caslte perm
+        //sliding pieces
+        //non sliding pieces
+        return moveList;
+    }
 
 }

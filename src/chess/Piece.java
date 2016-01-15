@@ -15,7 +15,7 @@ package chess;
 /**
  * @author Mikkel Soede
  * @version 1.0
- * @description
+ * @description handle the piece information there will be 64 piece to reprecent a hole board
  * @date 
  */
 public class Piece {

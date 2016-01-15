@@ -15,7 +15,7 @@ package chess;
 /**
  * @author Mikkel Soede
  * @version 1.0
- * @description
+ * @description handle all the player information
  * @date 
  */
 public class Player {
