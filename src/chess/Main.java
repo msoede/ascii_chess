@@ -30,6 +30,10 @@ public class Main {
         Evaluation evaluation = new Evaluation();
         Prints prints = new Prints();
         Main main = new Main();
+        MoveGen moveGen = new MoveGen();
+        
+        
+        moveGen.generateAllPawnMoves(board);
 
         //print welcome message 
         prints.printWelcomeMessage();

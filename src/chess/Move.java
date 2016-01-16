@@ -49,7 +49,7 @@ public class Move {
     }
 
     public int getFromFile() {
-        return fromRank;
+        return fromFile;
     }
 
     public int gtf() {
@@ -57,7 +57,7 @@ public class Move {
     }
 
     public int getToFile() {
-        return toRank;
+        return toFile;
     }
 
     public int gfr() {
@@ -65,7 +65,7 @@ public class Move {
     }
 
     public int getFromRank() {
-        return fromFile;
+        return fromRank;
     }
 
     public int gtr() {
@@ -73,7 +73,7 @@ public class Move {
     }
 
     public int getToRank() {
-        return toFile;
+        return toRank;
     }
 
     public boolean isPromoted() {
@@ -106,6 +106,11 @@ public class Move {
      */
     public boolean isCastling() {
         return castleBlackKing || castleBlackQueen || castleWhiteKing || castleWhiteQueen;
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" + "fromRank=" + fromRank + ", toRank=" + toRank + ", fromFile=" + fromFile + ", toFile=" + toFile + ", promoted=" + promoted + ", castleWhiteKing=" + castleWhiteKing + ", castleBlackKing=" + castleBlackKing + ", castleWhiteQueen=" + castleWhiteQueen + ", castleBlackQueen=" + castleBlackQueen + ", playerColor=" + playerColor + '}';
     }
 
 }

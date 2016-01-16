@@ -134,12 +134,12 @@ public class Board {
         return side;
     }
 
-    public Piece getPiece(int i, int j) {
-        return board[i][j];
+    public Piece getPiece(int rank, int file) {
+        return board[rank][file];
     }
 
-    public void setPiece(int i, int j, Piece piece) {
-        board[i][j] = piece;
+    private void setPiece(int rank, int file, Piece piece) {
+        board[rank][file] = piece;
     }
 
     public Player getCurrentPlayer() {
@@ -149,6 +149,7 @@ public class Board {
     public void undoLastMove() {
         Move lastMove = moveHistory.get(moveHistory.size() - 1);
     }
+    
 
     public boolean makeMove(Move move) {
         int fromFile = move.getFromFile();
@@ -158,15 +159,15 @@ public class Board {
 
         boolean currentPlayer = side;
 
-        if (getPiece(toFile, toRank) != null && getPiece(toFile, toRank).getPlayer().isColor() != currentPlayer) {
-            System.out.println("You have taken the enemy's " + getPiece(toFile, toRank).getName() + "!");
-            setPiece(toFile, toRank, getPiece(fromFile, fromRank));
-            setPiece(fromFile, fromRank, null);
+        if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer) {
+            System.out.println("You have taken the enemy's " + getPiece(toRank, toFile).getName() + "!");
+            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+            setPiece(fromRank, fromFile, null);
             return true;
         } else {
             System.out.println("Move successful!");
-            setPiece(toFile, toRank, getPiece(fromFile, fromRank));
-            setPiece(fromFile, fromRank, null);
+            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+            setPiece(fromRank, fromFile, null);
             return true;
         }
     }
