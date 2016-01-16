@@ -16,7 +16,7 @@ package chess;
  * @author Mikkel Soede
  * @version 1.0
  * @description Handle many of the printouts used when the program starts up
- * @date 
+ * @date
  */
 public class Prints {
 
@@ -50,9 +50,16 @@ public class Prints {
      * @param args
      */
     public void handleArguments(Board board, String[] args) {
+        Fen fen = new Fen();
 
         if (args.length >= 1) {
             for (String tempArg : args) {
+                if (tempArg.length() > 20) {
+                    if (tempArg.substring(0, 3).equals("fen")) {
+                        String fenString = tempArg.substring(3);
+                        fen.loadFen(fenString, board);
+                    }
+                }
                 tempArg = tempArg.toLowerCase();
                 if (tempArg.equals("h")) {
                     printHelpInfo();

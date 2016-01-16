@@ -30,10 +30,6 @@ public class Main {
         Evaluation evaluation = new Evaluation();
         Prints prints = new Prints();
         Main main = new Main();
-        MoveGen moveGen = new MoveGen();
-        
-        
-        moveGen.generateAllPawnMoves(board);
 
         //print welcome message 
         prints.printWelcomeMessage();
@@ -45,11 +41,11 @@ public class Main {
             board.printBoard();
 
             System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
-            input = main.getInputFromUser();
+            input = main.getInputFromUser(board);
 
             while (validate.validateMoveString(input) == false) {
                 System.out.println("invalid move(" + input + ") string, enter new move:");
-                input = main.getInputFromUser();
+                input = main.getInputFromUser(board);
             }
             if (validate.validateMove(input, board)) {
                 board.switchSide();
@@ -58,19 +54,26 @@ public class Main {
         }
     }
 
-    public String getInputFromUser() {
+    public String getInputFromUser(Board board) {
         String input = System.console().readLine();
         input = input.toLowerCase();
         if (input.equals("q")) {
             System.out.println("quit program \nhave a nice day!");
             System.exit(0);
         } else if (input.equals("h")) {
-            System.out.println("+-----+-------+");
-            System.out.println("| key | info  |");
-            System.out.println("+-----+-------+");
-            System.out.println("| h   | help  |");
-            System.out.println("| q   | quite |");
-            System.out.println("+-----+-------+");
+            System.out.println("+-----+----------------+");
+            System.out.println("| key | info           |");
+            System.out.println("+-----+----------------+");
+            System.out.println("| h   | help           |");
+            System.out.println("| q   | quite          |");
+            System.out.println("| fen | get fen string |");
+            System.out.println("+-----+----------------+");
+        } else if (input.equals("fen")) {
+            Fen fen = new Fen();
+            System.out.println("+------------+---------------------------------------------------------------+");
+            System.out.format("| Fen String | %61s |\n", fen.getFen(board));
+            System.out.println("+------------+---------------------------------------------------------------+");
+            System.out.println(fen.getFen(board));
         }
         return input;
     }

@@ -74,8 +74,6 @@ public class Validate {
         return false;
     }
 
-   
-
     /**
      *
      * @param move format: "a2a3"

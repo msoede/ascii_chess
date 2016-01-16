@@ -25,12 +25,15 @@ public class Board {
     private final Piece board[][];
     private boolean side;
     private final Player playerWhite;
+
     private final Player playerBlack;
     private ArrayList<Move> moveHistory = new ArrayList<>();
 
     private int searchTime = 15; // default value
     private int searchDepth = 5; // default value
     private boolean humanPlayer = true; // default value
+    
+    private int hafMoves = 0;
 
     public Board(String whitePlayerName, String blackPlayerName) {
         //setup players
@@ -75,7 +78,7 @@ public class Board {
         board[7][5] = new Piece("Bishop", playerBlack);
         board[7][6] = new Piece("Knight", playerBlack);
         board[7][7] = new Piece("Rook", playerBlack);
-
+        
         board[6][0] = new Piece("Pawn", playerBlack);
         board[6][1] = new Piece("Pawn", playerBlack);
         board[6][2] = new Piece("Pawn", playerBlack);
@@ -84,6 +87,15 @@ public class Board {
         board[6][5] = new Piece("Pawn", playerBlack);
         board[6][6] = new Piece("Pawn", playerBlack);
         board[6][7] = new Piece("Pawn", playerBlack);
+    }
+    
+    public void clearBoard(){
+        for (int rank = 0; rank < 8; rank++) {
+            for (int file = 0; file < 8; file++) {
+                setPiece(rank, file, null);
+            }
+            
+        }
     }
 
     public boolean isHumanPlayer() {
@@ -134,11 +146,19 @@ public class Board {
         return side;
     }
 
+    public Player getPlayerWhite() {
+        return playerWhite;
+    }
+
+    public Player getPlayerBlack() {
+        return playerBlack;
+    }
+
     public Piece getPiece(int rank, int file) {
         return board[rank][file];
     }
 
-    private void setPiece(int rank, int file, Piece piece) {
+    public void setPiece(int rank, int file, Piece piece) {
         board[rank][file] = piece;
     }
 
@@ -149,9 +169,9 @@ public class Board {
     public void undoLastMove() {
         Move lastMove = moveHistory.get(moveHistory.size() - 1);
     }
-    
 
     public boolean makeMove(Move move) {
+        hafMoves ++;
         int fromFile = move.getFromFile();
         int fromRank = move.getFromRank();
         int toFile = move.getToFile();
@@ -170,6 +190,10 @@ public class Board {
             setPiece(fromRank, fromFile, null);
             return true;
         }
+    }
+
+    public int getHafMoves() {
+        return hafMoves;
     }
 
     public void printBoard() {
@@ -197,7 +221,7 @@ public class Board {
         System.out.println("   #################################################");
         System.out.println("   #     #     #     #     #     #     #     #     #");
         System.out.println(" 6 #  " + v[5][0] + "  #  " + v[5][1] + "  #  " + v[5][2] + "  #  " + v[5][3] + "  #  " + v[5][4] + "  #  " + v[5][5] + "  #  " + v[5][6] + "  #  " + v[5][7] + "  # 6   +--------+-------+-------+");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | piece  | Black | White |");
+        System.out.println("   #     #     #     #     #     #     #     #     #     | piece  | White | Black |");
         System.out.println("   #################################################     +--------+-------+-------+");
         System.out.println("   #     #     #     #     #     #     #     #     #     | Pawn   | P     | p     |");
         System.out.println(" 5 #  " + v[4][0] + "  #  " + v[4][1] + "  #  " + v[4][2] + "  #  " + v[4][3] + "  #  " + v[4][4] + "  #  " + v[4][5] + "  #  " + v[4][6] + "  #  " + v[4][7] + "  # 5   | Knight | N     | n     |");

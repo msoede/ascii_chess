@@ -15,8 +15,9 @@ package chess;
 /**
  * @author Mikkel Soede
  * @version 1.0
- * @description handle the piece information there will be 64 piece to reprecent a hole board
- * @date 
+ * @description handle the piece information there will be 64 piece to reprecent
+ * a hole board
+ * @date
  */
 public class Piece {
 
@@ -25,6 +26,40 @@ public class Piece {
 
     public Piece(String name, Player player) {
         this.name = name;
+        this.player = player;
+    }
+
+    public Piece(char type, Player player) {
+       
+        String typeString = ""+type;
+        typeString = typeString.toUpperCase();
+        type = typeString.charAt(0);
+        
+        String value = " "; // defualt value
+        switch (type) {
+            case 'P':
+                value = "Pawn";
+                break;
+            case 'R':
+                value = "Rook";
+                break;
+            case 'N':
+                value = "Knight";
+                break;
+            case 'B':
+                value = "Bishop";
+                break;
+            case 'Q':
+                value = "Queen";
+                break;
+            case 'K':
+                value = "King";
+                break;
+            default:
+                break;
+
+        }
+        this.name = value;
         this.player = player;
     }
 
@@ -54,9 +89,9 @@ public class Piece {
         }
 
         if (player.isColor() == true) { //white side
-            value = value.toLowerCase();
-        } else { // black side
             value = value.toUpperCase();
+        } else { // black side
+            value = value.toLowerCase();
         }
 
         return value;
