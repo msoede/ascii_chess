@@ -16,7 +16,7 @@ package chess;
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date 
+ * @date
  */
 public class Validate {
 
@@ -98,10 +98,11 @@ public class Validate {
             }
         }
 
-        int l1 = fromFile;
         int n1 = fromRank;
-        int l2 = toFile;
+        int l1 = fromFile;
         int n2 = toRank;
+        int l2 = toFile;
+        Move moveTomake = new Move(n1, l1, n2, l2, false, false, false, false, false, false);
 
         if (board.getPiece(fromRank, fromFile) == null) {
             System.out.println("There's no piece at the specified location");
@@ -147,7 +148,7 @@ public class Validate {
                 System.out.println("An enemy piece is blocking your move!");
                 return false;
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         } //PAWN BLACK
         else if (board.getPiece(n1, l1).getName().equals("Pawn") && !currentPlayer) {
             if (n1 != 6 && rowDiff >= 2) {
@@ -171,13 +172,13 @@ public class Validate {
                 System.out.println("An enemy piece is blocking your move!");
                 return false;
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         } else if (board.getPiece(n1, l1).getName().equals("King")) {
             if (Math.abs(rowDiff) > 1 || Math.abs(colDiff) > 1) {
                 System.out.println("Kings may only move one space at a time.");
                 return false;
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         } else if (board.getPiece(n1, l1).getName().equals("Queen")) {
             if (Math.abs(rowDiff) != Math.abs(colDiff) && rowDiff != 0 && colDiff != 0) {
                 System.out.println("Queens can do a lot of things, but they can't apparate.");
@@ -248,13 +249,13 @@ public class Validate {
                     }
                 }
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         } else if (board.getPiece(n1, l1).getName().equals("Knight")) {
             if (Math.abs(rowDiff) * Math.abs(colDiff) != 2) {
                 System.out.println("Knights can't move like that.");
                 return false;
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         } else if (board.getPiece(n1, l1).getName().equals("Bishop")) {
             if (Math.abs(rowDiff) != Math.abs(colDiff)) {
                 System.out.println("Bishops can't move like that.");
@@ -297,7 +298,7 @@ public class Validate {
                     }
                 }
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         } else if (board.getPiece(n1, l1).getName().equals("Rook")) {
             if (rowDiff != 0 && colDiff != 0) {
                 System.out.println("Rooks can't move like that.");
@@ -333,7 +334,7 @@ public class Validate {
                     }
                 }
             }
-            return board.makeMove(n1, l1, n2, l2);
+            return board.makeMove(moveTomake);
         }
         return false; // default value
     }

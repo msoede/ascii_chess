@@ -16,14 +16,14 @@ package chess;
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date 
+ * @date
  */
 public class Move {
 
-    private final int fromFile;
-    private final int toFile;
     private final int fromRank;
     private final int toRank;
+    private final int fromFile;
+    private final int toFile;
     private final boolean promoted;
     private final boolean castleWhiteKing;
     private final boolean castleBlackKing;
@@ -31,11 +31,11 @@ public class Move {
     private final boolean castleBlackQueen;
     private final boolean playerColor;
 
-    public Move(int fromFile, int fromRank, int toFile, int toRank, boolean promoted, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean playerColor) {
-        this.fromFile = fromFile;
-        this.toFile = toFile;
+    public Move(int fromRank, int fromFile, int toRank, int toFile, boolean promoted, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean playerColor) {
         this.fromRank = fromRank;
         this.toRank = toRank;
+        this.fromFile = fromFile;
+        this.toFile = toFile;
         this.promoted = promoted;
         this.castleWhiteKing = castleWhiteKing;
         this.castleBlackKing = castleBlackKing;
@@ -49,7 +49,7 @@ public class Move {
     }
 
     public int getFromFile() {
-        return fromFile;
+        return fromRank;
     }
 
     public int gtf() {
@@ -57,7 +57,7 @@ public class Move {
     }
 
     public int getToFile() {
-        return toFile;
+        return toRank;
     }
 
     public int gfr() {
@@ -65,7 +65,7 @@ public class Move {
     }
 
     public int getFromRank() {
-        return fromRank;
+        return fromFile;
     }
 
     public int gtr() {
@@ -73,7 +73,7 @@ public class Move {
     }
 
     public int getToRank() {
-        return toRank;
+        return toFile;
     }
 
     public boolean isPromoted() {

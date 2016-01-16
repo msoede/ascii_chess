@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date 
+ * @date
  */
 public class Board {
 
@@ -150,26 +150,23 @@ public class Board {
         Move lastMove = moveHistory.get(moveHistory.size() - 1);
     }
 
-    /**
-     * NOT TESTED
-     * @param move
-     */
-    public void makeMove(Move move) {
-        makeMove(move.getFromFile(), move.getFromRank(), move.getToFile(), move.getToRank());
-    }
+    public boolean makeMove(Move move) {
+        int fromFile = move.getFromFile();
+        int fromRank = move.getFromRank();
+        int toFile = move.getToFile();
+        int toRank = move.getToRank();
 
-    public boolean makeMove(int n1, int l1, int n2, int l2) {
         boolean currentPlayer = side;
 
-        if (getPiece(n2, l2) != null && getPiece(n2, l2).getPlayer().isColor() != currentPlayer) {
-            System.out.println("You have taken the enemy's " + getPiece(n2, l2).getName() + "!");
-            setPiece(n2, l2, getPiece(n1, l1));
-            setPiece(n1, l1, null);
+        if (getPiece(toFile, toRank) != null && getPiece(toFile, toRank).getPlayer().isColor() != currentPlayer) {
+            System.out.println("You have taken the enemy's " + getPiece(toFile, toRank).getName() + "!");
+            setPiece(toFile, toRank, getPiece(fromFile, fromRank));
+            setPiece(fromFile, fromRank, null);
             return true;
         } else {
             System.out.println("Move successful!");
-            setPiece(n2, l2, getPiece(n1, l1));
-            setPiece(n1, l1, null);
+            setPiece(toFile, toRank, getPiece(fromFile, fromRank));
+            setPiece(fromFile, fromRank, null);
             return true;
         }
     }
