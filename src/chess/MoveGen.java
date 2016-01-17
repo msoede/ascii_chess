@@ -13,7 +13,6 @@
 package chess;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * @author Mikkel Soede
@@ -58,20 +57,68 @@ public class MoveGen {
             for (int file = 0; file < 8; file++) {
                 Piece p = pos.getPiece(rank, file);
                 if (p != null) {
-                    if (p.getType().equals("p") || p.getType().equals("P")) {
-                        //normal move forward
-                        Move moveToTest = new Move(rank, file, rank + 1, file, false, false, false, false, false, false);
-                        boolean res = validatePawnMove(pos, moveToTest);
-                        if (res) {
-                            moveList.add(moveToTest);
+                    if (p.getType().equals("p") && !pos.isSide()) {
+                        Move move1 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false); //normal move forward
+                        Move move2 = new Move(rank, file, rank - 2, file, false, false, false, false, false, false); //doobelt move forward
+
+                        if (file >= 1) {
+                            Move move3 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false); //attack left
+                            boolean res3 = validatePawnMove(pos, move3);
+
+                            if (res3) {
+                                moveList.add(move3);
+                            }
                         }
-                        //normal dooblet move forward
-                        Move moveToTestDob = new Move(rank, file, rank + 2, file, false, false, false, false, false, false);
-                        boolean resDob = validatePawnMove(pos, moveToTestDob);
-                        if (resDob) {
-                            moveList.add(moveToTest);
+                        if (file <= 6) {
+                            Move move4 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
+                            boolean res4 = validatePawnMove(pos, move4);
+
+                            if (res4) {
+                                moveList.add(move4);
+                            }
                         }
+
+                        boolean res1 = validatePawnMove(pos, move1);
+                        boolean res2 = validatePawnMove(pos, move2);
+                        if (res1) {
+                            moveList.add(move1);
+                        }
+                        if (res2) {
+                            moveList.add(move2);
+                        }
+                    } else if (p.getType().equals("P") && pos.isSide()) {
+                        Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
+                        Move move2 = new Move(rank, file, rank + 2, file, false, false, false, false, false, false); //doobelt move forward
+
+                        if (file >= 1) {
+                            Move move3 = new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false); //normal move forward
+                            boolean res3 = validatePawnMove(pos, move3);
+
+                            if (res3) {
+                                moveList.add(move3);
+                            }
+                        }
+                        if (file <= 6) {
+                            Move move4 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
+                            boolean res4 = validatePawnMove(pos, move4);
+
+                            if (res4) {
+                                moveList.add(move4);
+                            }
+                        }
+
+                        boolean res1 = validatePawnMove(pos, move1);
+                        boolean res2 = validatePawnMove(pos, move2);
+                        if (res1) {
+                            moveList.add(move1);
+                        }
+                        if (res2) {
+                            moveList.add(move2);
+                        }
+                    } else if (p.getType().equals("N") && pos.isSide()) {
+                        
                     }
+                    
                 }
             }
         }

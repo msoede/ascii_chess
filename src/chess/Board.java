@@ -32,7 +32,7 @@ public class Board {
     private int searchTime = 15; // default value
     private int searchDepth = 5; // default value
     private boolean humanPlayer = true; // default value
-    
+
     private int hafMoves = 0;
 
     public Board(String whitePlayerName, String blackPlayerName) {
@@ -78,7 +78,7 @@ public class Board {
         board[7][5] = new Piece("Bishop", playerBlack);
         board[7][6] = new Piece("Knight", playerBlack);
         board[7][7] = new Piece("Rook", playerBlack);
-        
+
         board[6][0] = new Piece("Pawn", playerBlack);
         board[6][1] = new Piece("Pawn", playerBlack);
         board[6][2] = new Piece("Pawn", playerBlack);
@@ -88,13 +88,13 @@ public class Board {
         board[6][6] = new Piece("Pawn", playerBlack);
         board[6][7] = new Piece("Pawn", playerBlack);
     }
-    
-    public void clearBoard(){
+
+    public void clearBoard() {
         for (int rank = 0; rank < 8; rank++) {
             for (int file = 0; file < 8; file++) {
                 setPiece(rank, file, null);
             }
-            
+
         }
     }
 
@@ -171,7 +171,7 @@ public class Board {
     }
 
     public boolean makeMove(Move move) {
-        hafMoves ++;
+        hafMoves++;
         int fromFile = move.getFromFile();
         int fromRank = move.getFromRank();
         int toFile = move.getToFile();

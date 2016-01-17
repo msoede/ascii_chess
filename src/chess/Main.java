@@ -30,8 +30,9 @@ public class Main {
         Evaluation evaluation = new Evaluation();
         Prints prints = new Prints();
         Main main = new Main();
+        MoveGen moveGen = new MoveGen();
 
-        //print welcome message 
+        //print welcome messages
         prints.printWelcomeMessage();
         prints.handleArguments(board, args);
 
@@ -39,6 +40,7 @@ public class Main {
         String input;
         while (true) {
             board.printBoard();
+            moveGen.generateAllPawnMoves(board);
 
             System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
             input = main.getInputFromUser(board);
@@ -47,7 +49,7 @@ public class Main {
                 System.out.println("invalid move(" + input + ") string, enter new move:");
                 input = main.getInputFromUser(board);
             }
-            if (validate.validateMove(input, board)) {
+            if (validate.validateMoveAndDoTheMove(input, board)) {
                 board.switchSide();
             }
             System.out.println("Evo: " + evaluation.evaluateBoard(board));
@@ -58,7 +60,8 @@ public class Main {
         String input = System.console().readLine();
         input = input.toLowerCase();
         if (input.equals("q")) {
-            System.out.println("quit program \nhave a nice day!");
+            System.out.println("quit program!");
+            System.out.println("have a nice day!");
             System.exit(0);
         } else if (input.equals("h")) {
             System.out.println("+-----+----------------+");

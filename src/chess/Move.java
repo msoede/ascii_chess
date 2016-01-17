@@ -110,7 +110,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move{" + "fromRank=" + fromRank + ", toRank=" + toRank + ", fromFile=" + fromFile + ", toFile=" + toFile + ", promoted=" + promoted + ", castleWhiteKing=" + castleWhiteKing + ", castleBlackKing=" + castleBlackKing + ", castleWhiteQueen=" + castleWhiteQueen + ", castleBlackQueen=" + castleBlackQueen + ", playerColor=" + playerColor + '}';
+        return "Move{" + "fromRank=" + fromRank + ", fromFile=" + fromFile + ",toRank=" + toRank + ", toFile=" + toFile + ", prom=" + promoted + ", cwk=" + castleWhiteKing + ", cbk=" + castleBlackKing + ", cwq=" + castleWhiteQueen + ", cbq=" + castleBlackQueen + ", playerColor=" + playerColor + '}';
     }
 
 }
