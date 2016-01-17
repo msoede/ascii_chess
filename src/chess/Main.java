@@ -73,7 +73,6 @@ public class Main {
             System.out.println("+------------+---------------------------------------------------------------+");
             System.out.format("| Fen String | %61s |\n", fen.getFen(board));
             System.out.println("+------------+---------------------------------------------------------------+");
-            System.out.println(fen.getFen(board));
         }
         return input;
     }

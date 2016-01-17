@@ -1,13 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//                                       _      
+//                                      | |     
+//          _ __ ___  ___  ___   ___  __| | ___ 
+//         | '_ ` _ \/ __|/ _ \ / _ \/ _` |/ _ \
+//         | | | | | \__ \ (_) |  __/ (_| |  __/
+//         |_|_|_| |_|___/\___/ \___|\__,_|\___|
+//          / ____| |                           
+//         | |    | |__   ___  ___ ___          
+//         | |    | '_ \ / _ \/ __/ __|         
+//         | |____| | | |  __/\__ \__ \         
+//          \_____|_| |_|\___||___/___/   
+//
 package chess;
 
 /**
- *
- * @author msoede
+ * @author Mikkel Soede
+ * @version 1.0
+ * @description
+ * @date
  */
 public class Fen {
 
@@ -19,9 +28,9 @@ public class Fen {
      * @return
      */
     public Board loadFen(String fen, Board board) {
-        board.clearBoard();
+        board.clearBoard(); // remove all pieces on board
         int rank = 7;
-        int file = 7;
+        int file = 0;
         int i;
         System.out.println("fen string: " + fen);
         for (i = 0; i < fen.length(); i++) {
@@ -31,7 +40,7 @@ public class Fen {
             }
             if (currentPiece == '/') {
                 rank--;
-                file = 7;
+                file = 0;
                 System.out.println("new rank!!");
                 continue;
             }
@@ -39,16 +48,14 @@ public class Fen {
             int tempInt = currentPiece - '0';
             if (tempInt >= 0 && tempInt <= 8) {
                 System.out.println("(" + rank + "," + file + ") cp: " + currentPiece + " tempint: " + tempInt + " int");
-                file = file - tempInt;
+                file = file + tempInt;
                 continue;
             } else if (tempInt >= 17 && tempInt <= 42) { // capital letters (WHITE)
                 board.setPiece(rank, file, new Piece(currentPiece, board.getPlayerWhite()));
-                System.out.println("(" + rank + "," + file + ") cp: " + currentPiece + " tempint: " + tempInt + " white");
             } else {//small letters (BLACK)
-                System.out.println("(" + rank + "," + file + ") cp: " + currentPiece + " tempint: " + tempInt + " black");
                 board.setPiece(rank, file, new Piece(currentPiece, board.getPlayerBlack()));
             }
-            file--;
+            file++;
         }
 
         //board.setSide((fen.charAt(i) == 'w'));
@@ -69,18 +76,18 @@ public class Fen {
      * @return
      */
     public String getFen(Board board) {
-        String fenString = "";
+        String fenString;
         String pieces = "";
-        String side = "";
-        String castling = "";
-        String enPassant = "";
-        String hafMoves = "";
-        String fullMoves = "";
+        String side;
+        String castling;
+        String enPassant;
+        String hafMoves;
+        String fullMoves;
 
         int spaces = 0;
 
         for (int rank = 7; rank >= 0; rank--) {
-            for (int file = 7; file >= 0; file--) {
+            for (int file = 0; file <= 7; file++) {
                 Piece p = board.getPiece(rank, file);
                 if (p == null) {
                     spaces++;
