@@ -82,7 +82,6 @@ public class Validate {
      * @return
      */
     public boolean validateMoveAndDoTheMove(String move, Board board) {
-
         boolean currentPlayer = board.getSide();
         int fromFile = 0;
         int fromRank = move.charAt(1) - '1';
@@ -103,6 +102,10 @@ public class Validate {
         int n2 = toRank;
         int l2 = toFile;
         Move moveTomake = new Move(n1, l1, n2, l2, false, false, false, false, false, false);
+
+//        if (fromRank <= 0 || fromRank >= 8 || fromFile <= 0 || fromFile >= 8 || toRank <= 0 || toRank >= 8 || toFile <= 0 || toFile >= 8) {
+//            return false;
+//        }
 
         if (board.getPiece(fromRank, fromFile) == null) {
             System.out.println("There's no piece at the specified location");
@@ -348,19 +351,19 @@ public class Validate {
         int toRank = moveTomake.getToRank();
         int toFile = moveTomake.getToFile();
 
+        if (fromRank < 0 || fromRank >= 8 || fromFile < 0 || fromFile >= 8 || toRank < 0 || toRank >= 8 || toFile < 0 || toFile >= 8) {
+            return false;
+        }
 
         if (board.getPiece(fromRank, fromFile) == null) {
-            System.out.println("There's no piece at the specified location");
             return false;
         }
 
         if (board.getPiece(fromRank, fromFile) != null && currentPlayer != board.getPiece(fromRank, fromFile).getPlayer().isColor()) {
-            System.out.println("That's not your piece, bro.");
             return false;
         }
 
         if (board.getPiece(toRank, toFile) != null && currentPlayer == board.getPiece(toRank, toFile).getPlayer().isColor()) {
-            System.out.println("You already have a piece there.");
             return false;
         }
 
@@ -369,69 +372,51 @@ public class Validate {
         int absRowDiff = Math.abs(rowDiff);
         int absColDiff = Math.abs(colDiff);
 
-
         //WHITE PAWN
         if (board.getPiece(fromRank, fromFile).getName().equals("Pawn") && currentPlayer) {
             if (fromRank != 1 && rowDiff <= -2) {
-                System.out.println("Pawns can't move like that.");
                 return false;
             } else if (fromRank == 1 && rowDiff < -2) {
-                System.out.println("Pawns may move 2 spaces forward their first move.");
                 return false;
             } else if (rowDiff >= 0) {
-                System.out.println("Pawns can't move like that.");
                 return false;
             } else if (Math.abs(colDiff) > 1) {
-                System.out.println("Pawns can't move like that.");
                 return false;
             } else if (Math.abs(colDiff) == 1 && rowDiff == -1 && board.getPiece(toRank, toFile) == null) {
-                System.out.println("There must be an enemy piece at " + toFile + "," + toRank + " for you to move there.");
                 return false;
             } else if (rowDiff == -1 && colDiff == 0 && board.getPiece(toRank, toFile) != null && board.getPiece(toRank, toFile).getPlayer().isColor() == !currentPlayer) {
-                System.out.println("An enemy piece is blocking your move!");
                 return false;
             }
-            return board.makeMove(moveTomake);
+            return true;
         } //PAWN BLACK
         else if (board.getPiece(fromRank, fromFile).getName().equals("Pawn") && !currentPlayer) {
             if (fromRank != 6 && rowDiff >= 2) {
-                System.out.println("Pawns can't move like that.");
                 return false;
             } else if (fromRank == 6 && rowDiff > 2) {
-                System.out.println("Pawns may move 2 spaces forward their first move.");
                 return false;
             } else if (rowDiff <= 0) {
-                System.out.println("Pawns can't move like that.");
                 return false;
             } else if (Math.abs(colDiff) > 1) {
-                System.out.println("Pawns can't move like that.");
                 return false;
-
             } else if (Math.abs(colDiff) == 1 && rowDiff == 1 && board.getPiece(toRank, toFile) == null) {
-                System.out.println("There must be an enemy piece at " + toFile + "," + toRank + " for you to move there.");
                 return false;
-
             } else if (rowDiff == 1 && colDiff == 0 && board.getPiece(toRank, toFile) != null && board.getPiece(toRank, toFile).getPlayer().isColor() == !currentPlayer) {
-                System.out.println("An enemy piece is blocking your move!");
                 return false;
             }
-            return board.makeMove(moveTomake);
+            return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("King")) {
             if (Math.abs(rowDiff) > 1 || Math.abs(colDiff) > 1) {
-                System.out.println("Kings may only move one space at a time.");
                 return false;
             }
-            return board.makeMove(moveTomake);
+            return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("Queen")) {
             if (Math.abs(rowDiff) != Math.abs(colDiff) && rowDiff != 0 && colDiff != 0) {
-                System.out.println("Queens can do a lot of things, but they can't apparate.");
                 return false;
             }
             if (rowDiff > 0 && colDiff > 0) {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     for (int j = fromFile - 1; j > toFile; j--) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -440,7 +425,6 @@ public class Validate {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     for (int j = fromFile + 1; j < toFile; j++) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -449,7 +433,6 @@ public class Validate {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     for (int j = fromFile + 1; j < toFile; j++) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -458,7 +441,6 @@ public class Validate {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     for (int j = fromFile - 1; j > toFile; j--) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -466,49 +448,42 @@ public class Validate {
             } else if (rowDiff == 0 && colDiff > 0) {
                 for (int i = fromFile - 1; i > toFile; i--) {
                     if (board.getPiece(fromRank, i) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             } else if (rowDiff == 0 && colDiff < 0) {
                 for (int i = fromFile + 1; i < toFile; i++) {
                     if (board.getPiece(fromRank, i) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             } else if (rowDiff > 0 && colDiff == 0) {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     if (board.getPiece(i, fromFile) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             } else if (rowDiff < 0 && colDiff == 0) {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     if (board.getPiece(i, fromFile) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             }
-            return board.makeMove(moveTomake);
+            return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("Knight")) {
             if (Math.abs(rowDiff) * Math.abs(colDiff) != 2) {
-                System.out.println("Knights can't move like that.");
                 return false;
             }
-            return board.makeMove(moveTomake);
+            return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("Bishop")) {
             if (Math.abs(rowDiff) != Math.abs(colDiff)) {
-                System.out.println("Bishops can't move like that.");
                 return false;
             }
             if (rowDiff > 0 && colDiff > 0) {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     for (int j = fromFile - 1; j > toFile; j--) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -517,7 +492,6 @@ public class Validate {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     for (int j = fromFile + 1; j < toFile; j++) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -526,7 +500,6 @@ public class Validate {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     for (int j = fromFile + 1; j < toFile; j++) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
@@ -535,49 +508,43 @@ public class Validate {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     for (int j = fromFile - 1; j > toFile; j--) {
                         if (board.getPiece(i, j) != null) {
-                            System.out.println("There's a piece blocking your move!");
                             return false;
                         }
                     }
                 }
             }
-            return board.makeMove(moveTomake);
+            return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("Rook")) {
             if (rowDiff != 0 && colDiff != 0) {
-                System.out.println("Rooks can't move like that.");
                 return false;
             }
 
             if (rowDiff == 0 && colDiff > 0) {
                 for (int i = fromFile - 1; i > toFile; i--) {
                     if (board.getPiece(fromRank, i) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             } else if (rowDiff == 0 && colDiff < 0) {
                 for (int i = fromFile + 1; i < toFile; i++) {
                     if (board.getPiece(fromRank, i) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             } else if (rowDiff > 0 && colDiff == 0) {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     if (board.getPiece(i, fromFile) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             } else if (rowDiff < 0 && colDiff == 0) {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     if (board.getPiece(i, fromFile) != null) {
-                        System.out.println("There's a piece blocking your move!");
                         return false;
                     }
                 }
             }
-            return board.makeMove(moveTomake);
+            return true;
         }
         return false; // default value
     }

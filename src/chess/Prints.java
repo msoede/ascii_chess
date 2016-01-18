@@ -54,8 +54,9 @@ public class Prints {
 
         if (args.length >= 1) {
             for (String tempArg : args) {
-                if (tempArg.length() > 20) {
+                if (tempArg.length() > 10) {
                     if (tempArg.substring(0, 3).equals("fen")) {
+                        System.out.println("Loading fen string");
                         String fenString = tempArg.substring(3);
                         fen.loadFen(fenString, board);
                     }

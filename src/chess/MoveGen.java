@@ -22,6 +22,8 @@ import java.util.ArrayList;
  */
 public class MoveGen {
 
+    private Validate validate;
+
     //piece values:
     private final int pawnValue = 100;
     private final int knightValue = 350;
@@ -29,6 +31,10 @@ public class MoveGen {
     private final int rookValue = 525;
     private final int queenValue = 1000;
     private final int kingValue = 50000;
+
+    public MoveGen() {
+        this.validate = new Validate();
+    }
 
     /**
      * generate all possible moves from a given position
@@ -40,19 +46,6 @@ public class MoveGen {
 
         ArrayList<Move> moveList = new ArrayList<>();
 
-        //Move m = new Move(rookValue, rookValue, rookValue, rookValue, true, true, true, true, true, true)
-        //check for pawn moves forward
-        //check for pawn moves attack
-        //check for pawn moves dobblet move
-        //check for caslte perm
-        //sliding pieces
-        //non sliding pieces
-        return moveList;
-    }
-
-    public void generateAllPawnMoves(Board pos) {
-        ArrayList<Move> moveList = new ArrayList<>();
-
         for (int rank = 0; rank < 8; rank++) {
             for (int file = 0; file < 8; file++) {
                 Piece p = pos.getPiece(rank, file);
@@ -60,73 +53,90 @@ public class MoveGen {
                     if (p.getType().equals("p") && !pos.isSide()) {
                         Move move1 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false); //normal move forward
                         Move move2 = new Move(rank, file, rank - 2, file, false, false, false, false, false, false); //doobelt move forward
+                        Move move3 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false); //attack left
+                        Move move4 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
 
-                        if (file >= 1) {
-                            Move move3 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false); //attack left
-                            boolean res3 = validatePawnMove(pos, move3);
-
-                            if (res3) {
-                                moveList.add(move3);
-                            }
-                        }
-                        if (file <= 6) {
-                            Move move4 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
-                            boolean res4 = validatePawnMove(pos, move4);
-
-                            if (res4) {
-                                moveList.add(move4);
-                            }
-                        }
-
-                        boolean res1 = validatePawnMove(pos, move1);
-                        boolean res2 = validatePawnMove(pos, move2);
-                        if (res1) {
-                            moveList.add(move1);
-                        }
-                        if (res2) {
-                            moveList.add(move2);
-                        }
+                        validateMoveAndToMoveList(pos, moveList, move1);
+                        validateMoveAndToMoveList(pos, moveList, move2);
+                        validateMoveAndToMoveList(pos, moveList, move3);
+                        validateMoveAndToMoveList(pos, moveList, move4);
                     } else if (p.getType().equals("P") && pos.isSide()) {
                         Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
                         Move move2 = new Move(rank, file, rank + 2, file, false, false, false, false, false, false); //doobelt move forward
+                        Move move3 = new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false); //normal move forward
+                        Move move4 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
 
-                        if (file >= 1) {
-                            Move move3 = new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false); //normal move forward
-                            boolean res3 = validatePawnMove(pos, move3);
+                        validateMoveAndToMoveList(pos, moveList, move1);
+                        validateMoveAndToMoveList(pos, moveList, move2);
+                        validateMoveAndToMoveList(pos, moveList, move3);
+                        validateMoveAndToMoveList(pos, moveList, move4);
+                    } else if (p.getType().equals("N") || p.getType().equals("n")) {
+                        Move move1 = new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false); //normal move forward
+                        Move move2 = new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false); //doobelt move forward
+                        Move move3 = new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false); //normal move forward
+                        Move move4 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
+                        Move move5 = new Move(rank, file, rank + 1, file - 2, false, false, false, false, false, false); //normal move forward
+                        Move move6 = new Move(rank, file, rank - 1, file - 2, false, false, false, false, false, false); //normal move forward
+                        Move move7 = new Move(rank, file, rank - 2, file + 1, false, false, false, false, false, false); //normal move forward
+                        Move move8 = new Move(rank, file, rank - 2, file - 1, false, false, false, false, false, false); //normal move forward
 
-                            if (res3) {
-                                moveList.add(move3);
-                            }
+                        validateMoveAndToMoveList(pos, moveList, move1);
+                        validateMoveAndToMoveList(pos, moveList, move2);
+                        validateMoveAndToMoveList(pos, moveList, move3);
+                        validateMoveAndToMoveList(pos, moveList, move4);
+                        validateMoveAndToMoveList(pos, moveList, move5);
+                        validateMoveAndToMoveList(pos, moveList, move6);
+                        validateMoveAndToMoveList(pos, moveList, move7);
+                        validateMoveAndToMoveList(pos, moveList, move8);
+                    } else if (p.getType().equals("R") || p.getType().equals("r")) {
+                        for (int i = 0; i < 8; i++) {
+                            Move move1 = new Move(rank, file, i, file, false, false, false, false, false, false);
+                            validateMoveAndToMoveList(pos, moveList, move1);
+                            Move move2 = new Move(rank, file, rank, i, false, false, false, false, false, false);
+                            validateMoveAndToMoveList(pos, moveList, move2);
                         }
-                        if (file <= 6) {
-                            Move move4 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
-                            boolean res4 = validatePawnMove(pos, move4);
 
-                            if (res4) {
-                                moveList.add(move4);
-                            }
+                    } else if (p.getType().equals("B") || p.getType().equals("b")) {
+                        for (int i = 0; i < 8; i++) {
+                            Move move1 = new Move(rank, file, i, i, false, false, false, false, false, false);
+                            validateMoveAndToMoveList(pos, moveList, move1);
+                            Move move2 = new Move(rank, file, i, i, false, false, false, false, false, false);
+                            validateMoveAndToMoveList(pos, moveList, move2);
                         }
 
-                        boolean res1 = validatePawnMove(pos, move1);
-                        boolean res2 = validatePawnMove(pos, move2);
-                        if (res1) {
-                            moveList.add(move1);
-                        }
-                        if (res2) {
-                            moveList.add(move2);
-                        }
-                    } else if (p.getType().equals("N") && pos.isSide()) {
-                        
+                    } else if (p.getType().equals("Q") || p.getType().equals("q")) {
+//                        Move move1 = new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false); 
+//                        validateMoveAndToMoveList(pos, moveList, move1);
+
+                    } else if (p.getType().equals("K") || p.getType().equals("k")) {
+                        Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
+                        Move move2 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
+                        Move move3 = new Move(rank, file, rank, file - 1, false, false, false, false, false, false); //normal move forward
+                        Move move4 = new Move(rank, file, rank, file + 1, false, false, false, false, false, false); //normal move forward
+                        Move move5 = new Move(rank, file, rank, file - 1, false, false, false, false, false, false); //normal move forward
+                        Move move6 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false); //normal move forward
+                        Move move7 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false); //normal move forward
+                        Move move8 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
+                        validateMoveAndToMoveList(pos, moveList, move1);
+                        validateMoveAndToMoveList(pos, moveList, move2);
+                        validateMoveAndToMoveList(pos, moveList, move3);
+                        validateMoveAndToMoveList(pos, moveList, move4);
+                        validateMoveAndToMoveList(pos, moveList, move5);
+                        validateMoveAndToMoveList(pos, moveList, move6);
+                        validateMoveAndToMoveList(pos, moveList, move7);
+                        validateMoveAndToMoveList(pos, moveList, move8);
                     }
-                    
                 }
             }
         }
-        System.out.println("movelist length: " + moveList.size());
-        for (Move next : moveList) {
-            System.out.println(next.toString());
-        }
+        return moveList;
+    }
 
+    public void validateMoveAndToMoveList(Board pos, ArrayList<Move> moveList, Move move) {
+        boolean res2 = validate.validateMove(move, pos);
+        if (res2) {
+            moveList.add(move);
+        }
     }
 
     public boolean validatePawnMove(Board board, Move moveTomake) {
@@ -136,6 +146,10 @@ public class MoveGen {
         int fromFile = moveTomake.getFromFile();
         int toRank = moveTomake.getToRank();
         int toFile = moveTomake.getToFile();
+
+        if (fromRank <= 0 || fromRank >= 8 || fromFile <= 0 || fromFile >= 8 || toRank <= 0 || toRank >= 8 || toFile <= 0 || toFile >= 8) {
+            return false;
+        }
 
         if (board.getPiece(fromRank, fromFile) == null) {
             return false;

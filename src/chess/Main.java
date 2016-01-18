@@ -12,6 +12,8 @@
 //
 package chess;
 
+import java.util.ArrayList;
+
 /**
  * @author Mikkel Soede
  * @version 1.0
@@ -40,8 +42,8 @@ public class Main {
         String input;
         while (true) {
             board.printBoard();
-            moveGen.generateAllPawnMoves(board);
-
+            ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+            System.out.println("Possible moves: " + moveList.size());
             System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
             input = main.getInputFromUser(board);
 
