@@ -60,6 +60,8 @@ public class MoveGen {
                         validateMoveAndToMoveList(pos, moveList, move2);
                         validateMoveAndToMoveList(pos, moveList, move3);
                         validateMoveAndToMoveList(pos, moveList, move4);
+
+                        //promotion??
                     } else if (p.getType().equals("P") && pos.isSide()) {
                         Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
                         Move move2 = new Move(rank, file, rank + 2, file, false, false, false, false, false, false); //doobelt move forward
@@ -70,6 +72,7 @@ public class MoveGen {
                         validateMoveAndToMoveList(pos, moveList, move2);
                         validateMoveAndToMoveList(pos, moveList, move3);
                         validateMoveAndToMoveList(pos, moveList, move4);
+                        //promotion??
                     } else if (p.getType().equals("N") || p.getType().equals("n")) {
                         Move move1 = new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false); //normal move forward
                         Move move2 = new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false); //doobelt move forward
@@ -95,19 +98,33 @@ public class MoveGen {
                             Move move2 = new Move(rank, file, rank, i, false, false, false, false, false, false);
                             validateMoveAndToMoveList(pos, moveList, move2);
                         }
-
                     } else if (p.getType().equals("B") || p.getType().equals("b")) {
-                        for (int i = 0; i < 8; i++) {
-                            Move move1 = new Move(rank, file, i, i, false, false, false, false, false, false);
-                            validateMoveAndToMoveList(pos, moveList, move1);
-                            Move move2 = new Move(rank, file, i, i, false, false, false, false, false, false);
-                            validateMoveAndToMoveList(pos, moveList, move2);
-                        }
+                        int tempRank = rank;
+                        int tempFile = file;
+
+                        
+                        
+                        Move move1 = new Move(rank, file, rank + i, file1 + j, false, false, false, false, false, false);
+                        validateMoveAndToMoveList(pos, moveList, move1);
+                        Move move2 = new Move(rank, file, rank + i, file + i, false, false, false, false, false, false);
+                        validateMoveAndToMoveList(pos, moveList, move2);
 
                     } else if (p.getType().equals("Q") || p.getType().equals("q")) {
-//                        Move move1 = new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false); 
-//                        validateMoveAndToMoveList(pos, moveList, move1);
 
+//                        for (int i = 0; i < 8; i++) {
+//                            Move move1 = new Move(rank, file, i, file, false, false, false, false, false, false);
+//                            validateMoveAndToMoveList(pos, moveList, move1);
+//                            Move move2 = new Move(rank, file, rank, i, false, false, false, false, false, false);
+//                            validateMoveAndToMoveList(pos, moveList, move2);
+//                        }
+//                        for (int i = 0; i < 8; i++) {
+//                            for (int j = 8; j < 0; j--) {
+//                                Move move1 = new Move(rank, file, i, j, false, false, false, false, false, false);
+//                                validateMoveAndToMoveList(pos, moveList, move1);
+//                            }
+//                            Move move2 = new Move(rank, file, i, i, false, false, false, false, false, false);
+//                            validateMoveAndToMoveList(pos, moveList, move2);
+//                        }
                     } else if (p.getType().equals("K") || p.getType().equals("k")) {
                         Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
                         Move move2 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
