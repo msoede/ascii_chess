@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author Mikkel Soede
  * @version 1.0
  * @description
- * @date
+ * @date 
  */
 public class Main {
 
@@ -44,6 +44,11 @@ public class Main {
             board.printBoard();
             ArrayList<Move> moveList = moveGen.generateAllMoves(board);
             System.out.println("Possible moves: " + moveList.size());
+            int i = 0;
+            for (Move move : moveList) {
+                System.out.println(i + " -> move " + move.toString());
+                i++;
+            }
             System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
             input = main.getInputFromUser(board);
 

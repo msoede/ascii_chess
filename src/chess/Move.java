@@ -112,5 +112,4 @@ public class Move {
     public String toString() {
         return "Move{" + "fromRank=" + fromRank + ", fromFile=" + fromFile + ",toRank=" + toRank + ", toFile=" + toFile + ", prom=" + promoted + ", cwk=" + castleWhiteKing + ", cbk=" + castleBlackKing + ", cwq=" + castleWhiteQueen + ", cbq=" + castleBlackQueen + ", playerColor=" + playerColor + '}';
     }
-
 }

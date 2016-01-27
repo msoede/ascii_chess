@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class MoveGen {
 
-    private Validate validate;
+    private final Validate validate;
 
     //piece values:
     private final int pawnValue = 100;
@@ -99,15 +99,43 @@ public class MoveGen {
                             validateMoveAndToMoveList(pos, moveList, move2);
                         }
                     } else if (p.getType().equals("B") || p.getType().equals("b")) {
-                        int tempRank = rank;
-                        int tempFile = file;
+                        System.out.println("bishop rank " + rank + "\tfile " + file);
 
-                        
-                        
-                        Move move1 = new Move(rank, file, rank + i, file1 + j, false, false, false, false, false, false);
-                        validateMoveAndToMoveList(pos, moveList, move1);
-                        Move move2 = new Move(rank, file, rank + i, file + i, false, false, false, false, false, false);
-                        validateMoveAndToMoveList(pos, moveList, move2);
+                        for (int i = 0; i < 8; i++) {
+//                            System.out.println("check move(" + (rank + i) + "," + (file + i) + ")");
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (file + i), (rank + i), false, false, false, false, false, false));
+                            if ((rank + i) >= 8 || (file + i) >= 8) {
+                                break;
+                            }
+                        }
+
+                        for (int i = 0; i < 8; i++) {
+//                            System.out.println("check move(" + (rank - i) + "," + (file - i) + ")");
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (file - i), (rank - i), false, false, false, false, false, false));
+                            if ((rank - i) <= 0 || (file - i) <= 0) {
+                                break;
+                            }
+                        }
+
+                        for (int i = 0; i < 8; i++) {
+//                            System.out.println("check move(" + (rank - i) + "," + (file + i) + ")");
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (file - i), (rank + i), false, false, false, false, false, false));
+                            if ((rank - i) <= 0 || (file + i) >= 8) {
+                                break;
+                            }
+                        }
+
+                        for (int i = 0; i < 8; i++) {
+//                            System.out.println("check move(" + (rank + i) + "," + (file - i) + ")");
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (file + i), (rank - i), false, false, false, false, false, false));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false));
+                            if ((rank + i) >= 8 || (file - i) <= 0) {
+                                break;
+                            }
+                        }
 
                     } else if (p.getType().equals("Q") || p.getType().equals("q")) {
 
@@ -126,14 +154,14 @@ public class MoveGen {
 //                            validateMoveAndToMoveList(pos, moveList, move2);
 //                        }
                     } else if (p.getType().equals("K") || p.getType().equals("k")) {
-                        Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
-                        Move move2 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
-                        Move move3 = new Move(rank, file, rank, file - 1, false, false, false, false, false, false); //normal move forward
-                        Move move4 = new Move(rank, file, rank, file + 1, false, false, false, false, false, false); //normal move forward
-                        Move move5 = new Move(rank, file, rank, file - 1, false, false, false, false, false, false); //normal move forward
-                        Move move6 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false); //normal move forward
-                        Move move7 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false); //normal move forward
-                        Move move8 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
+                        Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false);
+                        Move move2 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false);
+                        Move move5 = new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false);
+                        Move move4 = new Move(rank, file, rank, file + 1, false, false, false, false, false, false);
+                        Move move3 = new Move(rank, file, rank, file - 1, false, false, false, false, false, false);
+                        Move move6 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false);
+                        Move move8 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false);
+                        Move move7 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false);
                         validateMoveAndToMoveList(pos, moveList, move1);
                         validateMoveAndToMoveList(pos, moveList, move2);
                         validateMoveAndToMoveList(pos, moveList, move3);
@@ -155,68 +183,4 @@ public class MoveGen {
             moveList.add(move);
         }
     }
-
-    public boolean validatePawnMove(Board board, Move moveTomake) {
-        boolean currentPlayer = board.getSide();
-
-        int fromRank = moveTomake.getFromRank();
-        int fromFile = moveTomake.getFromFile();
-        int toRank = moveTomake.getToRank();
-        int toFile = moveTomake.getToFile();
-
-        if (fromRank <= 0 || fromRank >= 8 || fromFile <= 0 || fromFile >= 8 || toRank <= 0 || toRank >= 8 || toFile <= 0 || toFile >= 8) {
-            return false;
-        }
-
-        if (board.getPiece(fromRank, fromFile) == null) {
-            return false;
-        }
-
-        if (board.getPiece(fromRank, fromFile) != null && currentPlayer != board.getPiece(fromRank, fromFile).getPlayer().isColor()) {
-            return false;
-        }
-
-        if (board.getPiece(toRank, toFile) != null && currentPlayer == board.getPiece(toRank, toFile).getPlayer().isColor()) {
-            return false;
-        }
-
-        int rowDiff = fromRank - toRank;
-        int colDiff = fromFile - toFile;
-        //WHITE PAWN
-        if (board.getPiece(fromRank, fromFile).getName().equals("Pawn") && currentPlayer) {
-            if (fromRank != 1 && rowDiff <= -2) {
-                return false;
-            } else if (fromRank == 1 && rowDiff < -2) {
-                return false;
-            } else if (rowDiff >= 0) {
-                return false;
-            } else if (Math.abs(colDiff) > 1) {
-                return false;
-            } else if (Math.abs(colDiff) == 1 && rowDiff == -1 && board.getPiece(toRank, toFile) == null) {
-                return false;
-            } else if (rowDiff == -1 && colDiff == 0 && board.getPiece(toRank, toFile) != null && board.getPiece(toRank, toFile).getPlayer().isColor() == !currentPlayer) {
-                return false;
-            }
-            return true;
-        } //PAWN BLACK
-        else if (board.getPiece(fromRank, fromFile).getName().equals("Pawn") && !currentPlayer) {
-            if (fromRank != 6 && rowDiff >= 2) {
-                return false;
-            } else if (fromRank == 6 && rowDiff > 2) {
-                return false;
-            } else if (rowDiff <= 0) {
-                return false;
-            } else if (Math.abs(colDiff) > 1) {
-                return false;
-            } else if (Math.abs(colDiff) == 1 && rowDiff == 1 && board.getPiece(toRank, toFile) == null) {
-                return false;
-
-            } else if (rowDiff == 1 && colDiff == 0 && board.getPiece(toRank, toFile) != null && board.getPiece(toRank, toFile).getPlayer().isColor() == !currentPlayer) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
 }

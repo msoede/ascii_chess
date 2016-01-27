@@ -94,7 +94,6 @@ public class Board {
             for (int file = 0; file < 8; file++) {
                 setPiece(rank, file, null);
             }
-
         }
     }
 
