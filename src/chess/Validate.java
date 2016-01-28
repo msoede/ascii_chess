@@ -241,13 +241,16 @@ public class Validate {
             }
             return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("Bishop")) {
+            System.out.println("Bishop");
             if (Math.abs(rowDiff) != Math.abs(colDiff)) {
+                System.out.println("" + Math.abs(rowDiff) + " != " + Math.abs(colDiff));
                 return false;
             }
             if (rowDiff > 0 && colDiff > 0) {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     for (int j = fromFile - 1; j > toFile; j--) {
                         if (board.getPiece(i, j) != null) {
+                            System.out.println("false 1 (" + i + "," + j + ")" + board.getPiece(i, j).getName());
                             return false;
                         }
                     }
@@ -256,14 +259,26 @@ public class Validate {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     for (int j = fromFile + 1; j < toFile; j++) {
                         if (board.getPiece(i, j) != null) {
+                            System.out.println("false 2 (" + i + "," + j + ")" + board.getPiece(i, j).getName());
                             return false;
                         }
                     }
                 }
+//                else if(rowDiff < 0 && colDiff < 0){
+//			for(int i = n1+1; i < n2; i++){
+//				for(int j = l1+1; j < l2; j ++){
+//					if(board[i][j].piece != nullptr){
+//						cout<<"There's a piece blocking your move!"<<endl<<endl;
+//						return false;
+//					}
+//				}
+//			}
+//		}
             } else if (rowDiff > 0 && colDiff < 0) {
                 for (int i = fromRank - 1; i > toRank; i--) {
                     for (int j = fromFile + 1; j < toFile; j++) {
                         if (board.getPiece(i, j) != null) {
+                            System.out.println("false 3 (" + i + "," + j + ")" + board.getPiece(i, j).getName());
                             return false;
                         }
                     }
@@ -272,11 +287,13 @@ public class Validate {
                 for (int i = fromRank + 1; i < toRank; i++) {
                     for (int j = fromFile - 1; j > toFile; j--) {
                         if (board.getPiece(i, j) != null) {
+                            System.out.println("false 4 (" + i + "," + j + ")" + board.getPiece(i, j).getName());
                             return false;
                         }
                     }
                 }
             }
+            System.out.println("true");
             return true;
         } else if (board.getPiece(fromRank, fromFile).getName().equals("Rook")) {
             if (rowDiff != 0 && colDiff != 0) {
