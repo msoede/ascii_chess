@@ -99,10 +99,7 @@ public class MoveGen {
                             validateMoveAndToMoveList(pos, moveList, move2);
                         }
                     } else if (p.getType().equals("B") || p.getType().equals("b")) {
-                        System.out.println("bishop rank " + rank + "\tfile " + file);
-
                         for (int i = 1; i < 8; i++) {
-                            System.out.println("1 check move(" + (rank + i) + "," + (file + i) + ")");
                             boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false));
                             if ((rank + i) >= 8 || (file + i) >= 8 || res == false) {
                                 break;
@@ -110,7 +107,6 @@ public class MoveGen {
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            System.out.println("2 check move(" + (rank - i) + "," + (file - i) + ")");
                             boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false));
                             if ((rank - i) <= 0 || (file - i) <= 0 || res == false) {
                                 break;
@@ -118,7 +114,6 @@ public class MoveGen {
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            System.out.println("3 check move(" + (rank - i) + "," + (file + i) + ")");
                             boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false));
                             if ((rank - i) <= 0 || (file + i) >= 8 || res == false) {
                                 break;
@@ -126,7 +121,6 @@ public class MoveGen {
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            System.out.println("4 check move(" + (rank + i) + "," + (file - i) + ")");
                             boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false));
                             if ((rank + i) >= 8 || (file - i) <= 0 || res == false) {
                                 break;
@@ -135,20 +129,43 @@ public class MoveGen {
 
                     } else if (p.getType().equals("Q") || p.getType().equals("q")) {
 
-//                        for (int i = 0; i < 8; i++) {
-//                            Move move1 = new Move(rank, file, i, file, false, false, false, false, false, false);
-//                            validateMoveAndToMoveList(pos, moveList, move1);
-//                            Move move2 = new Move(rank, file, rank, i, false, false, false, false, false, false);
-//                            validateMoveAndToMoveList(pos, moveList, move2);
-//                        }
-//                        for (int i = 0; i < 8; i++) {
-//                            for (int j = 8; j < 0; j--) {
-//                                Move move1 = new Move(rank, file, i, j, false, false, false, false, false, false);
-//                                validateMoveAndToMoveList(pos, moveList, move1);
-//                            }
-//                            Move move2 = new Move(rank, file, i, i, false, false, false, false, false, false);
-//                            validateMoveAndToMoveList(pos, moveList, move2);
-//                        }
+                        //horicontial and verical
+                        for (int i = 0; i < 8; i++) {
+                            Move move1 = new Move(rank, file, i, file, false, false, false, false, false, false);
+                            validateMoveAndToMoveList(pos, moveList, move1);
+                            Move move2 = new Move(rank, file, rank, i, false, false, false, false, false, false);
+                            validateMoveAndToMoveList(pos, moveList, move2);
+                        }
+
+                        //diagonal
+                        for (int i = 1; i < 8; i++) {
+                            boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false));
+                            if ((rank + i) >= 8 || (file + i) >= 8 || res == false) {
+                                break;
+                            }
+                        }
+
+                        for (int i = 1; i < 8; i++) {
+                            boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false));
+                            if ((rank - i) <= 0 || (file - i) <= 0 || res == false) {
+                                break;
+                            }
+                        }
+
+                        for (int i = 1; i < 8; i++) {
+                            boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false));
+                            if ((rank - i) <= 0 || (file + i) >= 8 || res == false) {
+                                break;
+                            }
+                        }
+
+                        for (int i = 1; i < 8; i++) {
+                            boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false));
+                            if ((rank + i) >= 8 || (file - i) <= 0 || res == false) {
+                                break;
+                            }
+                        }
+
                     } else if (p.getType().equals("K") || p.getType().equals("k")) {
                         Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false);
                         Move move2 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false);

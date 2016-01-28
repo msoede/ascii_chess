@@ -113,14 +113,6 @@ public class Board {
         this.side = side;
     }
 
-    public ArrayList<Move> getMoveHistory() {
-        return moveHistory;
-    }
-
-    public void setMoveHistory(ArrayList<Move> moveHistory) {
-        this.moveHistory = moveHistory;
-    }
-
     public int getSearchTime() {
         return searchTime;
     }
@@ -166,7 +158,17 @@ public class Board {
     }
 
     public void undoLastMove() {
-        Move lastMove = moveHistory.get(moveHistory.size() - 1);
+        System.out.println("undoLastMove before");
+        int size = moveHistory.size();
+        Move lm = moveHistory.get(size - 1);
+        moveHistory.remove(size - 1);
+        System.out.println("move before: " + lm.toString());
+        Move moveToMake = new Move(lm.gtr(), lm.gtf(), lm.gfr(), lm.gff(), lm.isPromoted(), lm.isCastleWhiteKing(), lm.isCastleBlackKing(), lm.isCastleWhiteQueen(), lm.isCastleBlackQueen(), lm.isPlayerColor());
+        System.out.println("move after : " + moveToMake.toString());
+        boolean isMoveDone = makeMove(moveToMake);
+        System.out.println("isMoveDone: " + isMoveDone);
+        printBoard();
+        System.out.println("undoLastMove after");
     }
 
     public boolean makeMove(Move move) {
@@ -182,11 +184,13 @@ public class Board {
             System.out.println("You have taken the enemy's " + getPiece(toRank, toFile).getName() + "!");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
+            moveHistory.add(move);
             return true;
         } else {
             System.out.println("Move successful!");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
+            moveHistory.add(move);
             return true;
         }
     }
