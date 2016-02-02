@@ -158,17 +158,16 @@ public class Board {
     }
 
     public void undoLastMove() {
-        System.out.println("undoLastMove before");
         int size = moveHistory.size();
         Move lm = moveHistory.get(size - 1);
         moveHistory.remove(size - 1);
-        System.out.println("move before: " + lm.toString());
         Move moveToMake = new Move(lm.gtr(), lm.gtf(), lm.gfr(), lm.gff(), lm.isPromoted(), lm.isCastleWhiteKing(), lm.isCastleBlackKing(), lm.isCastleWhiteQueen(), lm.isCastleBlackQueen(), lm.isPlayerColor());
-        System.out.println("move after : " + moveToMake.toString());
-        boolean isMoveDone = makeMove(moveToMake);
-        System.out.println("isMoveDone: " + isMoveDone);
-        printBoard();
-        System.out.println("undoLastMove after");
+        makeMove(moveToMake);
+    }
+
+    public void undoMove(Move m) {
+        Move moveToMake = new Move(m.gtr(), m.gtf(), m.gfr(), m.gff(), m.isPromoted(), m.isCastleWhiteKing(), m.isCastleBlackKing(), m.isCastleWhiteQueen(), m.isCastleBlackQueen(), m.isPlayerColor());
+        makeMove(moveToMake);
     }
 
     public boolean makeMove(Move move) {
@@ -181,13 +180,13 @@ public class Board {
         boolean currentPlayer = side;
 
         if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer) {
-            System.out.println("You have taken the enemy's " + getPiece(toRank, toFile).getName() + "!");
+//            System.out.println("You have taken the enemy's " + getPiece(toRank, toFile).getName() + "!");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             moveHistory.add(move);
             return true;
         } else {
-            System.out.println("Move successful!");
+//            System.out.println("Move successful!");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             moveHistory.add(move);

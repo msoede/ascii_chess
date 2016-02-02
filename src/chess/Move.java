@@ -69,7 +69,7 @@ public class Move {
     }
 
     public int gtr() {
-        return getFromRank();
+        return getToRank();
     }
 
     public int getToRank() {
