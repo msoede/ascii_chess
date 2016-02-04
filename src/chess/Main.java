@@ -15,7 +15,6 @@ package chess;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * @author Mikkel Soede
@@ -35,7 +34,6 @@ public class Main {
         Evaluation evaluation = new Evaluation();
         Prints prints = new Prints();
         Main main = new Main();
-        MoveGen moveGen = new MoveGen();
         AlfaBetaSearch alfaBetaSearch = new AlfaBetaSearch();
 
         //print welcome messages
@@ -65,17 +63,7 @@ public class Main {
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
                 System.out.println("Computer player!!");
-                int inf = Integer.MAX_VALUE - 1000;
-                //alfaBetaSearch.aplfaBeta(-inf, inf, 3, board);
                 alfaBetaSearch.FindBedstMove(board);
-
-                //ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-                //System.out.println("Possible moves: " + moveList.size());
-                //int i = 0;
-                //for (Move move : moveList) {
-                //    System.out.println(i + " -> move " + move.toString());
-                //    i++;
-                //}
                 board.switchSide();
             }
         }

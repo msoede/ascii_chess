@@ -26,10 +26,49 @@ public class AlfaBetaSearch {
     private final Evaluation evaluation;
     private final int infinite = Integer.MAX_VALUE - 1000;
     private int nodes = 0;
+    private Move bestMove;
 
     public AlfaBetaSearch() {
         this.moveGen = new MoveGen();
         this.evaluation = new Evaluation();
+    }
+
+    //    int alphaBeta( int alpha, int beta, int depthleft ) {
+    //    int bestscore = -oo;
+    //    if( depthleft == 0 ) return quiesce( alpha, beta );
+    //    for ( all moves)  {
+    //       score = -alphaBeta( -beta, -alpha, depthleft - 1 );
+    //       if( score >= beta )
+    //          return score;  // fail-soft beta-cutoff
+    //       if( score > bestscore ) {
+    //          bestscore = score;
+    //          if( score > alpha )
+    //             alpha = score;
+    //       }
+    //    }
+    //    return bestscore;
+    //}
+    public int aplfaBetaTest(int alpha, int beta, int depth, Board pos) {
+        int bestscore = -infinite;
+        if (depth == 0) {
+            return evaluation.evaluateBoard(pos);
+        }
+        ArrayList<Move> moveList = moveGen.generateAllMoves(pos);
+        for (Move childMove : moveList) {
+            pos.makeMove(childMove);
+            int score = -aplfaBetaTest(-beta, -alpha, depth - 1, pos);
+            pos.undoMove(childMove);
+            if (score >= beta) {
+                return score;  // fail-soft beta-cutoff
+            }
+            if (score > bestscore) {
+                bestscore = score;
+                if (score > alpha) {
+                    alpha = score;
+                }
+            }
+        }
+        return bestscore;
     }
 
     // source: https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
@@ -53,32 +92,35 @@ public class AlfaBetaSearch {
     //17              if β ≤ α
     //18                  break (* α cut-off *)
     //19          return v
-    public int aplfaBeta(int alpha, int beta, int depth, Board pos) {
+    public int aplfaBeta(int alpha, int beta, int depth, Board pos, boolean maximizingPlayer) {
+
+        //if (pos.isGameOver()) {
+        //    System.out.println("Game is over");
+        //    return 0;
+        //}
+        if ((nodes % 1024) == 0) {
+            checkForTimeIsUp(pos);
+        }
+        //System.out.println("Node: " + nodes + "\t alpha: " + alpha + " \t beta: " + beta + "\t depth: " + depth + "\t");
 
         if (depth == 0) {
             nodes++;
-//            System.out.println("Nodes: " + nodes);
             return evaluation.evaluateBoard(pos);
         }
 
-        if (nodes % 10000 == 0) {
-            checkForTimeIsUp();
-        }
-
         ArrayList<Move> moveList = moveGen.generateAllMoves(pos);
-        System.out.println("Node: " + nodes + "\t alpha: " + alpha + " \t beta: " + beta + "\t depth: " + depth + "\t movelist size: " + moveList.size());
-//        System.out.println("Depth: " + depth);
-        if (pos.isSide()) {
+        if (maximizingPlayer) {
             int v = -infinite;
             for (Move childMove : moveList) {
                 pos.makeMove(childMove);
-                v = max(v, aplfaBeta(alpha, beta, depth - 1, pos)); //v := max(v, alphabeta(child, depth - 1, α, β, FALSE))
+                v = max(v, aplfaBeta(alpha, beta, depth - 1, pos, false)); //v := max(v, alphabeta(child, depth - 1, α, β, FALSE))
                 pos.undoMove(childMove);
-                //pos.undoLastMove();
                 alpha = max(alpha, v);
                 if (beta <= alpha) {
-                    System.out.println("cut-off white");
-                    break; // cut-off
+                    System.out.println("cut-off white node: " + nodes);
+                    bestMove = childMove;
+                    return beta;
+                    //break; // cut-off
                 }
             }
             return v;
@@ -86,13 +128,14 @@ public class AlfaBetaSearch {
             int v = infinite;
             for (Move childMove : moveList) {
                 pos.makeMove(childMove);
-                v = min(v, aplfaBeta(alpha, beta, depth - 1, pos)); //v := min(v, alphabeta(child, depth - 1, α, β, TRUE))
+                v = min(v, aplfaBeta(alpha, beta, depth - 1, pos, true)); //v := min(v, alphabeta(child, depth - 1, α, β, TRUE))
                 pos.undoMove(childMove);
-//                pos.undoLastMove();
                 beta = min(beta, v);
                 if (beta <= alpha) {
-                    System.out.println("cut-off black");
-                    break; // cut-off
+                    System.out.println("cut-off black node: " + nodes);
+                    bestMove = childMove;
+                    return alpha;
+                    //break; // cut-off
                 }
             }
             return v;
@@ -105,16 +148,29 @@ public class AlfaBetaSearch {
      * @param pos
      */
     public void FindBedstMove(Board pos) {
+        long startTime = System.currentTimeMillis();
         int maxDepth = pos.getSearchDepth();
-        int timeInSec = pos.getSearchTime();
         int currentDepth;
-        Move bestMove;
+        pos.setStartTime();
+
         for (currentDepth = 0; currentDepth < maxDepth; currentDepth++) {
-            int bestScore = aplfaBeta(-infinite, infinite, currentDepth, pos);
+            if (pos.isGameOver()) {
+                break;
+            }
+//            int bestScore = aplfaBeta(-infinite, infinite, currentDepth, pos, true);
+            int bestScore = aplfaBetaTest(-infinite, infinite, currentDepth, pos);
+
             //check for time is up
             System.out.println("---------------------------------------------------------");
             System.out.println("---------------------------------------------------------");
             System.out.println("iterative deepening(" + currentDepth + "):" + bestScore);
+            System.out.println("---------------------------------------------------------");
+            System.out.println("---------------------------------------------------------");
+            if (bestMove != null) {
+                System.out.println("Bedst move: " + bestMove.toString());
+            }
+            double now = (((double) (System.currentTimeMillis() - startTime)) / 1000);
+            System.out.println("Time: " + now + " sec");
             System.out.println("---------------------------------------------------------");
             System.out.println("---------------------------------------------------------");
         }
@@ -128,7 +184,10 @@ public class AlfaBetaSearch {
         return a < b ? a : b;
     }
 
-    private void checkForTimeIsUp() {
-
+    private void checkForTimeIsUp(Board board) {
+        if (board.getEndTime() <= System.currentTimeMillis()) {
+            System.out.println("Time is up!!");
+            board.setGameOver(true);
+        }
     }
 }

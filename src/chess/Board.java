@@ -31,6 +31,10 @@ public class Board {
 
     private int searchTime = 15; // default value
     private int searchDepth = 5; // default value
+    private long startTime = 0;
+    private long endTime = 0;
+    private boolean gameOver = false;
+
     private boolean humanPlayer = true; // default value
 
     private int hafMoves = 0;
@@ -95,6 +99,23 @@ public class Board {
                 setPiece(rank, file, null);
             }
         }
+    }
+
+    public void setStartTime() {
+        this.startTime = (System.currentTimeMillis());
+        this.endTime = (System.currentTimeMillis() + (searchTime * 1000));
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public long getEndTime() {
+        return endTime;
     }
 
     public boolean isHumanPlayer() {

@@ -43,6 +43,8 @@ public class Move {
         this.castleBlackQueen = castleBlackQueen;
         this.playerColor = playerColor;
     }
+    
+    
 
     public int gff() {
         return getFromFile();
