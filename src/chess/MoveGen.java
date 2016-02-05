@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class MoveGen {
 
     private final Validate validate;
-
     //piece values:
     private final int pawnValue = 100;
     private final int knightValue = 350;
@@ -51,28 +50,28 @@ public class MoveGen {
                 Piece p = pos.getPiece(rank, file);
                 if (p != null) {
                     if (p.getType().equals("p") && !pos.isSide()) {
-                        Move move1 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false); //normal move forward
-                        Move move2 = new Move(rank, file, rank - 2, file, false, false, false, false, false, false); //doobelt move forward
-                        Move move3 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false); //attack left
-                        Move move4 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false); //normal move forward
-
-                        validateMoveAndToMoveList(pos, moveList, move1);
-                        validateMoveAndToMoveList(pos, moveList, move2);
-                        validateMoveAndToMoveList(pos, moveList, move3);
-                        validateMoveAndToMoveList(pos, moveList, move4);
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
+                        if (rank == 6) {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
+                        }
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
 
                         //promotion??
+                        if (file == 0) {
+
+                        }
                     } else if (p.getType().equals("P") && pos.isSide()) {
-                        Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false); //normal move forward
-                        Move move2 = new Move(rank, file, rank + 2, file, false, false, false, false, false, false); //doobelt move forward
-                        Move move3 = new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false); //normal move forward
-                        Move move4 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false); //normal move forward
-
-                        validateMoveAndToMoveList(pos, moveList, move1);
-                        validateMoveAndToMoveList(pos, moveList, move2);
-                        validateMoveAndToMoveList(pos, moveList, move3);
-                        validateMoveAndToMoveList(pos, moveList, move4);
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false)); //normal move forward
+                        if (rank == 1) {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false)); //doobelt move forward
+                        }
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false)); //attack move forward
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false)); //attach move forward
                         //promotion??
+                        if (file == 7) {
+
+                        }
                     } else if (p.getType().equals("N") || p.getType().equals("n")) {
                         Move move1 = new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false); //normal move forward
                         Move move2 = new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false); //doobelt move forward

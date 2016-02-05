@@ -30,6 +30,7 @@ public class Main {
     public static void main(String[] args) {
         //Definetions 
         Board board = new Board("White", "Black");
+        board.setStartPosistion();
         Validate validate = new Validate();
         Evaluation evaluation = new Evaluation();
         Prints prints = new Prints();
@@ -45,7 +46,6 @@ public class Main {
             board.printBoard();
 
             if (board.isSide() == board.isHumanPlayer()) {
-                System.out.println("Human player!!");
                 System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
                 input = main.getInputFromUser();
 
@@ -62,8 +62,8 @@ public class Main {
                 }
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
-                System.out.println("Computer player!!");
                 alfaBetaSearch.FindBedstMove(board);
+
                 board.switchSide();
             }
         }

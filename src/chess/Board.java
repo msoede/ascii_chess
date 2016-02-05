@@ -27,14 +27,13 @@ public class Board {
     private final Player playerWhite;
 
     private final Player playerBlack;
-    private ArrayList<Move> moveHistory = new ArrayList<>();
+    private final ArrayList<Move> moveHistory = new ArrayList<>();
 
     private int searchTime = 15; // default value
     private int searchDepth = 5; // default value
-    private long startTime = 0;
+    private long startTime;
     private long endTime = 0;
     private boolean gameOver = false;
-
     private boolean humanPlayer = true; // default value
 
     private int hafMoves = 0;
@@ -53,6 +52,15 @@ public class Board {
                 board[i][j] = null;
             }
         }
+
+    }
+
+    /**
+     * Set the normal start position on the board
+     */
+    public void setStartPosistion() {
+        //empty the board
+        clearBoard();
 
         // setup white side
         board[0][0] = new Piece("Rook", playerWhite);
@@ -74,15 +82,6 @@ public class Board {
         board[1][7] = new Piece("Pawn", playerWhite);
 
         //setup black side
-        board[7][0] = new Piece("Rook", playerBlack);
-        board[7][1] = new Piece("Knight", playerBlack);
-        board[7][2] = new Piece("Bishop", playerBlack);
-        board[7][3] = new Piece("Queen", playerBlack);
-        board[7][4] = new Piece("King", playerBlack);
-        board[7][5] = new Piece("Bishop", playerBlack);
-        board[7][6] = new Piece("Knight", playerBlack);
-        board[7][7] = new Piece("Rook", playerBlack);
-
         board[6][0] = new Piece("Pawn", playerBlack);
         board[6][1] = new Piece("Pawn", playerBlack);
         board[6][2] = new Piece("Pawn", playerBlack);
@@ -91,8 +90,20 @@ public class Board {
         board[6][5] = new Piece("Pawn", playerBlack);
         board[6][6] = new Piece("Pawn", playerBlack);
         board[6][7] = new Piece("Pawn", playerBlack);
+
+        board[7][0] = new Piece("Rook", playerBlack);
+        board[7][1] = new Piece("Knight", playerBlack);
+        board[7][2] = new Piece("Bishop", playerBlack);
+        board[7][3] = new Piece("Queen", playerBlack);
+        board[7][4] = new Piece("King", playerBlack);
+        board[7][5] = new Piece("Bishop", playerBlack);
+        board[7][6] = new Piece("Knight", playerBlack);
+        board[7][7] = new Piece("Rook", playerBlack);
     }
 
+    /**
+     * clear all the pieces on the board
+     */
     public void clearBoard() {
         for (int rank = 0; rank < 8; rank++) {
             for (int file = 0; file < 8; file++) {
@@ -101,6 +112,10 @@ public class Board {
         }
     }
 
+    /**
+     * the start time to currentTimeMillis() and set the end to
+     * currentTimeMillis() + the searchTime
+     */
     public void setStartTime() {
         this.startTime = (System.currentTimeMillis());
         this.endTime = (System.currentTimeMillis() + (searchTime * 1000));
@@ -174,23 +189,44 @@ public class Board {
         board[rank][file] = piece;
     }
 
+    public int getHafMoves() {
+        return hafMoves;
+    }
+
     public Player getCurrentPlayer() {
         return side ? playerWhite : playerBlack;
     }
 
     public void undoLastMove() {
         int size = moveHistory.size();
-        Move lm = moveHistory.get(size - 1);
-        moveHistory.remove(size - 1);
-        Move moveToMake = new Move(lm.gtr(), lm.gtf(), lm.gfr(), lm.gff(), lm.isPromoted(), lm.isCastleWhiteKing(), lm.isCastleBlackKing(), lm.isCastleWhiteQueen(), lm.isCastleBlackQueen(), lm.isPlayerColor());
-        makeMove(moveToMake);
+        if (size > 0) {
+            Move lastMove = moveHistory.get(size - 1);
+            moveHistory.remove(size - 1);
+            undoMove(lastMove);
+        }
     }
 
-    public void undoMove(Move m) {
-        Move moveToMake = new Move(m.gtr(), m.gtf(), m.gfr(), m.gff(), m.isPromoted(), m.isCastleWhiteKing(), m.isCastleBlackKing(), m.isCastleWhiteQueen(), m.isCastleBlackQueen(), m.isPlayerColor());
-        makeMove(moveToMake);
+    private void undoMove(Move m) {
+        int toRank = m.gtr();
+        int fromRank = m.gfr();
+        int toFile = m.gtf();
+        int fromFile = m.gff();
+        setPiece(fromRank, fromFile, getPiece(toRank, toFile));
+        if (m.isCaputreMove()) {
+            System.out.println("undo caputre move : " + m.getType());
+            setPiece(toRank, toFile, new Piece(m.getType(), playerWhite));
+        } else {
+            setPiece(toRank, toFile, null);
+        }
+
+        hafMoves--;
     }
 
+    /**
+     *
+     * @param move
+     * @return true when move is done
+     */
     public boolean makeMove(Move move) {
         hafMoves++;
         int fromFile = move.getFromFile();
@@ -201,13 +237,12 @@ public class Board {
         boolean currentPlayer = side;
 
         if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer) {
-//            System.out.println("You have taken the enemy's " + getPiece(toRank, toFile).getName() + "!");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
+            move.setCaputreMove(getPiece(toRank, toFile).getName());
             moveHistory.add(move);
             return true;
         } else {
-//            System.out.println("Move successful!");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             moveHistory.add(move);
@@ -215,10 +250,9 @@ public class Board {
         }
     }
 
-    public int getHafMoves() {
-        return hafMoves;
-    }
-
+    /**
+     * <h1>Prints an ASCII art view of the current chess board </h1>
+     */
     public void printBoard() {
         String v[][] = new String[8][8];
         for (int i = 0; i < 8; i++) {
@@ -231,42 +265,53 @@ public class Board {
             }
         }
 
+        String[][] fill = new String[8][4];
+
+        fill[7][0] = "+------------------+-------------+";
+        fill[7][1] = "| Board infomation |    value    |";
+        fill[7][2] = "+------------------+-------------+";
+        fill[7][3] = "| Turn             | " + String.format("%-11s", getCurrentPlayer().getName()) + " |";
+        fill[6][0] = "| 50 move rule     | ??          |";
+        fill[6][1] = "| Castling         | ????        |";
+        fill[6][2] = "| move his size    | " + String.format("%-11d", moveHistory.size()) + " |";
+        fill[6][3] = "| Search depth     | " + String.format("%-11d", getSearchDepth()) + " |";
+        fill[5][0] = "| Search time      | " + String.format("%-11s", (getSearchTime() + " sec")) + " |";
+        fill[5][1] = "| Haf moves        | " + String.format("%-11d", getHafMoves()) + " |";
+        fill[5][2] = "| Full moves       | " + String.format("%-11d", (getHafMoves() / 2)) + " |";
+        fill[5][3] = "+------------------+-------------+";
+        fill[4][0] = "";
+        fill[4][1] = "";
+        fill[4][2] = "";
+        fill[4][3] = "";
+
+        fill[3][0] = "";
+        fill[3][1] = "";
+        fill[3][2] = "";
+        fill[3][3] = "";
+        fill[2][0] = "";
+        fill[2][1] = "";
+        fill[2][2] = "+--------+-------+-------+";
+        fill[2][3] = "| piece  | White | Black |";
+        fill[1][0] = "+--------+-------+-------+";
+        fill[1][1] = "| Pawn   | P     | p     |";
+        fill[1][2] = "| Knight | N     | n     |";
+        fill[1][3] = "| Bishop | B     | b     |";
+        fill[0][0] = "| Rock   | R     | r     |";
+        fill[0][1] = "| Queen  | Q     | q     |";
+        fill[0][2] = "| King   | K     | k     |";
+        fill[0][3] = "+--------+-------+-------+";
+
         System.out.println("");
         System.out.println("      A     B     C     D     E     F     G     H   ");
-        System.out.println("   #################################################     +------------------+-------------+");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | Board infomation |    value    |");
-        System.out.println(" 8 #  " + v[7][0] + "  #  " + v[7][1] + "  #  " + v[7][2] + "  #  " + v[7][3] + "  #  " + v[7][4] + "  #  " + v[7][5] + "  #  " + v[7][6] + "  #  " + v[7][7] + "  # 8   +------------------+-------------+");
-        System.out.format("   #     #     #     #     #     #     #     #     #     | Turn             | %11s |\n", getCurrentPlayer().getName());
-        System.out.println("   #################################################     | 50 move rule     | 99          |");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | Castling         | KQkq        |");
-        System.out.println(" 7 #  " + v[6][0] + "  #  " + v[6][1] + "  #  " + v[6][2] + "  #  " + v[6][3] + "  #  " + v[6][4] + "  #  " + v[6][5] + "  #  " + v[6][6] + "  #  " + v[6][7] + "  # 7   +------------------+-------------+");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println("   #################################################");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println(" 6 #  " + v[5][0] + "  #  " + v[5][1] + "  #  " + v[5][2] + "  #  " + v[5][3] + "  #  " + v[5][4] + "  #  " + v[5][5] + "  #  " + v[5][6] + "  #  " + v[5][7] + "  # 6   +--------+-------+-------+");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | piece  | White | Black |");
-        System.out.println("   #################################################     +--------+-------+-------+");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | Pawn   | P     | p     |");
-        System.out.println(" 5 #  " + v[4][0] + "  #  " + v[4][1] + "  #  " + v[4][2] + "  #  " + v[4][3] + "  #  " + v[4][4] + "  #  " + v[4][5] + "  #  " + v[4][6] + "  #  " + v[4][7] + "  # 5   | Knight | N     | n     |");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | Bishop | B     | b     |");
-        System.out.println("   #################################################     | Rock   | R     | r     |");
-        System.out.println("   #     #     #     #     #     #     #     #     #     | Queen  | Q     | q     |");
-        System.out.println(" 4 #  " + v[3][0] + "  #  " + v[3][1] + "  #  " + v[3][2] + "  #  " + v[3][3] + "  #  " + v[3][4] + "  #  " + v[3][5] + "  #  " + v[3][6] + "  #  " + v[3][7] + "  # 4   | King   | K     | k     |");
-        System.out.println("   #     #     #     #     #     #     #     #     #     +--------+-------+-------+");
-        System.out.println("   #################################################");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println(" 3 #  " + v[2][0] + "  #  " + v[2][1] + "  #  " + v[2][2] + "  #  " + v[2][3] + "  #  " + v[2][4] + "  #  " + v[2][5] + "  #  " + v[2][6] + "  #  " + v[2][7] + "  # 3");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println("   #################################################");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println(" 2 #  " + v[1][0] + "  #  " + v[1][1] + "  #  " + v[1][2] + "  #  " + v[1][3] + "  #  " + v[1][4] + "  #  " + v[1][5] + "  #  " + v[1][6] + "  #  " + v[1][7] + "  # 2");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println("   #################################################");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
-        System.out.println(" 1 #  " + v[0][0] + "  #  " + v[0][1] + "  #  " + v[0][2] + "  #  " + v[0][3] + "  #  " + v[0][4] + "  #  " + v[0][5] + "  #  " + v[0][6] + "  #  " + v[0][7] + "  # 1");
-        System.out.println("   #     #     #     #     #     #     #     #     #");
+        for (int i = 7; i >= 0; i--) {
+            System.out.println("   #################################################    " + fill[i][0]);
+            System.out.println("   #     #     #     #     #     #     #     #     #    " + fill[i][1]);
+            System.out.println(" " + (i + 1) + " #  " + v[i][0] + "  #  " + v[i][1] + "  #  " + v[i][2] + "  #  " + v[i][3] + "  #  " + v[i][4] + "  #  " + v[i][5] + "  #  " + v[i][6] + "  #  " + v[i][7] + "  # " + (i + 1) + "  " + fill[i][2]);
+            System.out.format("   #     #     #     #     #     #     #     #     #    " + fill[i][3] + "\n");
+        }
         System.out.println("   #################################################");
         System.out.println("      A     B     C     D     E     F     G     H   ");
+
     }
 
 }

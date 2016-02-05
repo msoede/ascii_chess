@@ -30,6 +30,8 @@ public class Move {
     private final boolean castleWhiteQueen;
     private final boolean castleBlackQueen;
     private final boolean playerColor;
+    private boolean caputreMove;
+    private String caputrePiece;
 
     public Move(int fromRank, int fromFile, int toRank, int toFile, boolean promoted, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean playerColor) {
         this.fromRank = fromRank;
@@ -43,9 +45,24 @@ public class Move {
         this.castleBlackQueen = castleBlackQueen;
         this.playerColor = playerColor;
     }
-    
-    
 
+    public void setCaputreMove(String input) {
+        caputreMove = true;
+        caputrePiece = input;
+    }
+
+    public boolean isCaputreMove() {
+        return caputreMove;
+    }
+
+    public String getCaputrePiece() {
+        return caputrePiece;
+    }
+
+    /**
+     * calls <h1>getFromFile()</h1>
+     * @return 
+     */
     public int gff() {
         return getFromFile();
     }
@@ -54,6 +71,11 @@ public class Move {
         return fromFile;
     }
 
+
+    /**
+     * calls <h1>getToFile()</h1>
+     * @return 
+     */
     public int gtf() {
         return getToFile();
     }
@@ -62,6 +84,10 @@ public class Move {
         return toFile;
     }
 
+    /**
+     * calls <h1>getFromRank()</h1>
+     * @return 
+     */
     public int gfr() {
         return getFromRank();
     }
@@ -70,6 +96,10 @@ public class Move {
         return fromRank;
     }
 
+    /**
+     * calls <h1>getToRank()</h1>
+     * @return 
+     */
     public int gtr() {
         return getToRank();
     }
@@ -110,6 +140,39 @@ public class Move {
         return castleBlackKing || castleBlackQueen || castleWhiteKing || castleWhiteQueen;
     }
 
+    public String getType() {
+        String value = " ";
+        switch (caputrePiece) {
+            case "Pawn":
+                value = "P";
+                break;
+            case "Rook":
+                value = "R";
+                break;
+            case "Knight":
+                value = "N";
+                break;
+            case "Bishop":
+                value = "B";
+                break;
+            case "Queen":
+                value = "Q";
+                break;
+            case "King":
+                value = "K";
+                break;
+            default:
+                break;
+        }
+
+        if (playerColor == true) { //white side
+            value = value.toUpperCase();
+        } else { // black side
+            value = value.toLowerCase();
+        }
+        return value;
+    }
+
     @Override
     public String toString() {
         String cwk = castleWhiteKing ? "K" : "-";
@@ -118,6 +181,6 @@ public class Move {
         String cbq = castleBlackQueen ? "q" : "-";
         String castling = cwk + cwq + cbk + cbq;
 
-        return "Move{(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0")+" castling: " + castling + " playerColor=" + (playerColor?"White":"Black") + '}';
+        return "Move{(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
     }
 }
