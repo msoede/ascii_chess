@@ -48,7 +48,7 @@ public class MoveGen {
         for (int rank = 0; rank < 8; rank++) {
             for (int file = 0; file < 8; file++) {
                 Piece p = pos.getPiece(rank, file);
-                if (p != null) {
+                if (p != null) { //make sure the piece is not empty
                     if (p.getType().equals("p") && !pos.isSide()) { //white side
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
@@ -115,10 +115,8 @@ public class MoveGen {
 
                         //horicontial and verical
                         for (int i = 0; i < 8; i++) {
-                            Move move1 = new Move(rank, file, i, file, false, false, false, false, false, false);
-                            validateMoveAndToMoveList(pos, moveList, move1);
-                            Move move2 = new Move(rank, file, rank, i, false, false, false, false, false, false);
-                            validateMoveAndToMoveList(pos, moveList, move2);
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, i, file, false, false, false, false, false, false));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, i, false, false, false, false, false, false));
                         }
 
                         //diagonal
@@ -149,24 +147,15 @@ public class MoveGen {
                                 break;
                             }
                         }
-
                     } else if (p.getType().equals("K") || p.getType().equals("k")) {
-                        Move move1 = new Move(rank, file, rank + 1, file, false, false, false, false, false, false);
-                        Move move2 = new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false);
-                        Move move5 = new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false);
-                        Move move4 = new Move(rank, file, rank, file + 1, false, false, false, false, false, false);
-                        Move move3 = new Move(rank, file, rank, file - 1, false, false, false, false, false, false);
-                        Move move6 = new Move(rank, file, rank - 1, file, false, false, false, false, false, false);
-                        Move move8 = new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false);
-                        Move move7 = new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false);
-                        validateMoveAndToMoveList(pos, moveList, move1);
-                        validateMoveAndToMoveList(pos, moveList, move2);
-                        validateMoveAndToMoveList(pos, moveList, move3);
-                        validateMoveAndToMoveList(pos, moveList, move4);
-                        validateMoveAndToMoveList(pos, moveList, move5);
-                        validateMoveAndToMoveList(pos, moveList, move6);
-                        validateMoveAndToMoveList(pos, moveList, move7);
-                        validateMoveAndToMoveList(pos, moveList, move8);
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file - 1, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file + 1, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
                     }
                 }
             }
@@ -175,10 +164,21 @@ public class MoveGen {
     }
 
     public boolean validateMoveAndToMoveList(Board pos, ArrayList<Move> moveList, Move move) {
-        boolean res2 = validate.validateMove(move, pos);
-        if (res2) {
-            moveList.add(move);
+
+        //make sure the move is only on the list once
+        for (Move childMove : moveList) {
+            if (childMove.compareMove(move)) {
+                System.out.println("Move are eques");
+                return false;
+            }
+
+            System.out.println("move: " + childMove.toString());
         }
-        return res2;
+
+        if (validate.validateMove(move, pos)) {
+            moveList.add(move);
+            return true;
+        }
+        return false;
     }
 }

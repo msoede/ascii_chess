@@ -61,7 +61,8 @@ public class Move {
 
     /**
      * calls <h1>getFromFile()</h1>
-     * @return 
+     *
+     * @return
      */
     public int gff() {
         return getFromFile();
@@ -71,10 +72,10 @@ public class Move {
         return fromFile;
     }
 
-
     /**
      * calls <h1>getToFile()</h1>
-     * @return 
+     *
+     * @return
      */
     public int gtf() {
         return getToFile();
@@ -86,7 +87,8 @@ public class Move {
 
     /**
      * calls <h1>getFromRank()</h1>
-     * @return 
+     *
+     * @return
      */
     public int gfr() {
         return getFromRank();
@@ -98,7 +100,8 @@ public class Move {
 
     /**
      * calls <h1>getToRank()</h1>
-     * @return 
+     *
+     * @return
      */
     public int gtr() {
         return getToRank();
@@ -182,5 +185,35 @@ public class Move {
         String castling = cwk + cwq + cbk + cbq;
 
         return "Move{(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
+    }
+
+    public boolean compareMove(Move i) {
+        if (i.caputreMove != caputreMove) {
+            return false;
+        }
+        if (i.castleBlackKing != castleBlackKing) {
+            return false;
+        }
+        if (i.castleWhiteKing != castleWhiteKing) {
+            return false;
+        }
+        if (i.castleBlackQueen != castleBlackQueen) {
+            return false;
+        }
+        if (i.castleWhiteQueen != castleWhiteQueen) {
+            return false;
+        }
+
+        if (i.playerColor != playerColor) {
+            return false;
+        }
+
+        if (i.promoted != promoted) {
+            return false;
+        }
+        if (i.gtf() != gtf() || i.gtr() != gtr() || i.gff() != gff() || i.gfr() != gfr()) {
+            return false;
+        }
+        return true;
     }
 }

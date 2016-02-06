@@ -53,9 +53,9 @@ public class PerfTest {
             board.makeMove(childMove);
             ArrayList<Move> moveList1 = moveGen.generateAllMoves(board);
             board.undoLastMove();
-            
+
             r[1] = r[1] + moveList1.size();
-            System.out.println("size " +r[1]);
+            System.out.println("size " + r[1]);
 //            for (Move childMove1 : moveList1) {
 //                board.makeMove(childMove1);
 //            }
