@@ -25,17 +25,14 @@ public class Board {
     private final Piece board[][];
     private boolean side;
     private final Player playerWhite;
-
     private final Player playerBlack;
     private final ArrayList<Move> moveHistory = new ArrayList<>();
-
     private int searchTime = 15; // default value
     private int searchDepth = 5; // default value
     private long startTime;
     private long endTime = 0;
     private boolean gameOver = false;
     private boolean humanPlayer = true; // default value
-
     private int hafMoves = 0;
 
     public Board(String whitePlayerName, String blackPlayerName) {
@@ -313,5 +310,4 @@ public class Board {
         System.out.println("      A     B     C     D     E     F     G     H   ");
 
     }
-
 }

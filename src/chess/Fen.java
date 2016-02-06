@@ -41,13 +41,11 @@ public class Fen {
             if (currentPiece == '/') {
                 rank--;
                 file = 0;
-                System.out.println("new rank!!");
                 continue;
             }
 
             int tempInt = currentPiece - '0';
             if (tempInt >= 0 && tempInt <= 8) {
-                System.out.println("(" + rank + "," + file + ") cp: " + currentPiece + " tempint: " + tempInt + " int");
                 file = file + tempInt;
                 continue;
             } else if (tempInt >= 17 && tempInt <= 42) { // capital letters (WHITE)
