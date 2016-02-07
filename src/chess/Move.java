@@ -187,6 +187,20 @@ public class Move {
         return "Move{(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
     }
 
+    /**
+     *
+     * @return 
+     */
+    public String moveString() {
+
+        //RANK
+        char[] ranks = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        char fromRankChar = ranks[getFromRank()];
+        char toRankChar = ranks[getToRank()];
+
+        return fromRankChar + "" + getFromFile() + "" + toRankChar + "" + getToFile();
+    }
+
     public boolean compareMove(Move i) {
         if (i.caputreMove != caputreMove) {
             return false;

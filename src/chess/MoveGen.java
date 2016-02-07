@@ -171,8 +171,6 @@ public class MoveGen {
                 System.out.println("Move are eques");
                 return false;
             }
-
-            System.out.println("move: " + childMove.toString());
         }
 
         if (validate.validateMove(move, pos)) {

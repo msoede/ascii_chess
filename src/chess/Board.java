@@ -210,7 +210,6 @@ public class Board {
         int fromFile = m.gff();
         setPiece(fromRank, fromFile, getPiece(toRank, toFile));
         if (m.isCaputreMove()) {
-            System.out.println("undo caputre move : " + m.getType());
             setPiece(toRank, toFile, new Piece(m.getType(), playerWhite));
         } else {
             setPiece(toRank, toFile, null);
@@ -246,7 +245,7 @@ public class Board {
             return true;
         }
     }
-
+    
     /**
      * <h1>Prints an ASCII art view of the current chess board </h1>
      */

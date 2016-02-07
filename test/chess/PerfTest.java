@@ -1,8 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//                                       _      
+//                                      | |     
+//          _ __ ___  ___  ___   ___  __| | ___ 
+//         | '_ ` _ \/ __|/ _ \ / _ \/ _` |/ _ \
+//         | | | | | \__ \ (_) |  __/ (_| |  __/
+//         |_|_|_| |_|___/\___/ \___|\__,_|\___|
+//          / ____| |                           
+//         | |    | |__   ___  ___ ___          
+//         | |    | '_ \ / _ \/ __/ __|         
+//         | |____| | | |  __/\__ \__ \         
+//          \_____|_| |_|\___||___/___/   
+//
 package chess;
 
 import java.util.ArrayList;
@@ -55,7 +62,7 @@ public class PerfTest {
             board.undoLastMove();
 
             r[1] = r[1] + moveList1.size();
-            System.out.println("size " + r[1]);
+//            System.out.println("size " + r[1]);
 //            for (Move childMove1 : moveList1) {
 //                board.makeMove(childMove1);
 //            }
@@ -70,8 +77,26 @@ public class PerfTest {
 
     @Test
     public void testPerf2() {
-        System.out.println("-> testPerf12()");
-        assertEquals(false, true);
+        String fenString = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+        int d[] = {48, 2039, 97862, 4085603, 193690690};
+        int r[] = {0, 0, 0, 0, 0};
+        fen.loadFen(fenString, board);
+
+        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+        r[0] = moveList.size();
+        r[1] = r[0];
+        System.out.println("pert testing");
+        for (Move childMove : moveList) {
+            board.makeMove(childMove);
+            board.printBoard();
+            board.undoLastMove();
+        }
+
+        for (int i = 0; i < d.length; i++) {
+            System.out.println("compare[" + i + "]: " + r[i] + "==" + d[i]);
+            equals(r[i] == d[i]);
+            assertEquals(r[i], d[i]);
+        }
     }
 
     @Test
