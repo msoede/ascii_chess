@@ -12,6 +12,9 @@
 //
 package chess;
 
+import chess.Objects.Fen;
+import chess.Objects.Board;
+
 /**
  * @author Mikkel Soede
  * @version 1.0

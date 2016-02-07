@@ -12,6 +12,9 @@
 //
 package chess;
 
+import chess.Objects.Board;
+import chess.Objects.Move;
+
 /**
  * @author Mikkel Soede
  * @version 1.0

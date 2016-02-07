@@ -10,8 +10,11 @@
 //         | |____| | | |  __/\__ \__ \         
 //          \_____|_| |_|\___||___/___/   
 //
-package chess;
+package chess.Objects;
 
+import chess.Objects.Move;
+import chess.Objects.Piece;
+import chess.Objects.Player;
 import java.util.ArrayList;
 
 /**
@@ -208,9 +211,11 @@ public class Board {
         int fromRank = m.gfr();
         int toFile = m.gtf();
         int fromFile = m.gff();
+        Player playerSide = m.isPlayerColor() ? playerWhite : playerBlack;
         setPiece(fromRank, fromFile, getPiece(toRank, toFile));
         if (m.isCaputreMove()) {
-            setPiece(toRank, toFile, new Piece(m.getType(), playerWhite));
+            System.out.println("undo capture move: " + m.getType()+" playerSide: "+playerSide.getName());
+            setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSide));
         } else {
             setPiece(toRank, toFile, null);
         }
@@ -233,9 +238,9 @@ public class Board {
         boolean currentPlayer = side;
 
         if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer) {
+            move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
-            move.setCaputreMove(getPiece(toRank, toFile).getName());
             moveHistory.add(move);
             return true;
         } else {
@@ -245,7 +250,7 @@ public class Board {
             return true;
         }
     }
-    
+
     /**
      * <h1>Prints an ASCII art view of the current chess board </h1>
      */
@@ -254,11 +259,18 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (this.getPiece(i, j) != null) {
-                    v[i][j] = this.getPiece(i, j).getType();
+                    v[i][j] = "" + this.getPiece(i, j).getType();
                 } else {
                     v[i][j] = " ";
                 }
             }
+        }
+
+        int size = moveHistory.size();
+        String lastMoveString = "";
+        if (size > 0) {
+            Move lastMove = moveHistory.get(size - 1);
+            lastMoveString = lastMove.moveString();
         }
 
         String[][] fill = new String[8][4];
@@ -274,8 +286,8 @@ public class Board {
         fill[5][0] = "| Search time      | " + String.format("%-11s", (getSearchTime() + " sec")) + " |";
         fill[5][1] = "| Haf moves        | " + String.format("%-11d", getHafMoves()) + " |";
         fill[5][2] = "| Full moves       | " + String.format("%-11d", (getHafMoves() / 2)) + " |";
-        fill[5][3] = "+------------------+-------------+";
-        fill[4][0] = "";
+        fill[5][3] = "| Last Move        | " + String.format("%-11s", lastMoveString) + " |";
+        fill[4][0] = "+------------------+-------------+";
         fill[4][1] = "";
         fill[4][2] = "";
         fill[4][3] = "";

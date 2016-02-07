@@ -12,6 +12,8 @@
 //
 package chess;
 
+import chess.Objects.Board;
+import chess.Objects.Move;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;

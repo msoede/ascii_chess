@@ -12,6 +12,8 @@
 //
 package chess;
 
+import chess.Objects.Board;
+import chess.Objects.Move;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

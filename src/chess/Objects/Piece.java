@@ -10,7 +10,9 @@
 //         | |____| | | |  __/\__ \__ \         
 //          \_____|_| |_|\___||___/___/   
 //
-package chess;
+package chess.Objects;
+
+import chess.Objects.Player;
 
 /**
  * @author Mikkel Soede
@@ -30,11 +32,8 @@ public class Piece {
     }
 
     public Piece(char type, Player player) {
-       
-        String typeString = ""+type;
-        typeString = typeString.toUpperCase();
-        type = typeString.charAt(0);
-        
+        type = Character.toUpperCase(type);
+
         String value = " "; // defualt value
         switch (type) {
             case 'P':
@@ -63,35 +62,35 @@ public class Piece {
         this.player = player;
     }
 
-    public String getType() {
-        String value = " "; // defualt value
+    public char getType() {
+        char value = ' '; // defualt value
         switch (name) {
             case "Pawn":
-                value = "P";
+                value = 'P';
                 break;
             case "Rook":
-                value = "R";
+                value = 'R';
                 break;
             case "Knight":
-                value = "N";
+                value = 'N';
                 break;
             case "Bishop":
-                value = "B";
+                value = 'B';
                 break;
             case "Queen":
-                value = "Q";
+                value = 'Q';
                 break;
             case "King":
-                value = "K";
+                value = 'K';
                 break;
             default:
                 break;
         }
 
         if (player.isColor() == true) { //white side
-            value = value.toUpperCase();
+            value = Character.toUpperCase(value);
         } else { // black side
-            value = value.toLowerCase();
+            value = Character.toLowerCase(value);
         }
 
         return value;

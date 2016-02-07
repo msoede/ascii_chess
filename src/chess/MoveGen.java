@@ -12,6 +12,9 @@
 //
 package chess;
 
+import chess.Objects.Board;
+import chess.Objects.Move;
+import chess.Objects.Piece;
 import java.util.ArrayList;
 
 /**
@@ -49,9 +52,11 @@ public class MoveGen {
             for (int file = 0; file < 8; file++) {
                 Piece p = pos.getPiece(rank, file);
                 if (p != null) { //make sure the piece is not empty
-                    if (p.getType().equals("p") && !pos.isSide()) { //white side
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
+                    if (p.getType() == 'p' && !pos.isSide()) { //white side
+                        boolean forward = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
+                        if (forward == true) {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
+                        }
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
 
@@ -59,16 +64,18 @@ public class MoveGen {
                         if (file == 0) {
 
                         }
-                    } else if (p.getType().equals("P") && pos.isSide()) { //white side
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false)); //normal move forward
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false)); //doobelt move forward
+                    } else if (p.getType() == 'P' && pos.isSide()) { //white side
+                        boolean forward = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false)); //normal move forward
+                        if (forward == true) {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false)); //doobelt move forward
+                        }
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false)); //attack move forward
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false)); //attach move forward
                         //promotion??
                         if (file == 7) {
 
                         }
-                    } else if (p.getType().equals("N") || p.getType().equals("n")) {
+                    } else if (p.getType() == 'N' || p.getType() == 'n') {
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false));
@@ -77,12 +84,12 @@ public class MoveGen {
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 2, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file + 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file - 1, false, false, false, false, false, false));
-                    } else if (p.getType().equals("R") || p.getType().equals("r")) {
+                    } else if (p.getType() == 'R' || p.getType() == 'r') {
                         for (int i = 0; i < 8; i++) {
                             validateMoveAndToMoveList(pos, moveList, new Move(rank, file, i, file, false, false, false, false, false, false));
                             validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, i, false, false, false, false, false, false));
                         }
-                    } else if (p.getType().equals("B") || p.getType().equals("b")) {
+                    } else if (p.getType() == 'B' || p.getType() == 'b') {
                         for (int i = 1; i < 8; i++) {
                             boolean res = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false));
                             if ((rank + i) >= 8 || (file + i) >= 8 || res == false) {
@@ -111,8 +118,7 @@ public class MoveGen {
                             }
                         }
 
-                    } else if (p.getType().equals("Q") || p.getType().equals("q")) {
-
+                    } else if (p.getType() == 'Q' || p.getType() == 'q') {
                         //horicontial and verical
                         for (int i = 0; i < 8; i++) {
                             validateMoveAndToMoveList(pos, moveList, new Move(rank, file, i, file, false, false, false, false, false, false));
@@ -147,7 +153,7 @@ public class MoveGen {
                                 break;
                             }
                         }
-                    } else if (p.getType().equals("K") || p.getType().equals("k")) {
+                    } else if (p.getType() == 'K' || p.getType() == 'k') {
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file - 1, false, false, false, false, false, false));

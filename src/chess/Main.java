@@ -12,6 +12,9 @@
 //
 package chess;
 
+import chess.Objects.Fen;
+import chess.Objects.Board;
+import chess.Objects.Move;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -10,7 +10,7 @@
 //         | |____| | | |  __/\__ \__ \         
 //          \_____|_| |_|\___||___/___/   
 //
-package chess;
+package chess.Objects;
 
 /**
  * @author Mikkel Soede

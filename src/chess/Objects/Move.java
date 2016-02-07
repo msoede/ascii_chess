@@ -10,7 +10,7 @@
 //         | |____| | | |  __/\__ \__ \         
 //          \_____|_| |_|\___||___/___/   
 //
-package chess;
+package chess.Objects;
 
 /**
  * @author Mikkel Soede
@@ -47,6 +47,7 @@ public class Move {
     }
 
     public void setCaputreMove(String input) {
+        System.out.println("setCaputreMove: " + input);
         caputreMove = true;
         caputrePiece = input;
     }
@@ -143,35 +144,35 @@ public class Move {
         return castleBlackKing || castleBlackQueen || castleWhiteKing || castleWhiteQueen;
     }
 
-    public String getType() {
-        String value = " ";
+    public char getType() {
+        char value = ' ';
         switch (caputrePiece) {
             case "Pawn":
-                value = "P";
+                value = 'P';
                 break;
             case "Rook":
-                value = "R";
+                value = 'R';
                 break;
             case "Knight":
-                value = "N";
+                value = 'N';
                 break;
             case "Bishop":
-                value = "B";
+                value = 'B';
                 break;
             case "Queen":
-                value = "Q";
+                value = 'Q';
                 break;
             case "King":
-                value = "K";
+                value = 'K';
                 break;
             default:
                 break;
         }
 
         if (playerColor == true) { //white side
-            value = value.toUpperCase();
+            value = Character.toUpperCase(value);
         } else { // black side
-            value = value.toLowerCase();
+            value = Character.toLowerCase(value);
         }
         return value;
     }
@@ -189,16 +190,18 @@ public class Move {
 
     /**
      *
-     * @return 
+     * @return
      */
     public String moveString() {
 
         //RANK
         char[] ranks = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-        char fromRankChar = ranks[getFromRank()];
-        char toRankChar = ranks[getToRank()];
+        int c1 = (getFromRank() + 1);
+        char c2 = ranks[getFromFile()];
+        int c3 = (getToRank() + 1);
+        char c4 = ranks[getToFile()];
 
-        return fromRankChar + "" + getFromFile() + "" + toRankChar + "" + getToFile();
+        return c2 + "" + c1 + "" + c4 + "" + c3;
     }
 
     public boolean compareMove(Move i) {

@@ -12,6 +12,7 @@
 //
 package chess;
 
+import chess.Objects.Move;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
