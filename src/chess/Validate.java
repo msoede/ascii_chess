@@ -12,8 +12,7 @@
 //
 package chess;
 
-import chess.Objects.Board;
-import chess.Objects.Move;
+import chess.Objects.*;
 
 /**
  * @author Mikkel Soede
@@ -85,7 +84,6 @@ public class Validate {
      * @return
      */
     public boolean validateMoveAndDoTheMove(String move, Board board) {
-
         int fromFile = 0;
         int fromRank = move.charAt(1) - '1';
         int toFile = 0;
@@ -138,46 +136,69 @@ public class Validate {
         int colDiff = fromFile - toFile;
         int absRowDiff = Math.abs(rowDiff);
         int absColDiff = Math.abs(colDiff);
+        Piece fromPiece = board.getPiece(fromRank, fromFile);
+        Piece toPiece = board.getPiece(toRank, toFile);
+        String fromPieceName = "";
+        String toPieceName = "";
+        if (fromPiece != null) {
+            fromPieceName = fromPiece.getName();
+        }
+        if (toPiece != null) {
+            toPieceName = toPiece.getName();
+        }
 
         //WHITE PAWN
-        if (board.getPiece(fromRank, fromFile).getName().equals("Pawn") && currentPlayer) {
+        if (fromPieceName.equals("Pawn") && currentPlayer) {
             if (fromRank != 1 && rowDiff <= -2) {
                 return false;
-            } else if (fromRank == 1 && rowDiff < -2) {
+            } else if (fromRank == 1 && rowDiff < -2) { //first move to long
                 return false;
-            } else if (rowDiff >= 0) {
+            } else if (rowDiff >= 0) { //move worng direction
                 return false;
-            } else if (Math.abs(colDiff) > 1) {
+            } else if (absColDiff > 1) { //move left or right
                 return false;
-            } else if (Math.abs(colDiff) == 1 && rowDiff == -1 && board.getPiece(toRank, toFile) == null) {
+            } else if (absColDiff == 1 && rowDiff == -1 && toPiece == null) {
                 return false;
-            } else if (rowDiff == -1 && colDiff == 0 && board.getPiece(toRank, toFile) != null && board.getPiece(toRank, toFile).getPlayer().isColor() == !currentPlayer) {
+            } else if (rowDiff == -1 && colDiff == 0 && toPiece != null && toPiece.getPlayer().isColor() == !currentPlayer) {
                 return false;
+            } else if (fromRank == 1 && rowDiff == -2 && toPiece != null) {
+                return false;
+            } else if (fromRank == 1 && rowDiff == -2 && board.getPiece(fromRank + 1, fromFile) != null) {
+                return false;
+            } else {
+                return true;
             }
-            return true;
         } //PAWN BLACK
-        else if (board.getPiece(fromRank, fromFile).getName().equals("Pawn") && !currentPlayer) {
+        else if (fromPieceName.equals("Pawn") && !currentPlayer) {
             if (fromRank != 6 && rowDiff >= 2) {
                 return false;
-            } else if (fromRank == 6 && rowDiff > 2) {
+            } else if (fromRank == 6 && rowDiff > 2) {  //&& board.getPiece(fromRank + 1, fromFile) != null && toPiece != null
                 return false;
             } else if (rowDiff <= 0) {
                 return false;
-            } else if (Math.abs(colDiff) > 1) {
+            } else if (absColDiff > 1) {
                 return false;
-            } else if (Math.abs(colDiff) == 1 && rowDiff == 1 && board.getPiece(toRank, toFile) == null) {
+            } else if (absColDiff == 1 && rowDiff == 1 && toPiece == null) {
                 return false;
-            } else if (rowDiff == 1 && colDiff == 0 && board.getPiece(toRank, toFile) != null && board.getPiece(toRank, toFile).getPlayer().isColor() == !currentPlayer) {
+            } else if (rowDiff == 1 && colDiff == 0 && toPiece != null && toPiece.getPlayer().isColor() == !currentPlayer) {
                 return false;
+            } else if (fromRank == 6 && rowDiff == 2 && toPiece != null) {
+                return false;
+            } else if (fromRank == 6 && rowDiff == 2 && board.getPiece(fromRank - 1, fromFile) != null) {
+                return false;
+            } else {
+                return true;
             }
-            return true;
-        } else if (board.getPiece(fromRank, fromFile).getName().equals("King")) {
-            if (Math.abs(rowDiff) > 1 || Math.abs(colDiff) > 1) {
+        } else if (fromPieceName.equals("King")) {
+            if (absRowDiff == 0 && absColDiff == 2 && board.isCastlingAllowed(currentPlayer)) { // castling 
+                return true;
+            } else if (absRowDiff > 1 || absColDiff > 1) { // moved to long
                 return false;
+            } else { //normal move
+                return true;
             }
-            return true;
-        } else if (board.getPiece(fromRank, fromFile).getName().equals("Queen")) {
-            if (Math.abs(rowDiff) != Math.abs(colDiff) && rowDiff != 0 && colDiff != 0) {
+        } else if (fromPieceName.equals("Queen")) {
+            if (absRowDiff != absColDiff && rowDiff != 0 && colDiff != 0) {
                 return false;
             }
             if (rowDiff > 0 && colDiff > 0) {
@@ -238,12 +259,9 @@ public class Validate {
                 }
             }
             return true;
-        } else if (board.getPiece(fromRank, fromFile).getName().equals("Knight")) {
-            if (Math.abs(rowDiff) * Math.abs(colDiff) != 2) {
-                return false;
-            }
-            return true;
-        } else if (board.getPiece(fromRank, fromFile).getName().equals("Bishop")) {
+        } else if (fromPieceName.equals("Knight")) {
+            return absRowDiff * absColDiff == 2;
+        } else if (fromPieceName.equals("Bishop")) {
             if (Math.abs(rowDiff) != Math.abs(colDiff)) {
                 return false;
             }
@@ -281,7 +299,7 @@ public class Validate {
                 }
             }
             return true;
-        } else if (board.getPiece(fromRank, fromFile).getName().equals("Rook")) {
+        } else if (fromPieceName.equals("Rook")) {
             if (rowDiff != 0 && colDiff != 0) {
                 return false;
             }

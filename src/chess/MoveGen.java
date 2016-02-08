@@ -53,10 +53,8 @@ public class MoveGen {
                 Piece p = pos.getPiece(rank, file);
                 if (p != null) { //make sure the piece is not empty
                     if (p.getType() == 'p' && !pos.isSide()) { //white side
-                        boolean forward = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
-                        if (forward == true) {
-                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
-                        }
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
 
@@ -65,10 +63,8 @@ public class MoveGen {
 
                         }
                     } else if (p.getType() == 'P' && pos.isSide()) { //white side
-                        boolean forward = validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false)); //normal move forward
-                        if (forward == true) {
-                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false)); //doobelt move forward
-                        }
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false)); //normal move forward
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false)); //doobelt move forward
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false)); //attack move forward
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false)); //attach move forward
                         //promotion??
@@ -154,6 +150,7 @@ public class MoveGen {
                             }
                         }
                     } else if (p.getType() == 'K' || p.getType() == 'k') {
+                        //Normal moves:
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file - 1, false, false, false, false, false, false));
@@ -162,6 +159,17 @@ public class MoveGen {
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
+
+                        if (p.getType() == 'K') {  //Castling Moves white
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file - 2, false, true, false, false, false, true));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file + 2, false, false, false, true, false, true));
+                        } //Castling Moves black
+                        else {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file + 2, false, false, true, false, false, false));
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank, file - 2, false, false, false, false, true, false));
+
+                        }
+
                     }
                 }
             }

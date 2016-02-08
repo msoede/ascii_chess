@@ -185,7 +185,7 @@ public class Move {
         String cbq = castleBlackQueen ? "q" : "-";
         String castling = cwk + cwq + cbk + cbq;
 
-        return "Move{(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
+        return "Move "+moveString()+"  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
     }
 
     /**
