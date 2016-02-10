@@ -47,7 +47,6 @@ public class Move {
     }
 
     public void setCaputreMove(String input) {
-        System.out.println("setCaputreMove: " + input);
         caputreMove = true;
         caputrePiece = input;
     }
@@ -185,14 +184,14 @@ public class Move {
         String cbq = castleBlackQueen ? "q" : "-";
         String castling = cwk + cwq + cbk + cbq;
 
-        return "Move "+moveString()+"  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
+        return "Move "+getMoveString()+"  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
     }
 
     /**
      *
      * @return
      */
-    public String moveString() {
+    public String getMoveString() {
 
         //RANK
         char[] ranks = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};

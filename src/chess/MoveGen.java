@@ -33,6 +33,7 @@ public class MoveGen {
     private final int rookValue = 525;
     private final int queenValue = 1000;
     private final int kingValue = 50000;
+    private Evaluation evaluation = new Evaluation();
 
     public MoveGen() {
         this.validate = new Validate();
@@ -53,30 +54,32 @@ public class MoveGen {
                 Piece p = pos.getPiece(rank, file);
                 if (p != null) { //make sure the piece is not empty
                     if (p.getType() == 'p' && !pos.isSide()) { //white side
+                        //promotion
+                        if ((rank - 1) == 0) {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, true, false, false, false, false, false));
+                            continue;
+                        }
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
 
-                        //promotion??
-                        if (file == 0) {
-
-                        }
                     } else if (p.getType() == 'P' && pos.isSide()) { //white side
+                        //promotion
+                        if ((rank + 1) == 7) {
+                            validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, true, false, false, false, false, false));
+                            continue;
+                        }
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false)); //normal move forward
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false)); //doobelt move forward
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false)); //attack move forward
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false)); //attach move forward
-                        //promotion??
-                        if (file == 7) {
-
-                        }
                     } else if (p.getType() == 'N' || p.getType() == 'n') {
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 2, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false));
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false));
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false));
-                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank + 1, file - 2, false, false, false, false, false, false));
+                        validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file + 2, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 1, file - 2, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file + 1, false, false, false, false, false, false));
                         validateMoveAndToMoveList(pos, moveList, new Move(rank, file, rank - 2, file - 1, false, false, false, false, false, false));
@@ -193,4 +196,72 @@ public class MoveGen {
         }
         return false;
     }
+    private int total = 0;
+
+    public int generateAllForDepth(Board board, int depth) {
+        perfTest(depth, board);
+        return total;
+    }
+
+    private void perfTest(int depth, Board board) {
+        total = 0;
+        ArrayList<Move> moveList = generateAllMoves(board);
+        for (Move childMove : moveList) {
+//            total++;
+//            System.out.println("total: "+total);
+            board.makeMove(childMove);
+            perf1(depth - 1, board);
+            board.undoLastMove();
+        }
+    }
+
+    private void perf1(int depth, Board board) {
+        if (depth <= 0) {
+            total++;
+            return;
+        }
+
+        ArrayList<Move> moveList = generateAllMoves(board);
+        for (Move childMove : moveList) {
+            board.makeMove(childMove);
+            perf1(depth - 1, board);
+            board.undoLastMove();
+        }
+    }
+//    private int miniMax(Board board, int depth, boolean maximizingPlayer) {
+//        if (depth == 0) {
+//            total++;
+//            return evaluation.evaluateBoard(board);
+//        }
+//
+//        if (maximizingPlayer) {
+//            int bestValue = -1000000;
+//            ArrayList<Move> moveList = generateAllMoves(board);
+//            for (Move childMove : moveList) {
+//                board.makeMove(childMove);
+//                int v = miniMax(board, depth - 1, false);
+//                board.undoLastMove();
+//                bestValue = max(bestValue, v);
+//            }
+//            return bestValue;
+//        } else {
+//            int bestValue = 1000000;
+//            ArrayList<Move> moveList = generateAllMoves(board);
+//            for (Move childMove : moveList) {
+//                board.makeMove(childMove);
+//                int v = miniMax(board, depth - 1, true);
+//                board.undoLastMove();
+//                bestValue = min(bestValue, v);
+//            }
+//            return bestValue;
+//        }
+//    }
+//
+//    public int max(int a, int b) {
+//        return a > b ? a : b;
+//    }
+//
+//    public int min(int a, int b) {
+//        return a < b ? a : b;
+//    }
 }

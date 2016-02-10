@@ -12,9 +12,7 @@
 //
 package chess.Objects;
 
-import chess.Objects.Move;
-import chess.Objects.Piece;
-import chess.Objects.Player;
+import chess.Objects.*;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +37,10 @@ public class Board {
     private int hafMoves = 0;
     private boolean castlingWhite;
     private boolean castlingBlack;
+    private boolean castlingWhiteKing;
+    private boolean castlingWhiteQueen;
+    private boolean castlingBlackKing;
+    private boolean castlingBlackQueen;
 
     public Board(String whitePlayerName, String blackPlayerName) {
         //setup players
@@ -123,14 +125,7 @@ public class Board {
         this.endTime = (System.currentTimeMillis() + (searchTime * 1000));
     }
 
-    // The king and the chosen rook are on the player's first rank.[3]
-    // - Neither the king nor the chosen rook has previously moved.
-    // - There are no pieces between the king and the chosen rook.
-    // - The king is not currently in check.
-    // - The king does not pass through a square that is attacked by an enemy piece.[4]
-    // - The king does not end up in check. (True of any legal move.)
-    // make sure all requerment for castling is done
-    public boolean isCastlingAllowed(boolean side) {
+    public boolean isKingSideCastlingAllowed(boolean side) {
         int startRank = side ? 0 : 7;
         char kingChar = side ? 'K' : 'k';
         char rookChar = side ? 'R' : 'r';
@@ -143,16 +138,49 @@ public class Board {
         boolean piecesOnTheLeft = getPiece(startRank, 1) == null && getPiece(startRank, 2) == null && getPiece(startRank, 3) == null;
         boolean piecesOnTheRight = getPiece(startRank, 6) == null && getPiece(startRank, 5) == null;
 
-        if (king && rookLeft && piecesOnTheLeft) {
-            if (pieceKing.getType() == kingChar && pieceRookLeft.getType() == rookChar) {
-                return true;
-            }
-        }
+        //if (king && rookLeft && piecesOnTheLeft) {
+        //    if (pieceKing.getType() == kingChar && pieceRookLeft.getType() == rookChar) {
+        //        return true;
+        //    }
+        //}
         if (king && rookRigth && piecesOnTheRight) {
             if (pieceKing.getType() == kingChar && pieceRookRight.getType() == rookChar) {
                 return true;
             }
         }
+        return false;
+    }
+
+    // The king and the chosen rook are on the player's first rank.[3]
+    // - Neither the king nor the chosen rook has previously moved.
+    // - There are no pieces between the king and the chosen rook.
+    // - The king is not currently in check.
+    // - The king does not pass through a square that is attacked by an enemy piece.[4]
+    // - The king does not end up in check. (True of any legal move.)
+    // make sure all requerment for castling is done
+    public boolean isQueenSideCastlingAllowed(boolean side) {
+        int startRank = side ? 0 : 7;
+        char kingChar = side ? 'K' : 'k';
+        char rookChar = side ? 'R' : 'r';
+        Piece pieceKing = getPiece(startRank, 4);
+        Piece pieceRookLeft = getPiece(startRank, 0);
+        Piece pieceRookRight = getPiece(startRank, 7);
+        boolean king = !(pieceKing == null);
+        boolean rookLeft = !(pieceRookLeft == null);
+        boolean rookRigth = !(pieceRookRight == null);
+        boolean piecesOnTheLeft = getPiece(startRank, 1) == null && getPiece(startRank, 2) == null && getPiece(startRank, 3) == null;
+        boolean piecesOnTheRight = getPiece(startRank, 6) == null && getPiece(startRank, 5) == null;
+
+        if ((king && rookLeft) && piecesOnTheLeft) {
+            if (pieceKing.getType() == kingChar && pieceRookLeft.getType() == rookChar) {
+                return true;
+            }
+        }
+        //if (king && rookRigth && piecesOnTheRight) {
+        //    if (pieceKing.getType() == kingChar && pieceRookRight.getType() == rookChar) {
+        //        return true;
+        //    }
+        //}
         return false;
     }
 
@@ -254,6 +282,8 @@ public class Board {
             Move lastMove = moveHistory.get(size - 1);
             moveHistory.remove(size - 1);
             undoMove(lastMove);
+        } else {
+            System.out.println("history is empty");
         }
     }
 
@@ -264,11 +294,39 @@ public class Board {
         int fromFile = m.gff();
         Player playerSide = m.isPlayerColor() ? playerWhite : playerBlack;
         setPiece(fromRank, fromFile, getPiece(toRank, toFile));
-        if (m.isCaputreMove()) {
-            System.out.println("undo capture move: " + m.getType() + " playerSide: " + playerSide.getName());
+        if (m.isCastleWhiteKing()) { //castle white king
+            setPiece(0, 7, getPiece(0, 5));
+            setPiece(0, 5, null);
+            setPiece(0, 4, getPiece(0, 6));
+            setPiece(0, 6, null);
+            castlingWhite = true;
+        } else if (m.isCastleWhiteQueen()) {//castle white queen
+            setPiece(0, 0, getPiece(0, 3));
+            setPiece(0, 3, null);
+            setPiece(0, 4, getPiece(0, 2));
+            setPiece(0, 2, null);
+            castlingWhite = true;
+        } else if (m.isCastleBlackKing()) { //castle black king
+            setPiece(7, 7, getPiece(7, 5));
+            setPiece(7, 5, null);
+            setPiece(7, 4, getPiece(7, 6));
+            setPiece(7, 6, null);
+            castlingBlack = true;
+        } else if (m.isCastleBlackQueen()) { //castle black queen
+            setPiece(7, 0, getPiece(7, 3));
+            setPiece(7, 3, null);
+            setPiece(7, 4, getPiece(7, 2));
+            setPiece(7, 2, null);
+            castlingBlack = true;
+        }
+
+        if (m.isCaputreMove()) { //capture move
             setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSide));
+        } else if (m.isPromoted()) {
+            setPiece(toRank, toFile, new Piece("Queen", playerSide));
+            setPiece(fromRank, fromFile, null);
         } else {
-            setPiece(toRank, toFile, null);
+            setPiece(toRank, toFile, null); // non capture move(normal move)
         }
 
         hafMoves--;
@@ -288,31 +346,55 @@ public class Board {
 
         boolean currentPlayer = side;
 
-        if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer) {
+        if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer && move.isPromoted() == false) { // normal move forward
             move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             moveHistory.add(move);
             return true;
         } else {
-            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
-            setPiece(fromRank, fromFile, null);
-            if (move.isCastleWhiteKing()) { //castle white king
+            if (move.isCastling() == false && move.isPromoted() == false) {  // normal move
+                setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+                setPiece(fromRank, fromFile, null);
+            } else if (move.isPromoted()) { // promotion move
+                setPiece(toRank, toFile, new Piece("Queen", getCurrentPlayer()));
+                setPiece(fromRank, fromFile, null);
+            } else if (move.isCastleWhiteKing() && castlingWhite) { //castle white king
                 setPiece(0, 5, getPiece(0, 7));
                 setPiece(0, 7, null);
-            } else if (move.isCastleWhiteQueen()) {//castle white queen
+                setPiece(0, 6, getPiece(0, 4));
+                setPiece(0, 4, null);
+                castlingWhite = false;
+            } else if (move.isCastleWhiteQueen() && castlingWhite) {//castle white queen
                 setPiece(0, 3, getPiece(0, 0));
                 setPiece(0, 0, null);
-            } else if (move.isCastleBlackKing()) { //castle black king
+                setPiece(0, 2, getPiece(0, 4));
+                setPiece(0, 4, null);
+                castlingWhite = false;
+            } else if (move.isCastleBlackKing() && castlingBlack) { //castle black king
                 setPiece(7, 5, getPiece(7, 7));
                 setPiece(7, 7, null);
-            } else if (move.isCastleBlackQueen()) { //castle black queen
+                setPiece(7, 6, getPiece(7, 4));
+                setPiece(7, 4, null);
+                castlingBlack = false;
+            } else if (move.isCastleBlackQueen() && castlingBlack) { //castle black queen
                 setPiece(7, 3, getPiece(7, 0));
                 setPiece(7, 0, null);
+                setPiece(7, 2, getPiece(7, 4));
+                setPiece(7, 4, null);
+                castlingBlack = false;
             }
             moveHistory.add(move);
             return true;
         }
+    }
+
+    public String getMOveHistoryString() {
+        String output = "";
+        for (int i = 0; i < moveHistory.size(); i++) {
+            output += moveHistory.get(i).getMoveString() + "\n";
+        }
+        return output;
     }
 
     /**
@@ -334,7 +416,7 @@ public class Board {
         String lastMoveString = "";
         if (size > 0) {
             Move lastMove = moveHistory.get(size - 1);
-            lastMoveString = lastMove.moveString();
+            lastMoveString = lastMove.getMoveString();
         }
 
         String castlingString = "W: " + (castlingWhite ? "1" : "0") + "  B: " + (castlingBlack ? "1" : "0");

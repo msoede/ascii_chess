@@ -46,12 +46,6 @@ public class AlfaBetaSearch {
 
         for (Move childMove : moveList) {
             board.makeMove(childMove);
-            board.printBoard();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AlfaBetaSearch.class.getName()).log(Level.SEVERE, null, ex);
-            }
             int score = alphaBetaMin(alpha, beta, depthleft - 1, board);
             board.undoLastMove();
             if (score >= beta) {

@@ -151,6 +151,8 @@ public class Validate {
         if (fromPieceName.equals("Pawn") && currentPlayer) {
             if (fromRank != 1 && rowDiff <= -2) {
                 return false;
+            } else if (moveTomake.isPromoted() && toRank == 7) {
+                return true;
             } else if (fromRank == 1 && rowDiff < -2) { //first move to long
                 return false;
             } else if (rowDiff >= 0) { //move worng direction
@@ -172,7 +174,9 @@ public class Validate {
         else if (fromPieceName.equals("Pawn") && !currentPlayer) {
             if (fromRank != 6 && rowDiff >= 2) {
                 return false;
-            } else if (fromRank == 6 && rowDiff > 2) {  //&& board.getPiece(fromRank + 1, fromFile) != null && toPiece != null
+            } else if (moveTomake.isPromoted() && toRank == 0) {
+                return true;
+            } else if (fromRank == 6 && rowDiff > 2) {
                 return false;
             } else if (rowDiff <= 0) {
                 return false;
@@ -190,7 +194,15 @@ public class Validate {
                 return true;
             }
         } else if (fromPieceName.equals("King")) {
-            if (absRowDiff == 0 && absColDiff == 2 && board.isCastlingAllowed(currentPlayer)) { // castling 
+            boolean isCastlingQueenSide = moveTomake.isCastleBlackQueen() || moveTomake.isCastleWhiteQueen();
+            boolean isCastlingKingSide = moveTomake.isCastleBlackKing() || moveTomake.isCastleWhiteKing();
+
+//            if(KingIsThreated){
+//                return false;
+//            }
+            if (isCastlingQueenSide && absRowDiff == 0 && absColDiff == 2 && board.isQueenSideCastlingAllowed(currentPlayer)) { // castling 
+                return true;
+            } else if (isCastlingKingSide && absRowDiff == 0 && absColDiff == 2 && board.isKingSideCastlingAllowed(currentPlayer)) { // castling 
                 return true;
             } else if (absRowDiff > 1 || absColDiff > 1) { // moved to long
                 return false;

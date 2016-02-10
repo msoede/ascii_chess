@@ -58,8 +58,8 @@ public class Fen {
             }
             file++;
         }
-
-        //board.setSide((fen.charAt(i) == 'w'));
+i++;
+        board.setSide((fen.charAt(i) == 'w'));
         board.printBoard();
 
         //castling???
@@ -92,13 +92,11 @@ public class Fen {
                 Piece p = board.getPiece(rank, file);
                 if (p == null) {
                     spaces++;
+                } else if (spaces == 0) {
+                    pieces = pieces + p.getType();
                 } else {
-                    if (spaces == 0) {
-                        pieces = pieces + p.getType();
-                    } else {
-                        pieces = pieces + "" + spaces + "" + p.getType();
-                        spaces = 0;
-                    }
+                    pieces = pieces + "" + spaces + "" + p.getType();
+                    spaces = 0;
                 }
             }
             if (spaces != 0) {
@@ -121,5 +119,4 @@ public class Fen {
         fenString = pieces + " " + side + " " + castling + " " + enPassant + " " + hafMoves + " " + fullMoves;
         return fenString;
     }
-
 }

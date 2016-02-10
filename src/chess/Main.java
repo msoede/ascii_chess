@@ -124,6 +124,20 @@ public class Main {
                 System.out.println("Find bedst move");
                 System.out.println("Not implemnted YET!!");
                 return true;
+            case "list":
+                System.out.println("Movelist");
+                System.out.println(board.getMOveHistoryString());
+                return true;
+            case "movelist":
+                MoveGen moveGen = new MoveGen();
+                ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+                System.out.println("Movelist");
+                int i = 1;
+                for (Move childMove : moveList) {
+                    System.out.format("%03d : %s\n", i, childMove.getMoveString());
+                    i++;
+                }
+                return true;
             default:
                 break;
         }
