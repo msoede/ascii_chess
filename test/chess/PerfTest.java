@@ -39,7 +39,7 @@ public class PerfTest {
 
     @Before
     public void setUp() {
-        board = new Board("White", "Black");
+        board = new Board();
         fen = new Fen();
         moveGen = new MoveGen();
     }

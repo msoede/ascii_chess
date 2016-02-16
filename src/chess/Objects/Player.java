@@ -16,28 +16,25 @@ package chess.Objects;
  * @author Mikkel Soede
  * @version 1.0
  * @description handle all the player information
- * @date 
+ * @date
  */
 public class Player {
 
-    private String name;
+    private final String nameWhite;
+    private final String nameBlack;
     private boolean color;
 
     /**
-     * @param name name of the player 
      * @param color (true = wite side) (false = black side)
      */
-    public Player(String name, boolean color) {
-        this.name = name;
+    public Player(boolean color) {
         this.color = color;
+        this.nameBlack = "Black";
+        this.nameWhite = "White";
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return color ? nameWhite : nameBlack;
     }
 
     public boolean isColor() {
@@ -47,5 +44,4 @@ public class Player {
     public void setColor(boolean color) {
         this.color = color;
     }
-
 }

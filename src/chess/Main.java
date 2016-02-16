@@ -33,13 +33,13 @@ public class Main {
      */
     public static void main(String[] args) {
         //Definetions 
-        Board board = new Board("White", "Black");
+        Board board = new Board();
         board.setStartPosistion();
-        Validate validate = new Validate();
         Evaluation evaluation = new Evaluation();
+        MoveGen moveGen = new MoveGen();
         Prints prints = new Prints();
         Main main = new Main();
-        AlfaBetaSearch alfaBetaSearch = new AlfaBetaSearch();
+        AlfaBetaSearch alfaBetaSearch = new AlfaBetaSearch(evaluation);
 
         //print welcome messages
         prints.printWelcomeMessage();
@@ -57,11 +57,11 @@ public class Main {
                     continue;
                 }
 
-                while (validate.validateMoveString(input) == false) {
+                while (moveGen.validateMoveString(input) == false) {
                     System.out.println("invalid move(" + input + ") string, enter new move:");
                     input = main.getInputFromUser();
                 }
-                if (validate.validateMoveAndDoTheMove(input, board)) {
+                if (moveGen.validateMoveAndDoTheMove(input, board)) {
                     board.switchSide();
                 }
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));

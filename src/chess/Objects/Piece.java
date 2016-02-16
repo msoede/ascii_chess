@@ -12,8 +12,6 @@
 //
 package chess.Objects;
 
-import chess.Objects.Player;
-
 /**
  * @author Mikkel Soede
  * @version 1.0
@@ -26,6 +24,16 @@ public class Piece {
     private String name;
     private Player player;
 
+    //+--------+--------+
+    //|  Name  |  Type  |
+    //+--------+--------+
+    //| Pawn   | P or p |
+    //| Rook   | R or r |
+    //| Knight | N or n |
+    //| Bishop | B or b |
+    //| Queen  | Q or q |
+    //| King   | K or k |
+    //+--------+--------+
     public Piece(String name, Player player) {
         this.name = name;
         this.player = player;
@@ -56,7 +64,6 @@ public class Piece {
                 break;
             default:
                 break;
-
         }
         this.name = value;
         this.player = player;
@@ -86,7 +93,6 @@ public class Piece {
             default:
                 break;
         }
-
         if (player.isColor() == true) { //white side
             value = Character.toUpperCase(value);
         } else { // black side
@@ -113,13 +119,6 @@ public class Piece {
     }
 
     public String getColorString() {
-        if (player != null) {
-            if (player.isColor()) {
-                return "White";
-            } else {
-                return "Black";
-            }
-        }
-        return "";
+        return player != null ? player.getName() : "";
     }
 }

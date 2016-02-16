@@ -53,7 +53,7 @@ public class BoardTest {
     @Test
     public void testUndoLastMove() {
         System.out.println("undoLastMove");
-        Board board = new Board("White", "Black");
+        Board board = new Board();
         MoveGen moveGen = new MoveGen();
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         for (Move childMove : moveList) {

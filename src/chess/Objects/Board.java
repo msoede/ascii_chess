@@ -42,10 +42,10 @@ public class Board {
     private boolean castlingBlackKing;
     private boolean castlingBlackQueen;
 
-    public Board(String whitePlayerName, String blackPlayerName) {
+    public Board() {
         //setup players
-        playerWhite = new Player(whitePlayerName, true);
-        playerBlack = new Player(blackPlayerName, false);
+        playerWhite = new Player(true);
+        playerBlack = new Player(false);
         side = playerWhite.isColor();
 
         //setup the board
@@ -56,7 +56,6 @@ public class Board {
                 board[i][j] = null;
             }
         }
-
     }
 
     /**
@@ -396,6 +395,8 @@ public class Board {
         }
         return output;
     }
+    
+
 
     /**
      * <h1>Prints an ASCII art view of the current chess board </h1>

@@ -184,7 +184,7 @@ public class Move {
         String cbq = castleBlackQueen ? "q" : "-";
         String castling = cwk + cwq + cbk + cbq;
 
-        return "Move "+getMoveString()+"  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
+        return "Move " + getMoveString() + "  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
     }
 
     /**
@@ -201,6 +201,13 @@ public class Move {
         char c4 = ranks[getToFile()];
 
         return c2 + "" + c1 + "" + c4 + "" + c3;
+    }
+
+    public boolean compareMoveTo(Move i) {
+        if (i.gtf() != gtf() || i.gtr() != gtr()) {
+            return false;
+        }
+        return false;
     }
 
     public boolean compareMove(Move i) {

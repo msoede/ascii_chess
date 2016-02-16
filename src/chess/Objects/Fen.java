@@ -12,8 +12,6 @@
 //
 package chess.Objects;
 
-import chess.Objects.Board;
-import chess.Objects.Piece;
 
 /**
  * @author Mikkel Soede

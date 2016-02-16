@@ -32,9 +32,9 @@ public class AlfaBetaSearch {
     private int nodes = 0;
     private Move bestMove;
 
-    public AlfaBetaSearch() {
+    public AlfaBetaSearch(Evaluation evaluation) {
         this.moveGen = new MoveGen();
-        this.evaluation = new Evaluation();
+        this.evaluation = evaluation;
     }
 
     int alphaBetaMax(int alpha, int beta, int depthleft, Board board) {

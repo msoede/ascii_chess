@@ -52,7 +52,8 @@ public class AlfaBetaSearchTest {
     @Test
     public void testMax() {
         System.out.println("max");
-        AlfaBetaSearch instance = new AlfaBetaSearch();
+        
+        AlfaBetaSearch instance = new AlfaBetaSearch(new Evaluation());
         assertEquals(instance.max(5, 3), 5);
         assertEquals(instance.max(5, 4), 5);
         assertEquals(instance.max(5, 5), 5);
@@ -68,7 +69,7 @@ public class AlfaBetaSearchTest {
     @Test
     public void testMin() {
         System.out.println("min");
-        AlfaBetaSearch instance = new AlfaBetaSearch();
+        AlfaBetaSearch instance = new AlfaBetaSearch(new Evaluation());
         assertEquals(instance.min(5, 3), 3);
         assertEquals(instance.min(5, 4), 4);
         assertEquals(instance.min(5, 5), 5);
