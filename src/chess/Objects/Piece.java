@@ -113,6 +113,10 @@ public class Piece {
     public Player getPlayer() {
         return player;
     }
+    
+    public boolean getPlayerColor(){
+        return player.isColor();
+    }
 
     public void setPlayer(Player player) {
         this.player = player;

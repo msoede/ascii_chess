@@ -64,44 +64,9 @@ public class Board {
     public void setStartPosistion() {
         //empty the board
         clearBoard();
-
-        // setup white side
-        board[0][0] = new Piece("Rook", playerWhite);
-        board[0][1] = new Piece("Knight", playerWhite);
-        board[0][2] = new Piece("Bishop", playerWhite);
-        board[0][3] = new Piece("Queen", playerWhite);
-        board[0][4] = new Piece("King", playerWhite);
-        board[0][5] = new Piece("Bishop", playerWhite);
-        board[0][6] = new Piece("Knight", playerWhite);
-        board[0][7] = new Piece("Rook", playerWhite);
-
-        board[1][0] = new Piece("Pawn", playerWhite);
-        board[1][1] = new Piece("Pawn", playerWhite);
-        board[1][2] = new Piece("Pawn", playerWhite);
-        board[1][3] = new Piece("Pawn", playerWhite);
-        board[1][4] = new Piece("Pawn", playerWhite);
-        board[1][5] = new Piece("Pawn", playerWhite);
-        board[1][6] = new Piece("Pawn", playerWhite);
-        board[1][7] = new Piece("Pawn", playerWhite);
-
-        //setup black side
-        board[6][0] = new Piece("Pawn", playerBlack);
-        board[6][1] = new Piece("Pawn", playerBlack);
-        board[6][2] = new Piece("Pawn", playerBlack);
-        board[6][3] = new Piece("Pawn", playerBlack);
-        board[6][4] = new Piece("Pawn", playerBlack);
-        board[6][5] = new Piece("Pawn", playerBlack);
-        board[6][6] = new Piece("Pawn", playerBlack);
-        board[6][7] = new Piece("Pawn", playerBlack);
-
-        board[7][0] = new Piece("Rook", playerBlack);
-        board[7][1] = new Piece("Knight", playerBlack);
-        board[7][2] = new Piece("Bishop", playerBlack);
-        board[7][3] = new Piece("Queen", playerBlack);
-        board[7][4] = new Piece("King", playerBlack);
-        board[7][5] = new Piece("Bishop", playerBlack);
-        board[7][6] = new Piece("Knight", playerBlack);
-        board[7][7] = new Piece("Rook", playerBlack);
+        //load start board
+        Fen fen = new Fen();
+        fen.loadFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", this);
     }
 
     /**
@@ -395,8 +360,6 @@ public class Board {
         }
         return output;
     }
-    
-
 
     /**
      * <h1>Prints an ASCII art view of the current chess board </h1>

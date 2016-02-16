@@ -67,15 +67,6 @@ public class Main {
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
                 alfaBetaSearch.FindBedstMove(board);
-
-//                MoveGen moveGen = new MoveGen();
-//                ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-//                for (Move childMove : moveList) {
-//                    board.makeMove(childMove);
-//                    board.printBoard();
-//                    board.undoLastMove();
-//                }
-//                
                 board.switchSide();
             }
         }

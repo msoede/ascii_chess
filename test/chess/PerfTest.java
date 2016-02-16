@@ -25,9 +25,10 @@ import org.junit.Test;
 
 public class PerfTest {
 
-    private Board board;
-    private Fen fen;
-    private MoveGen moveGen;
+    Perf perf;
+    Board board;
+    Fen fen;
+    MoveGen moveGen;
 
     @BeforeClass
     public static void setUpClass() {
@@ -39,104 +40,56 @@ public class PerfTest {
 
     @Before
     public void setUp() {
-        board = new Board();
-        fen = new Fen();
+        perf = new Perf(true);
         moveGen = new MoveGen();
+        fen = new Fen();
+        board = new Board();
+        board.setStartPosistion();
     }
 
     @After
     public void tearDown() {
-        board.clearBoard();
+        perf.clearBoard();
     }
 
 //    @Test
-//    public void testPerf1() {
-//        String fenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-//        int d[] = {20, 400, 8902, 197281, 4865609, 119060324};
-//        int r[] = {0, 0, 0, 0, 0, 0};
-//        fen.loadFen(fenString, board);
+//    public void testPerf2() {
 //
-//        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-//        r[0] = moveList.size();
-//        r[1] = r[0];
-//        for (Move childMove : moveList) {
-//            board.makeMove(childMove);
-//            ArrayList<Move> moveList1 = moveGen.generateAllMoves(board);
-//            board.undoLastMove();
-//
-//            r[1] = r[1] + moveList1.size();
-////            System.out.println("size " + r[1]);
-////            for (Move childMove1 : moveList1) {
-////                board.makeMove(childMove1);
-////            }
-//        }
-//
-//        for (int i = 0; i < d.length; i++) {
-//            System.out.println("compare[" + i + "]: " + r[i] + "==" + d[i]);
-//            assertEquals(d[i], r[i]);
-//        }
+//        assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 20, 1), true);
+//        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 48, 1), true);
+//        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 15, 1), true);
+//        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 16, 1), true);
+//        assertEquals(perf.makeTest("4k2r/8/8/8/8/8/8/4K3 w k - 0 1", 5, 1), true);
+//        assertEquals(perf.makeTest("r3k3/8/8/8/8/8/8/4K3 w q - 0 1", 5, 1), true);
+//        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1", 26, 1), true);
+//        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1", 5, 1), true);
+////        assertEquals(perf.makeTest("8/8/8/8/8/8/6k1/4K2R w K - 0 1", 12, 1), true);
+////        assertEquals(perf.makeTest("8/8/8/8/8/8/1k6/R3K3 w Q - 0 1", 15, 1), true);
+////        assertEquals(perf.makeTest("4k2r/6K1/8/8/8/8/8/8 w k - 0 1", 3, 1), true);
+////        assertEquals(perf.makeTest("r3k3/1K6/8/8/8/8/8/8 w q - 0 1", 4, 1), true);
+//        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", 26, 1), true);
+//        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/1R2K2R w Kkq - 0 1", 25, 1), true);
+////        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/2R1K2R w Kkq - 0 1", 25, 1), true);
 //    }
     @Test
-    public void testPerf2() {
-//        String fenString = "8/8/8/8/8/8/6k1/4K2R w K - 0 1";
-        String fenString = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq";
-//        String fenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        int d[] = {48, 2039, 97862, 4085603, 193690690};
+    public void testPerf3() {
+        System.out.println("-> testPerf3()");
+        String fenString = "4k3/8/8/8/8/8/8/4K2R w K - 0 1";
+        int d[] = {15, 2039, 97862, 4085603, 193690690};
         int r[] = {0, 0, 0, 0, 0};
         fen.loadFen(fenString, board);
 
-        int seachDepth = 1;
-        int movesTotal = moveGen.generateAllForDepth(board, seachDepth);
-        System.out.println("Number of moves done at depth " + seachDepth + ": " + movesTotal);
-        assertEquals(2039, movesTotal);
-//        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-//
-//        r[0] = moveList.size();
-//        r[1] = r[0];
-//        System.out.println("pert testing");
-//        int j = 0;
-//        for (Move childMove : moveList) {
-//            System.out.println(j + " : " + childMove.toString());
-//            j++;
-//            board.makeMove(childMove);
-//            board.printBoard();
-//            board.undoLastMove();
-//        }
-//
-//        for (int i = 0; i < d.length; i++) {
-//            System.out.println("compare[" + i + "]: " + r[i] + "==" + d[i]);
-//            equals(r[i] == d[i]);
-//            assertEquals(d[i], r[i]);
-//        }
+        r[0] = moveGen.generateAllForDepth(board, 1);
+        board.clearBoard();
+        fen.loadFen(fenString, board);
+        r[1] = moveGen.generateAllForDepth(board, 2);
+
+        for (int i = 0; i < d.length; i++) {
+            System.out.println("compare[" + i + "]: " + r[i] + "==" + d[i]);
+            assertEquals(d[i], r[i]);
+        }
     }
-//    @Test
-//    public void testPerf3() {
-////        System.out.println("-> testPerf3()");
-////        String fenString = "4k3/8/8/8/8/8/8/4K2R w K - 0 1";
-////        int d[] = {15, 2039, 97862, 4085603, 193690690};
-////        int r[] = {0, 0, 0, 0, 0};
-////        fen.loadFen(fenString, board);
-////
-////        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-////
-////        r[0] = moveList.size();
-////        r[1] = r[0];
-////        System.out.println("pert testing");
-////        int j = 0;
-////        for (Move childMove : moveList) {
-////            System.out.println(j + " : " + childMove.toString());
-////            j++;
-////            board.makeMove(childMove);
-////            board.printBoard();
-////            board.undoLastMove();
-////        }
-////
-////        for (int i = 0; i < d.length; i++) {
-////            System.out.println("compare[" + i + "]: " + r[i] + "==" + d[i]);
-////            equals(r[i] == d[i]);
-////            assertEquals(r[i], d[i]);
-////        }
-//    }
+    
 //    @Test
 //    public void testWhitePawnPromotion() {
 //        String fenString = "8/3P2p1/8/8/8/8/8/8 w - - 0 1";

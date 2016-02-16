@@ -207,7 +207,7 @@ public class Evaluation {
                     continue; // empty piece
                 }
                 String pieceName = tempPiece.getName();
-                boolean pieceColor = tempPiece.getPlayer().isColor();
+                boolean pieceColor = tempPiece.getPlayerColor();
                 int tempScore = 0;
                 switch (pieceName) {
                     case "Pawn":

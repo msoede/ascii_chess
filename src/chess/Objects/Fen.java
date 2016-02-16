@@ -12,7 +12,6 @@
 //
 package chess.Objects;
 
-
 /**
  * @author Mikkel Soede
  * @version 1.0
@@ -21,6 +20,7 @@ package chess.Objects;
  */
 public class Fen {
 
+    
     /**
      * e.g. rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
      *
@@ -33,7 +33,7 @@ public class Fen {
         int rank = 7;
         int file = 0;
         int i;
-        System.out.println("fen string: " + fen);
+//        System.out.println("fen string: " + fen);
         for (i = 0; i < fen.length(); i++) {
             char currentPiece = fen.charAt(i);
             if (currentPiece == ' ') {
@@ -56,9 +56,9 @@ public class Fen {
             }
             file++;
         }
-i++;
+        i++;
         board.setSide((fen.charAt(i) == 'w'));
-        board.printBoard();
+//        board.printBoard();
 
         //castling???
         //enpassant
