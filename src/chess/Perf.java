@@ -1,8 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//                                       _      
+//                                      | |     
+//          _ __ ___  ___  ___   ___  __| | ___ 
+//         | '_ ` _ \/ __|/ _ \ / _ \/ _` |/ _ \
+//         | | | | | \__ \ (_) |  __/ (_| |  __/
+//         |_|_|_| |_|___/\___/ \___|\__,_|\___|
+//          / ____| |                           
+//         | |    | |__   ___  ___ ___          
+//         | |    | '_ \ / _ \/ __/ __|         
+//         | |____| | | |  __/\__ \__ \         
+//          \_____|_| |_|\___||___/___/   
+//
 package chess;
 
 import chess.Objects.Board;
