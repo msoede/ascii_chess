@@ -18,8 +18,10 @@ import chess.Objects.Move;
 import java.util.ArrayList;
 
 /**
- *
- * @author msoede
+ * @author Mikkel Soede
+ * @version 1.0
+ * @description
+ * @date
  */
 public class Perf {
 
