@@ -27,7 +27,6 @@ public class PerfTest {
 
     Perf perf;
 
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -47,24 +46,79 @@ public class PerfTest {
     }
 
     @Test
-    public void testPerf2() {
-
+    public void testPerf1() {
         assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 20, 1), true);
-        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 48, 1), true);
-        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 15, 1), true);
-        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 16, 1), true);
-        assertEquals(perf.makeTest("4k2r/8/8/8/8/8/8/4K3 w k - 0 1", 5, 1), true);
-        assertEquals(perf.makeTest("r3k3/8/8/8/8/8/8/4K3 w q - 0 1", 5, 1), true);
-        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1", 26, 1), true);
-        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1", 5, 1), true);
-//        assertEquals(perf.makeTest("8/8/8/8/8/8/6k1/4K2R w K - 0 1", 12, 1), true);
-//        assertEquals(perf.makeTest("8/8/8/8/8/8/1k6/R3K3 w Q - 0 1", 15, 1), true);
-//        assertEquals(perf.makeTest("4k2r/6K1/8/8/8/8/8/8 w k - 0 1", 3, 1), true);
-//        assertEquals(perf.makeTest("r3k3/1K6/8/8/8/8/8/8 w q - 0 1", 4, 1), true);
-        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", 26, 1), true);
-        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/1R2K2R w Kkq - 0 1", 25, 1), true);
-//        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/2R1K2R w Kkq - 0 1", 25, 1), true);
     }
+
+    @Test
+    public void testPerf2() {
+        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 48, 1), true);
+    }
+
+    @Test
+    public void testPerf3() {
+        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 15, 1), true);
+    }
+
+    @Test
+    public void testPerf4() {
+        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 16, 1), true);
+    }
+
+    @Test
+    public void testPerf5() {
+        assertEquals(perf.makeTest("4k2r/8/8/8/8/8/8/4K3 w k - 0 1", 5, 1), true);
+    }
+
+    @Test
+    public void testPerf6() {
+        assertEquals(perf.makeTest("r3k3/8/8/8/8/8/8/4K3 w q - 0 1", 5, 1), true);
+    }
+
+    @Test
+    public void testPerf7() {
+        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1", 26, 1), true);
+    }
+
+    @Test
+    public void testPerf8() {
+        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1", 5, 1), true);
+    }
+
+    @Test
+    public void testPerf9() {
+        assertEquals(perf.makeTest("8/8/8/8/8/8/6k1/4K2R w K - 0 1", 12, 1), true);
+    }
+
+    @Test
+    public void testPerf10() {
+        assertEquals(perf.makeTest("8/8/8/8/8/8/1k6/R3K3 w Q - 0 1", 15, 1), true);
+    }
+
+    @Test
+    public void testPerf11() {
+        assertEquals(perf.makeTest("4k2r/6K1/8/8/8/8/8/8 w k - 0 1", 3, 1), true);
+    }
+
+    @Test
+    public void testPerf12() {
+        assertEquals(perf.makeTest("r3k3/1K6/8/8/8/8/8/8 w q - 0 1", 4, 1), true);
+    }
+    @Test
+    public void testPerf13() {
+        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", 26, 1), true);
+    }
+    @Test
+    public void testPerf14() {
+        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/1R2K2R w Kkq - 0 1", 25, 1), true);
+    }
+    @Test
+    public void testPerf15() {
+        assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/2R1K2R w Kkq - 0 1", 25, 1), true);
+    }
+
+    
+    
 //    @Test
 //    public void testPerf3() {
 //        System.out.println("-> testPerf3()");
@@ -83,5 +137,4 @@ public class PerfTest {
 //            assertEquals(d[i], r[i]);
 //        }
 //    }
-
 }
