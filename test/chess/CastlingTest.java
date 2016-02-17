@@ -53,9 +53,9 @@ public class CastlingTest {
 
     @Test
     public void testCastlingWhiteKing() {
-        String fenString = "4k2r/8/8/8/8/8/8/4K2R w - - 0 1";
+        String fenString = "4k2r/8/8/8/8/8/8/4K2R w KQkq - 0 1";
         int d = 15; //exp resualt
-        int r = 0; // test resualt
+        int r; // test resualt
         fen.loadFen(fenString, board);
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         r = moveList.size();
@@ -65,19 +65,18 @@ public class CastlingTest {
         for (Move childMove : moveList) {
             if (childMove.isCastleWhiteKing()) {
                 castlingMove = childMove;
+                System.out.println("Castling move found: " + castlingMove.toString());
                 break;
             }
         }
 
         board.makeMove(castlingMove);
-        board.printBoard();
         char kingLocation = board.getPiece(0, 6).getType();
         char rookLocation = board.getPiece(0, 5).getType();
         assertEquals(kingLocation, 'K');
         assertEquals(rookLocation, 'R');
         System.out.println("testCastlingWhiteKing passed");
     }
-
     @Test
     public void testCastlingBlackKing() {
         String fenString = "4k2r/8/8/8/8/8/8/4K2R b - - 0 1";
