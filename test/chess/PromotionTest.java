@@ -1,0 +1,89 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chess;
+
+import chess.Objects.Board;
+import chess.Objects.Fen;
+import chess.Objects.Move;
+import java.util.ArrayList;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author msoede
+ */
+public class PromotionTest {
+
+    Board board;
+    Fen fen;
+    MoveGen moveGen;
+
+    public PromotionTest() {
+    }
+
+    @BeforeClass
+    public static void setUpClass() {
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+    }
+
+    @Before
+    public void setUp() {
+        moveGen = new MoveGen();
+        fen = new Fen();
+        board = new Board();
+        board.setStartPosistion();
+    }
+
+    @After
+    public void tearDown() {
+    }
+
+    @Test
+    public void testWhitePawnPromotion() {
+        String fenString = "8/3P2p1/8/8/8/8/8/8 w - - 0 1";
+        int d = 1; //exp resualt
+        int r = 0; // test resualt
+        fen.loadFen(fenString, board);
+        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+        r = moveList.size();
+        assertEquals(d, r);
+        board.makeMove(moveList.get(0));
+        board.printBoard();
+        char queenLocation = board.getPiece(7, 3).getType();
+        assertEquals(queenLocation, 'Q');
+        System.out.println("testPawnWhitePromotion passed");
+    }
+
+    @Test
+    public void testBlackPawnPromotion() {
+        String fenString = "8/8/8/8/8/8/3p2P1/8 b - - 0 1";
+        int d = 1; //exp resualt
+        int r; // test resualt
+        fen.loadFen(fenString, board);
+        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+        r = moveList.size();
+
+        assertEquals(d, r);
+        board.makeMove(moveList.get(0));
+        board.printBoard();
+        char queenLocation = board.getPiece(0, 3).getType();
+        assertEquals(queenLocation, 'q');
+        
+        board.printBoard();
+        board.undoLastMove();
+        board.printBoard();
+        
+        System.out.println("testPawnBlackPromotion passed");
+    }
+}

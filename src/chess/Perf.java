@@ -44,6 +44,7 @@ public class Perf {
 
     public boolean makeTest(String fenString, int expRes, int seachDepth) {
         fen.loadFen(fenString, board);
+        board.printBoard();
         int movesTotal = moveGen.generateAllForDepth(board, seachDepth);
         System.out.println("Number of moves done at depth " + seachDepth + ": " + movesTotal + " == " + expRes);
         return movesTotal == expRes;

@@ -306,9 +306,11 @@ public class MoveGen {
         total = 0;
         ArrayList<Move> moveList = generateAllMoves(board);
         for (Move childMove : moveList) {
+            System.out.println("" + childMove.toString());
 //            total++;
 //            System.out.println("total: "+total);
             board.makeMove(childMove);
+            board.printBoard();
             perf1(depth - 1, board);
             board.undoLastMove();
         }
@@ -323,6 +325,7 @@ public class MoveGen {
         ArrayList<Move> moveList = generateAllMoves(board);
         for (Move childMove : moveList) {
             board.makeMove(childMove);
+            board.printBoard();
             perf1(depth - 1, board);
             board.undoLastMove();
         }
@@ -453,18 +456,19 @@ public class MoveGen {
         } else if (fromPieceName.equals("King")) {
 
 //            boolean isKingInCheck = false;
-            boolean isKingInCheck = !isInCheck(board, moveTomake);
+            boolean isKingAllowedToMove = !isInCheck(board, moveTomake);
+//            System.out.println("isKingAllowedToMove: " + isKingAllowedToMove);
 
             boolean isCastlingQueenSide = moveTomake.isCastleBlackQueen() || moveTomake.isCastleWhiteQueen();
             boolean isCastlingKingSide = moveTomake.isCastleBlackKing() || moveTomake.isCastleWhiteKing();
-            if (isCastlingQueenSide && absRowDiff == 0 && absColDiff == 2 && board.isQueenSideCastlingAllowed(currentPlayer) && isKingInCheck) { // castling 
+            if (isCastlingQueenSide && absRowDiff == 0 && absColDiff == 2 && board.isQueenSideCastlingAllowed(currentPlayer)) { // castling 
                 return true;
-            } else if (isCastlingKingSide && absRowDiff == 0 && absColDiff == 2 && board.isKingSideCastlingAllowed(currentPlayer) && isKingInCheck) { // castling 
+            } else if (isCastlingKingSide && absRowDiff == 0 && absColDiff == 2 && board.isKingSideCastlingAllowed(currentPlayer)) { // castling 
                 return true;
             } else if (absRowDiff > 1 || absColDiff > 1) { // moved to long
                 return false;
             } else { //normal move make sure the pice is not in check
-                return isKingInCheck;
+                return isKingAllowedToMove;
             }
         } else if (fromPieceName.equals("Queen")) {
             if (absRowDiff != absColDiff && rowDiff != 0 && colDiff != 0) {
@@ -607,7 +611,6 @@ public class MoveGen {
         ArrayList<Move> moveList = allMovesExptKing(board);
         for (Move childMove : moveList) {
             if (childMove.compareMoveTo(move)) {
-                System.out.println("Move equal");
                 return true;
             }
         }

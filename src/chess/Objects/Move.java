@@ -204,10 +204,7 @@ public class Move {
     }
 
     public boolean compareMoveTo(Move i) {
-        if (i.gtf() != gtf() || i.gtr() != gtr()) {
-            return false;
-        }
-        return false;
+        return !(i.gtf() != gtf() || i.gtr() != gtr());
     }
 
     public boolean compareMove(Move i) {
