@@ -104,21 +104,21 @@ public class PerfTest {
     public void testPerf12() {
         assertEquals(perf.makeTest("r3k3/1K6/8/8/8/8/8/8 w q - 0 1", 4, 1), true);
     }
+
     @Test
     public void testPerf13() {
         assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", 26, 1), true);
     }
+
     @Test
     public void testPerf14() {
         assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/1R2K2R w Kkq - 0 1", 25, 1), true);
     }
+
     @Test
     public void testPerf15() {
         assertEquals(perf.makeTest("r3k2r/8/8/8/8/8/8/2R1K2R w Kkq - 0 1", 25, 1), true);
     }
-
-    
-    
 //    @Test
 //    public void testPerf3() {
 //        System.out.println("-> testPerf3()");
