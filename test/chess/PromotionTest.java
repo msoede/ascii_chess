@@ -58,11 +58,21 @@ public class PromotionTest {
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         r = moveList.size();
         assertEquals(d, r);
+        System.out.println("Board before promotion move to make: "+moveList.get(0).toString());
+        board.printBoard();
         board.makeMove(moveList.get(0));
+        System.out.println("Board after promotion");
         board.printBoard();
         char queenLocation = board.getPiece(7, 3).getType();
         assertEquals(queenLocation, 'Q');
         System.out.println("testPawnWhitePromotion passed");
+
+        //undo the promotion move
+        board.undoLastMove();
+        board.printBoard();
+        char pawnLocation = board.getPiece(6, 3).getType();
+        assertEquals(pawnLocation, 'p');
+
     }
 
     @Test
@@ -74,16 +84,21 @@ public class PromotionTest {
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         r = moveList.size();
 
+        System.out.println("Board before promotion move to make: "+moveList.get(0).toString());
+        board.printBoard();
         assertEquals(d, r);
         board.makeMove(moveList.get(0));
+        System.out.println("after promotion is done");
         board.printBoard();
         char queenLocation = board.getPiece(0, 3).getType();
         assertEquals(queenLocation, 'q');
-        
-        board.printBoard();
+
+        //undo the promotion move
         board.undoLastMove();
         board.printBoard();
-        
+        char pawnLocation = board.getPiece(1, 3).getType();
+        assertEquals(pawnLocation, 'p');
+
         System.out.println("testPawnBlackPromotion passed");
     }
 }

@@ -53,17 +53,16 @@ public class Main {
                 System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
                 input = main.getInputFromUser();
 
-                if (main.getCommandToDo(input, board)) {
-                    continue;
-                }
-
-                while (moveGen.validateMoveString(input) == false) {
+                while (moveGen.validateMoveString(input) == false && main.getCommandToDo(input, board)) {
                     System.out.println("invalid move(" + input + ") string, enter new move:");
                     input = main.getInputFromUser();
                 }
+                //after her the move string is valid
                 if (moveGen.validateMoveAndDoTheMove(input, board)) {
                     board.switchSide();
+                    System.out.println("Move valid now it is the other player");
                 }
+
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
                 alfaBetaSearch.FindBedstMove(board);

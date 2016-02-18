@@ -113,8 +113,8 @@ public class Piece {
     public Player getPlayer() {
         return player;
     }
-    
-    public boolean getPlayerColor(){
+
+    public boolean getPlayerColor() {
         return player.isColor();
     }
 
@@ -124,5 +124,10 @@ public class Piece {
 
     public String getColorString() {
         return player != null ? player.getName() : "";
+    }
+
+    @Override
+    public String toString() {
+        return "Piece{" + "name=" + name + ", type= " + getType() + ", player=" + player.getName() + '}';
     }
 }

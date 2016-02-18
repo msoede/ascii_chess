@@ -43,6 +43,9 @@ public class Board {
     private boolean castlingBlackQueen;
 
     public Board() {
+        this.castlingBlack = true;
+        this.castlingWhite = true;
+
         //setup players
         playerWhite = new Player(true);
         playerBlack = new Player(false);
@@ -94,19 +97,12 @@ public class Board {
         char kingChar = side ? 'K' : 'k';
         char rookChar = side ? 'R' : 'r';
         Piece pieceKing = getPiece(startRank, 4);
-        Piece pieceRookLeft = getPiece(startRank, 0);
         Piece pieceRookRight = getPiece(startRank, 7);
+        
         boolean king = !(pieceKing == null);
-        boolean rookLeft = !(pieceRookLeft == null);
         boolean rookRigth = !(pieceRookRight == null);
-        boolean piecesOnTheLeft = getPiece(startRank, 1) == null && getPiece(startRank, 2) == null && getPiece(startRank, 3) == null;
         boolean piecesOnTheRight = getPiece(startRank, 6) == null && getPiece(startRank, 5) == null;
 
-        //if (king && rookLeft && piecesOnTheLeft) {
-        //    if (pieceKing.getType() == kingChar && pieceRookLeft.getType() == rookChar) {
-        //        return true;
-        //    }
-        //}
         if (king && rookRigth && piecesOnTheRight) {
             if (pieceKing.getType() == kingChar && pieceRookRight.getType() == rookChar) {
                 return true;
@@ -128,23 +124,15 @@ public class Board {
         char rookChar = side ? 'R' : 'r';
         Piece pieceKing = getPiece(startRank, 4);
         Piece pieceRookLeft = getPiece(startRank, 0);
-        Piece pieceRookRight = getPiece(startRank, 7);
         boolean king = !(pieceKing == null);
         boolean rookLeft = !(pieceRookLeft == null);
-        boolean rookRigth = !(pieceRookRight == null);
         boolean piecesOnTheLeft = getPiece(startRank, 1) == null && getPiece(startRank, 2) == null && getPiece(startRank, 3) == null;
-        boolean piecesOnTheRight = getPiece(startRank, 6) == null && getPiece(startRank, 5) == null;
 
-        if ((king && rookLeft) && piecesOnTheLeft) {
+        if (king && rookLeft && piecesOnTheLeft) {
             if (pieceKing.getType() == kingChar && pieceRookLeft.getType() == rookChar) {
                 return true;
             }
         }
-        //if (king && rookRigth && piecesOnTheRight) {
-        //    if (pieceKing.getType() == kingChar && pieceRookRight.getType() == rookChar) {
-        //        return true;
-        //    }
-        //}
         return false;
     }
 
@@ -252,6 +240,7 @@ public class Board {
     }
 
     private void undoMove(Move m) {
+        switchSide();
         int toRank = m.gtr();
         int fromRank = m.gfr();
         int toFile = m.gtf();
@@ -287,12 +276,11 @@ public class Board {
         if (m.isCaputreMove()) { //capture move
             setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSide));
         } else if (m.isPromoted()) {
-            setPiece(toRank, toFile, new Piece("Queen", playerSide));
-            setPiece(fromRank, fromFile, null);
+            setPiece(toRank, toFile, null);
+            setPiece(fromRank, fromFile, new Piece("Pawn", playerSide));
         } else {
             setPiece(toRank, toFile, null); // non capture move(normal move)
         }
-
         hafMoves--;
     }
 
@@ -302,6 +290,7 @@ public class Board {
      * @return true when move is done
      */
     public boolean makeMove(Move move) {
+        switchSide();
         hafMoves++;
         int fromFile = move.getFromFile();
         int fromRank = move.getFromRank();
@@ -321,8 +310,8 @@ public class Board {
                 setPiece(toRank, toFile, getPiece(fromRank, fromFile));
                 setPiece(fromRank, fromFile, null);
             } else if (move.isPromoted()) { // promotion move
-                setPiece(toRank, toFile, new Piece("Queen", getCurrentPlayer()));
                 setPiece(fromRank, fromFile, null);
+                setPiece(toRank, toFile, new Piece("Queen", getCurrentPlayer()));
             } else if (move.isCastleWhiteKing() && castlingWhite) { //castle white king
                 setPiece(0, 5, getPiece(0, 7));
                 setPiece(0, 7, null);
@@ -347,6 +336,8 @@ public class Board {
                 setPiece(7, 2, getPiece(7, 4));
                 setPiece(7, 4, null);
                 castlingBlack = false;
+            } else {
+                System.out.println("ERROR in board.makeMove() moveinfo: " + move.toString());
             }
             moveHistory.add(move);
             return true;

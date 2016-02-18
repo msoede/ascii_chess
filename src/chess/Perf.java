@@ -26,27 +26,71 @@ import java.util.ArrayList;
 public class Perf {
 
     private boolean debugMode;
-    private Board board;
-    private Fen fen;
-    private MoveGen moveGen;
+    private final Board board;
+    private final Fen fen;
+    private final MoveGen moveGen;
+    private int total = 0;
 
     public Perf(boolean debugMode) {
         this.debugMode = debugMode;
-
         board = new Board();
         fen = new Fen();
         moveGen = new MoveGen();
+    }
+
+    public void setDebugMode(boolean input) {
+        this.debugMode = input;
     }
 
     public void clearBoard() {
         board.clearBoard();
     }
 
+    public int generateAllForDepth(Board board, int depth) {
+        perfTest(depth, board);
+        return total;
+    }
+
+    private void perf1(int depth, Board board) {
+        if (depth <= 0) {
+            total++;
+            return;
+        }
+
+        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+        for (Move childMove : moveList) {
+            board.makeMove(childMove);
+            perf1(depth - 1, board);
+            board.undoLastMove();
+        }
+    }
+
+    private void perfTest(int depth, Board board) {
+        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+        int i = 0;
+        for (Move childMove : moveList) {
+            board.makeMove(childMove);
+            perf1(depth - 1, board);
+            board.undoLastMove();
+            if (debugMode) {
+                System.out.println("move[" + i + "]: " + childMove.toString());
+                i++;
+            }
+        }
+    }
+
     public boolean makeTest(String fenString, int expRes, int seachDepth) {
+        total = 0;
         fen.loadFen(fenString, board);
-        board.printBoard();
-        int movesTotal = moveGen.generateAllForDepth(board, seachDepth);
-        System.out.println("Number of moves done at depth " + seachDepth + ": " + movesTotal + " == " + expRes);
+        int movesTotal = generateAllForDepth(board, seachDepth);
+
+        boolean resualt = movesTotal == expRes;
+        if (!resualt) {
+            board.printBoard();
+            System.out.println("Failed fen:   " + fenString);
+            System.out.println("Failed depth: " + seachDepth);
+            System.out.println("Failed expected: " + expRes + " but was " + movesTotal);
+        }
         return movesTotal == expRes;
     }
 }
