@@ -26,10 +26,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author msoede
- */
 public class AlfaBetaSearchTest {
 
     public AlfaBetaSearchTest() {
@@ -51,28 +47,19 @@ public class AlfaBetaSearchTest {
     public void tearDown() {
     }
 
-    
-
-    /**
-     * Test of max method, of class AlfaBetaSearch.
-     */
     @Test
     public void testMax() {
         System.out.println("max");
-        
-        AlfaBetaSearch instance = new AlfaBetaSearch(new Evaluation());
-        assertEquals(instance.max(5, 3), 5);
-        assertEquals(instance.max(5, 4), 5);
-        assertEquals(instance.max(5, 5), 5);
-        assertEquals(instance.max(5, 6), 6);
-        assertEquals(instance.max(5, 7), 7);
-        assertEquals(instance.max(5, 8), 8);
+        AlfaBetaSearch abs = new AlfaBetaSearch(new Evaluation());
+        assertEquals(abs.max(5, 3), 5);
+        assertEquals(abs.max(5, 4), 5);
+        assertEquals(abs.max(5, 5), 5);
+        assertEquals(abs.max(5, 6), 6);
+        assertEquals(abs.max(5, 7), 7);
+        assertEquals(abs.max(5, 8), 8);
         System.out.println("max done");
     }
 
-    /**
-     * Test of min method, of class AlfaBetaSearch.
-     */
     @Test
     public void testMin() {
         System.out.println("min");

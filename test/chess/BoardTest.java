@@ -29,10 +29,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author msoede
- */
 public class BoardTest {
 
     public BoardTest() {
@@ -54,9 +50,6 @@ public class BoardTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of undoLastMove method, of class Board.
-     */
     @Test
     public void testUndoLastMove() {
         System.out.println("undoLastMove");

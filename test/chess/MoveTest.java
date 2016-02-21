@@ -27,10 +27,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author msoede
- */
 public class MoveTest {
 
     public MoveTest() {
@@ -52,9 +48,6 @@ public class MoveTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of compareMove method, of class Move.
-     */
     @Test
     public void testCompareMove() {
         System.out.println("compareMove");
