@@ -58,9 +58,12 @@ public class PromotionTest {
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         r = moveList.size();
         assertEquals(d, r);
-        System.out.println("Board before promotion move to make: "+moveList.get(0).toString());
+        System.out.println("Board before promotion move to make: " + moveList.get(0).toString());
         board.printBoard();
+        System.out.println("borad.side: " + board.isSide());
         board.makeMove(moveList.get(0));
+        System.out.println("Move to make: " + moveList.get(0).toString());
+        System.out.println("borad.side: " + board.isSide());
         System.out.println("Board after promotion");
         board.printBoard();
         char queenLocation = board.getPiece(7, 3).getType();
@@ -71,7 +74,7 @@ public class PromotionTest {
         board.undoLastMove();
         board.printBoard();
         char pawnLocation = board.getPiece(6, 3).getType();
-        assertEquals(pawnLocation, 'p');
+        assertEquals(pawnLocation, 'P');
 
     }
 
@@ -84,7 +87,7 @@ public class PromotionTest {
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         r = moveList.size();
 
-        System.out.println("Board before promotion move to make: "+moveList.get(0).toString());
+        System.out.println("Board before promotion move to make: " + moveList.get(0).toString());
         board.printBoard();
         assertEquals(d, r);
         board.makeMove(moveList.get(0));

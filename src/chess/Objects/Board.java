@@ -29,7 +29,7 @@ public class Board {
     private final Player playerBlack;
     private final ArrayList<Move> moveHistory = new ArrayList<>();
     private int searchTime = 15; // default value
-    private int searchDepth = 5; // default value
+    private int searchDepth = 10; // default value
     private long startTime;
     private long endTime = 0;
     private boolean gameOver = false;
@@ -98,7 +98,7 @@ public class Board {
         char rookChar = side ? 'R' : 'r';
         Piece pieceKing = getPiece(startRank, 4);
         Piece pieceRookRight = getPiece(startRank, 7);
-        
+
         boolean king = !(pieceKing == null);
         boolean rookRigth = !(pieceRookRight == null);
         boolean piecesOnTheRight = getPiece(startRank, 6) == null && getPiece(startRank, 5) == null;
@@ -240,7 +240,7 @@ public class Board {
     }
 
     private void undoMove(Move m) {
-        switchSide();
+
         int toRank = m.gtr();
         int fromRank = m.gfr();
         int toFile = m.gtf();
@@ -282,6 +282,7 @@ public class Board {
             setPiece(toRank, toFile, null); // non capture move(normal move)
         }
         hafMoves--;
+        switchSide();
     }
 
     /**
@@ -290,7 +291,7 @@ public class Board {
      * @return true when move is done
      */
     public boolean makeMove(Move move) {
-        switchSide();
+
         hafMoves++;
         int fromFile = move.getFromFile();
         int fromRank = move.getFromRank();
@@ -299,11 +300,12 @@ public class Board {
 
         boolean currentPlayer = side;
 
-        if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer && move.isPromoted() == false) { // normal move forward
+        if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer && move.isPromoted() == false) { // capture move
             move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             moveHistory.add(move);
+            switchSide();
             return true;
         } else {
             if (move.isCastling() == false && move.isPromoted() == false) {  // normal move
@@ -336,10 +338,11 @@ public class Board {
                 setPiece(7, 2, getPiece(7, 4));
                 setPiece(7, 4, null);
                 castlingBlack = false;
-            } else {
+            } else {    // error with move
                 System.out.println("ERROR in board.makeMove() moveinfo: " + move.toString());
             }
             moveHistory.add(move);
+            switchSide();
             return true;
         }
     }

@@ -51,6 +51,11 @@ public class Move {
         caputrePiece = input;
     }
 
+    public void clearCaputreMove() {
+        caputreMove = false;
+        caputrePiece = "";
+    }
+
     public boolean isCaputreMove() {
         return caputreMove;
     }
@@ -208,32 +213,26 @@ public class Move {
     }
 
     public boolean compareMove(Move i) {
-        if (i.caputreMove != caputreMove) {
-            return false;
-        }
-        if (i.castleBlackKing != castleBlackKing) {
-            return false;
-        }
-        if (i.castleWhiteKing != castleWhiteKing) {
-            return false;
-        }
-        if (i.castleBlackQueen != castleBlackQueen) {
-            return false;
-        }
-        if (i.castleWhiteQueen != castleWhiteQueen) {
-            return false;
-        }
+        boolean t0 = (i.caputreMove == caputreMove);
+        boolean t1 = (i.castleBlackKing == castleBlackKing);
+        boolean t2 = (i.castleWhiteKing == castleWhiteKing);
+        boolean t3 = (i.castleBlackQueen == castleBlackQueen);
+        boolean t4 = (i.castleWhiteQueen == castleWhiteQueen);
+        boolean t5 = (i.playerColor == playerColor);
+        boolean t6 = (i.promoted == promoted);
+        boolean t7 = (i.gtf() == gtf() || i.gtr() == gtr() || i.gff() == gff() || i.gfr() == gfr());
+//        System.out.println("---------------------------");
+//        System.out.println("t0: " + t0);
+//        System.out.println("t1: " + t1);
+//        System.out.println("t2: " + t2);
+//        System.out.println("t3: " + t3);
+//        System.out.println("t4: " + t4);
+//        System.out.println("t5: " + t5);
+//        System.out.println("t6: " + t6);
+//        System.out.println("t7: " + t7);
+//        System.out.println("retrun: " + (t0 && t1 && t2 && t3 && t4 && t5 && t6 && t7));
+//        System.out.println("---------------------------");
 
-        if (i.playerColor != playerColor) {
-            return false;
-        }
-
-        if (i.promoted != promoted) {
-            return false;
-        }
-        if (i.gtf() != gtf() || i.gtr() != gtr() || i.gff() != gff() || i.gfr() != gfr()) {
-            return false;
-        }
-        return true;
+        return t0 && t1 && t2 && t3 && t4 && t5 && t6 && t7;
     }
 }

@@ -59,7 +59,9 @@ public class Perf {
 
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         for (Move childMove : moveList) {
+            System.out.println("move("+total+","+depth+") " + childMove.toString());
             board.makeMove(childMove);
+            board.printBoard();
             perf1(depth - 1, board);
             board.undoLastMove();
         }
@@ -72,10 +74,10 @@ public class Perf {
             board.makeMove(childMove);
             perf1(depth - 1, board);
             board.undoLastMove();
-            if (debugMode) {
-                System.out.println("move[" + i + "]: " + childMove.toString());
-                i++;
-            }
+//            if (debugMode) {
+//                System.out.println("move[" + i + "]: " + childMove.toString());
+//                i++;
+//            }
         }
     }
 

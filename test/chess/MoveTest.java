@@ -25,27 +25,25 @@ import static org.junit.Assert.*;
  * @author msoede
  */
 public class MoveTest {
-    
+
     public MoveTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
-
-    
 
     /**
      * Test of compareMove method, of class Move.
@@ -59,11 +57,10 @@ public class MoveTest {
         Move move3 = new Move(0, 0, 1, 0, true, true, true, true, true, true);
         Move move4 = new Move(0, 0, 0, 2, false, true, true, true, true, true);
 
-        assertEquals(move1.compareMove(move5), true);
-        assertEquals(move1.compareMove(move2), false);
-        assertEquals(move1.compareMove(move3), false);
-        assertEquals(move1.compareMove(move4), false);
-        assertEquals(move2.compareMove(move2), true);
+        assertEquals(true, move1.compareMove(move5));
+        assertEquals(false, move1.compareMove(move2));
+        assertEquals(false,move1.compareMove(move3));
+        assertEquals(false,move1.compareMove(move4));
+        assertEquals(true,move2.compareMove(move2));
     }
-    
 }
