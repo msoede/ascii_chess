@@ -48,21 +48,20 @@ public class Main {
         String input;
         while (true) {
             board.printBoard();
-
             if (board.isSide() == board.isHumanPlayer()) {
                 System.out.println("Enter to the next move: (" + board.getCurrentPlayer().getName() + ")");
                 input = main.getInputFromUser();
-
-                while (moveGen.validateMoveString(input) == false && main.getCommandToDo(input, board)) {
+                while (main.getCommandToDo(input, board) == false) {
                     System.out.println("invalid move(" + input + ") string, enter new move:");
                     input = main.getInputFromUser();
                 }
-                //after her the move string is valid
-                if (moveGen.validateMoveAndDoTheMove(input, board)) {
-                    board.switchSide();
-                    System.out.println("Move valid now it is the other player");
+                if (main.validateMoveString(input)) { // make sure it move and not a command
+                    //after her the move string is valid
+                    if (moveGen.validateMoveAndDoTheMove(input, board)) {
+                        board.switchSide();
+                        System.out.println("Move valid now it is the other player");
+                    }
                 }
-
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
                 alfaBetaSearch.FindBedstMove(board);
@@ -129,7 +128,61 @@ public class Main {
                 }
                 return true;
             default:
-                break;
+                return validateMoveString(input);
+        }
+    }
+
+    /**
+     *
+     * @param input
+     * @return true if the string is a valid move string return false if the
+     * string is not a valid move string
+     */
+    public boolean validateMoveString(String input) {
+
+        if (input.length() != 4 || input.length() <= 3) {
+            return false; // make sure the lenth is 4 letter long
+        }
+        input = input.toLowerCase();
+
+        char fromRank = input.charAt(0);
+        char fromFile = input.charAt(1);
+        char toRank = input.charAt(2);
+        char toFile = input.charAt(3);
+
+        if (validateRankChar(fromRank) == false || validateRankChar(toRank) == false) {
+            return false; // make sure the from rank is a valid letter
+        }
+
+        if (validateFileChar(fromFile) == false || validateFileChar(toFile) == false) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     * @param input
+     * @return true if the char is an letter from a to h
+     * @return false if the char is NOT an letter from a to h
+     */
+    private boolean validateRankChar(char input) {
+        char[] letter = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        for (int i = 0; i < letter.length; i++) {
+            if (letter[i] == input) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean validateFileChar(char input) {
+        char[] letter = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
+        for (int i = 0; i < letter.length; i++) {
+            if (letter[i] == input) {
+                return true;
+            }
         }
         return false;
     }
