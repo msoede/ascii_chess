@@ -10,6 +10,7 @@
 //         | |____| | | |  __/\__ \__ \         
 //          \_____|_| |_|\___||___/___/   
 //
+
 package chess.Objects;
 
 import chess.Objects.*;
