@@ -214,9 +214,9 @@ public class AlfaBetaSearch {
         board.setStartTime();
 
         System.out.println("Iterative deepening max depth:" + board.getSearchDepth() + " search time: " + board.getSearchTime());
-        System.out.println("+-------+--------------+");
-        System.out.println("| depth |     time     |");
-        System.out.println("+-------+--------------+");
+        System.out.println("+-------+--------------+-------+");
+        System.out.println("| depth |     time     | score |");
+        System.out.println("+-------+--------------+-------+");
         for (currentDepth = 0; currentDepth < maxDepth; currentDepth++) {
             if (board.isGameOver()) {
                 break;
@@ -228,9 +228,9 @@ public class AlfaBetaSearch {
                 System.out.println("Bedst move: " + bestMove.toString());
             }
             double now = (((double) (System.currentTimeMillis() - startTime)) / 1000);
-            System.out.format("| %5d | %8s sec |\n", currentDepth, now);
+            System.out.format("| %5d | %8s sec |  %4d |\n", currentDepth, now,bestScore);
         }
-        System.out.println("+-------+--------------+");
+        System.out.println("+-------+--------------+-------+");
     }
 
     public int max(int a, int b) {
