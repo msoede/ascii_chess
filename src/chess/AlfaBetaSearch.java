@@ -39,6 +39,13 @@ public class AlfaBetaSearch {
 
     public int alphaBetaMax(int alpha, int beta, int depthleft, Board board) {
 
+        if ((nodes % 1024) == 0) {
+            checkForTimeIsUp(board);
+        }
+        if (board.isGameOver()) {
+            return 0;
+        }
+
         if (depthleft == 0) {
             return evaluation.evaluateBoard(board);
         }
@@ -59,6 +66,14 @@ public class AlfaBetaSearch {
     }
 
     public int alphaBetaMin(int alpha, int beta, int depthleft, Board board) {
+
+        if ((nodes % 1024) == 0) {
+            checkForTimeIsUp(board);
+        }
+        if (board.isGameOver()) {
+            return 0;
+        }
+
         if (depthleft == 0) {
             return evaluation.evaluateBoard(board);
         }
@@ -195,31 +210,27 @@ public class AlfaBetaSearch {
         long startTime = System.currentTimeMillis();
         int maxDepth = board.getSearchDepth();
         int currentDepth;
+        board.setGameOver(false);
         board.setStartTime();
 
-        alphaBetaMax(-infinite, infinite, maxDepth, board);
+        System.out.println("Iterative deepening max depth:" + board.getSearchDepth() + " search time: " + board.getSearchTime());
+        System.out.println("+-------+--------------+");
+        System.out.println("| depth |     time     |");
+        System.out.println("+-------+--------------+");
+        for (currentDepth = 0; currentDepth < maxDepth; currentDepth++) {
+            if (board.isGameOver()) {
+                break;
+            }
+            int bestScore = alphaBetaMax(-infinite, infinite, currentDepth, board);
 
-//        for (currentDepth = 0; currentDepth < maxDepth; currentDepth++) {
-//            if (pos.isGameOver()) {
-//                break;
-//            }
-////            int bestScore = aplfaBeta(-infinite, infinite, currentDepth, pos, true);
-//            int bestScore = aplfaBetaTest(-infinite, infinite, currentDepth, pos);
-//
-//            //check for time is up
-//            System.out.println("---------------------------------------------------------");
-//            System.out.println("---------------------------------------------------------");
-//            System.out.println("iterative deepening(" + currentDepth + "):" + bestScore);
-//            System.out.println("---------------------------------------------------------");
-//            System.out.println("---------------------------------------------------------");
-//            if (bestMove != null) {
-//                System.out.println("Bedst move: " + bestMove.toString());
-//            }
-//            double now = (((double) (System.currentTimeMillis() - startTime)) / 1000);
-//            System.out.println("Time: " + now + " sec");
-//            System.out.println("---------------------------------------------------------");
-//            System.out.println("---------------------------------------------------------");
-//        }
+            //check for time is up
+            if (bestMove != null) {
+                System.out.println("Bedst move: " + bestMove.toString());
+            }
+            double now = (((double) (System.currentTimeMillis() - startTime)) / 1000);
+            System.out.format("| %5d | %8s sec |\n", currentDepth, now);
+        }
+        System.out.println("+-------+--------------+");
     }
 
     public int max(int a, int b) {

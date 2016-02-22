@@ -280,7 +280,7 @@ public class Board {
         int fromRank = m.gfr();
         int toFile = m.gtf();
         int fromFile = m.gff();
-        Player playerSide = m.isPlayerColor() ? playerWhite : playerBlack;
+        Player playerSide = !m.isPlayerColor() ? playerWhite : playerBlack;
         setPiece(fromRank, fromFile, getPiece(toRank, toFile));
         if (m.isCastleWhiteKing()) { //castle white king
             setPiece(0, 7, getPiece(0, 5));

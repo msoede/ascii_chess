@@ -1,4 +1,3 @@
-//                                       _      
 //                                      | |     
 //          _ __ ___  ___  ___   ___  __| | ___ 
 //         | '_ ` _ \/ __|/ _ \ / _ \/ _` |/ _ \
@@ -281,7 +280,9 @@ public class MoveGen {
         } else if (fromPieceName.equals("King")) {
             boolean isKingAllowedToMove = true;
             if (otherSide) {
+                board.setPiece(fromRank, fromFile, null); // remove the king from board to remove shadow move
                 isKingAllowedToMove = !isInCheck(board, moveTomake);
+                board.setPiece(fromRank, fromFile, fromPiece); // put the king back on the board
             }
             boolean isCastlingQueenSide = moveTomake.isCastleBlackQueen() || moveTomake.isCastleWhiteQueen();
             boolean isCastlingKingSide = moveTomake.isCastleBlackKing() || moveTomake.isCastleWhiteKing();
