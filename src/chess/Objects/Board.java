@@ -12,6 +12,7 @@
 //
 package chess.Objects;
 
+import chess.Evaluation;
 import chess.Objects.*;
 import java.util.ArrayList;
 
@@ -414,6 +415,8 @@ public class Board {
         String castlingString = "W: " + (castlingWhite ? "1" : "0") + "  B: " + (castlingBlack ? "1" : "0");
         String[][] fill = new String[8][4];
 
+        Evaluation evaluation = new Evaluation();
+        
         fill[7][0] = "+------------------+-------------+";
         fill[7][1] = "| Board infomation |    value    |";
         fill[7][2] = "+------------------+-------------+";
@@ -428,8 +431,8 @@ public class Board {
         fill[5][3] = "| Last Move        | " + String.format("%-11s", lastMoveString) + " |";
         fill[4][0] = "| EnPassant is sat | " + String.format("%-11s", isEnpassantPieceSat()) + " |";
         fill[4][1] = "| EnPassant piece  | " + String.format("%-11s", getEnPassantString()) + " |";
-        fill[4][2] = "+------------------+-------------+";
-        fill[4][3] = "";
+        fill[4][2] = "| Score            | " + String.format("%-11d", evaluation.evaluateBoard(this)) + " |";
+        fill[4][3] = "+------------------+-------------+";
 
         fill[3][0] = "";
         fill[3][1] = "";

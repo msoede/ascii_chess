@@ -58,7 +58,6 @@ public class Main {
                 if (main.validateMoveString(input)) { // make sure it move and not a command
                     //after her the move string is valid
                     if (moveGen.validateMoveAndDoTheMove(input, board)) {
-                        board.switchSide();
                         System.out.println("Move valid now it is the other player");
                     }
                 }

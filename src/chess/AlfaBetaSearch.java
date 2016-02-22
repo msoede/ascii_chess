@@ -37,7 +37,7 @@ public class AlfaBetaSearch {
         this.evaluation = evaluation;
     }
 
-    int alphaBetaMax(int alpha, int beta, int depthleft, Board board) {
+    public int alphaBetaMax(int alpha, int beta, int depthleft, Board board) {
 
         if (depthleft == 0) {
             return evaluation.evaluateBoard(board);
@@ -58,7 +58,7 @@ public class AlfaBetaSearch {
         return alpha;
     }
 
-    int alphaBetaMin(int alpha, int beta, int depthleft, Board board) {
+    public int alphaBetaMin(int alpha, int beta, int depthleft, Board board) {
         if (depthleft == 0) {
             return evaluation.evaluateBoard(board);
         }
