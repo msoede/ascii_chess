@@ -279,12 +279,10 @@ public class MoveGen {
                 return true;
             }
         } else if (fromPieceName.equals("King")) {
-
             boolean isKingAllowedToMove = true;
             if (otherSide) {
                 isKingAllowedToMove = !isInCheck(board, moveTomake);
             }
-
             boolean isCastlingQueenSide = moveTomake.isCastleBlackQueen() || moveTomake.isCastleWhiteQueen();
             boolean isCastlingKingSide = moveTomake.isCastleBlackKing() || moveTomake.isCastleWhiteKing();
             if (isCastlingQueenSide && absRowDiff == 0 && absColDiff == 2 && board.isQueenSideCastlingAllowed(currentPlayer) && isKingAllowedToMove) { // castling 
@@ -361,7 +359,7 @@ public class MoveGen {
         } else if (fromPieceName.equals("Knight")) {
             return absRowDiff * absColDiff == 2;
         } else if (fromPieceName.equals("Bishop")) {
-            if (Math.abs(rowDiff) != Math.abs(colDiff)) {
+            if (absRowDiff != absColDiff) {
                 return false;
             }
             if (rowDiff > 0 && colDiff > 0) {
@@ -489,6 +487,4 @@ public class MoveGen {
         }
         return false;
     }
-
-    
 }

@@ -22,7 +22,6 @@ package chess;
 import chess.Objects.Board;
 import chess.Objects.Fen;
 import chess.Objects.Move;
-import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,26 +60,26 @@ public class CaptureTest {
 
     @Test
     public void testCapureMove() {
-        String fenString = "8/3P2p1/8/8/8/8/8/8 w - - 0 1";
-        int d = 1; //exp resualt
-        int r = 0; // test resualt
+        String fenString = "8/1n4N1/2k5/8/8/5K2/1N4n1/8 w - - 0 1 ";
+        Move attackMove = new Move(2, 5, 1, 6, false, false, false, false, false, false);
+        attackMove.setCaputreMove(board.getPiece(6, 1).getName());
         fen.loadFen(fenString, board);
-        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-        r = moveList.size();
-        assertEquals(d, r);
-        System.out.println("Board before promotion move to make: " + moveList.get(0).toString());
+        System.out.println("before capture move");
         board.printBoard();
-        board.makeMove(moveList.get(0));
-        System.out.println("Board after promotion");
+        assertEquals('K', board.getPiece(2, 5).getType());
+        assertEquals('n', board.getPiece(1, 6).getType());
+        //make capture move
+        board.makeMove(attackMove);
+        System.out.println("after capture move");
         board.printBoard();
-        char queenLocation = board.getPiece(7, 3).getType();
-        assertEquals(queenLocation, 'Q');
-        System.out.println("testPawnWhitePromotion passed");
+        assertEquals(null, board.getPiece(2, 5));
+        assertEquals('K', board.getPiece(1, 6).getType());
 
-        //undo the promotion move
+        //undo the capture move
         board.undoLastMove();
+        System.out.println("undo capture move");
         board.printBoard();
-        char pawnLocation = board.getPiece(6, 3).getType();
-        assertEquals(pawnLocation, 'p');
+        assertEquals('K', board.getPiece(2, 5).getType());
+        assertEquals('n', board.getPiece(1, 6).getType());
     }
 }

@@ -10,7 +10,6 @@
 //         | |____| | | |  __/\__ \__ \         
 //          \_____|_| |_|\___||___/___/   
 //
-
 package chess.Objects;
 
 import chess.Objects.*;
@@ -42,8 +41,13 @@ public class Board {
     private boolean castlingWhiteQueen;
     private boolean castlingBlackKing;
     private boolean castlingBlackQueen;
+    private int[] enPassantPiece;
 
     public Board() {
+        this.enPassantPiece = new int[2];  // enPassantPiece[0] = rank      enPassantPiece[1] = file
+        this.enPassantPiece[0] = -1;  // off board value
+        this.enPassantPiece[1] = -1;  // off board value
+
         this.castlingBlack = true;
         this.castlingWhite = true;
 
@@ -59,6 +63,35 @@ public class Board {
             for (int j = 0; j < 8; j++) {
                 board[i][j] = null;
             }
+        }
+    }
+
+    public void setEnpassantPiece(int rank, int file) {
+        this.enPassantPiece[0] = rank;
+        this.enPassantPiece[1] = file;
+    }
+
+    public void clearEnpassantPiece() {
+        this.enPassantPiece[0] = -1;  // off board value
+        this.enPassantPiece[1] = -1;  // off board value
+    }
+
+    /**
+     *
+     * @return true if enpassant piece is sat, false if enpassant piece NOT is
+     * sat
+     */
+    public boolean isEnpassantPieceSat() {
+        return !(this.enPassantPiece[0] == -1 && this.enPassantPiece[1] == -1);
+    }
+
+    public String getEnPassantString() {
+        if (isEnpassantPieceSat()) {
+            char[] file = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
+            char[] rank = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+            return rank[enPassantPiece[0]] + "" + file[enPassantPiece[1]];
+        } else {
+            return "none";
         }
     }
 
@@ -393,9 +426,9 @@ public class Board {
         fill[5][1] = "| Haf moves        | " + String.format("%-11d", getHafMoves()) + " |";
         fill[5][2] = "| Full moves       | " + String.format("%-11d", (getHafMoves() / 2)) + " |";
         fill[5][3] = "| Last Move        | " + String.format("%-11s", lastMoveString) + " |";
-        fill[4][0] = "+------------------+-------------+";
-        fill[4][1] = "";
-        fill[4][2] = "";
+        fill[4][0] = "| EnPassant is sat | " + String.format("%-11s", isEnpassantPieceSat()) + " |";
+        fill[4][1] = "| EnPassant piece  | " + String.format("%-11s", getEnPassantString()) + " |";
+        fill[4][2] = "+------------------+-------------+";
         fill[4][3] = "";
 
         fill[3][0] = "";
