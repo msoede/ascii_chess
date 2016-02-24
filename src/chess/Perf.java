@@ -94,6 +94,12 @@ public class Perf {
             System.out.println("Failed depth: " + seachDepth);
             System.out.println("Failed expected: " + expRes + " but was " + movesTotal);
         }
+        else{
+            System.out.println("Passed fen:   " + fenString);
+            System.out.println("Passed depth: " + seachDepth);
+            System.out.println("Passed expected: " + expRes + " but was " + movesTotal);
+            
+        }
         return movesTotal == expRes;
     }
 }

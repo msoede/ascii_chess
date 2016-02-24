@@ -64,7 +64,6 @@ public class Main {
                 System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
                 alfaBetaSearch.FindBedstMove(board);
-                board.switchSide();
             }
         }
     }

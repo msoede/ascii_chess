@@ -24,13 +24,6 @@ import java.util.ArrayList;
  */
 public class MoveGen {
 
-    //piece values:
-    private final int pawnValue = 100;
-    private final int knightValue = 350;
-    private final int bishopValue = 350;
-    private final int rookValue = 525;
-    private final int queenValue = 1000;
-    private final int kingValue = 50000;
 
     public ArrayList<Move> generateAllMovesOppositeSide(Board board) {
         board.switchSide();

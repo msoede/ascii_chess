@@ -191,6 +191,13 @@ public class Evaluation {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
+    //piece values:
+    private final int pawnValue = 100;
+    private final int knightValue = 350;
+    private final int bishopValue = 350;
+    private final int rookValue = 525;
+    private final int queenValue = 1000;
+    private final int kingValue = 50000;
 
     /**
      * gives the board position score
@@ -199,6 +206,22 @@ public class Evaluation {
      * @return
      */
     public int evaluateBoard(Board board) {
+
+        int wp = 0;
+        int bp = 0;
+        int wr = 0;
+        int br = 0;
+        int wb = 0;
+        int bb = 0;
+        int wn = 0;
+        int bn = 0;
+        int wq = 0;
+        int bq = 0;
+        int wk = 0;
+        int bk = 0;
+
+        int materialScore = 0;
+
         int score = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -212,21 +235,51 @@ public class Evaluation {
                 switch (pieceName) {
                     case "Pawn":
                         tempScore = pawnScore[i][j];
+                        if (pieceColor) {
+                            wp++;
+                        } else {
+                            bp++;
+                        }
                         break;
                     case "Queen":
                         tempScore = queenScore[i][j];
+                        if (pieceColor) {
+                            wq++;
+                        } else {
+                            bq++;
+                        }
                         break;
                     case "King":
                         tempScore = kingScore[i][j];
+                        if (pieceColor) {
+                            wk++;
+                        } else {
+                            bk++;
+                        }
                         break;
                     case "Bishop":
                         tempScore = bishopScore[i][j];
+                        if (pieceColor) {
+                            wb++;
+                        } else {
+                            bb++;
+                        }
                         break;
                     case "Knight":
                         tempScore = knightScore[i][j];
+                        if (pieceColor) {
+                            wn++;
+                        } else {
+                            bn++;
+                        }
                         break;
                     case "Rook":
                         tempScore = rookScore[i][j];
+                        if (pieceColor) {
+                            wr++;
+                        } else {
+                            br++;
+                        }
                         break;
                 }
                 //score += pieceColor ? tempScore : -tempScore;
@@ -234,6 +287,14 @@ public class Evaluation {
                 //System.out.println("Score(" + i + "," + j + ") piece: " + pieceName + "\t    color: " + pieceColor + " \tscore:" + tempScore + " total score: " + score);
             }
         }
-        return score;
+        int whoToMove = board.isSide() ? 1 : -1;
+
+        materialScore = kingValue * (wk - bk)
+                + queenValue * (wq - bq)
+                + rookValue * (wr - br)
+                + knightValue * (wn - bn)
+                + bishopValue * (wb - bb)
+                + pawnValue * (wp - bp);
+        return (materialScore) * whoToMove;
     }
 }
