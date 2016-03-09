@@ -85,7 +85,6 @@ public class PromotionTest {
         board.printBoard();
         char pawnLocation = board.getPiece(6, 3).getType();
         assertEquals(pawnLocation, 'P');
-
     }
 
     @Test
@@ -111,7 +110,6 @@ public class PromotionTest {
         board.printBoard();
         char pawnLocation = board.getPiece(1, 3).getType();
         assertEquals(pawnLocation, 'p');
-
         System.out.println("testPawnBlackPromotion passed");
     }
 }

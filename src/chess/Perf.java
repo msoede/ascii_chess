@@ -73,6 +73,7 @@ public class Perf {
         for (Move childMove : moveList) {
 //            System.out.println(total + " : " + childMove.toString());
             board.makeMove(childMove);
+//            board.printBoard();
             perf1(depth - 1, board);
             board.undoLastMove();
 //            if (debugMode) {
@@ -93,12 +94,11 @@ public class Perf {
             System.out.println("Failed fen:   " + fenString);
             System.out.println("Failed depth: " + seachDepth);
             System.out.println("Failed expected: " + expRes + " but was " + movesTotal);
-        }
-        else{
+        } else {
             System.out.println("Passed fen:   " + fenString);
             System.out.println("Passed depth: " + seachDepth);
             System.out.println("Passed expected: " + expRes + " but was " + movesTotal);
-            
+
         }
         return movesTotal == expRes;
     }

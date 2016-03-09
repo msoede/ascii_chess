@@ -69,6 +69,7 @@ public class MoveGen {
                         validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false, playerColor), true); //doobelt move forward
                         validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false, playerColor), true); //attack move forward
                         validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, playerColor), true); //attach move forward
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, playerColor), true); //attach move forward
                     } else if (p.getType() == 'N' || p.getType() == 'n') {
                         validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false, playerColor), true);
                         validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 2, false, false, false, false, false, false, playerColor), true);
@@ -177,6 +178,14 @@ public class MoveGen {
                         }
 
                     }
+                    //check every piece for enpassant attack
+                    if (board.isEnpassantPieceSat() && board.isEnPassantColor() != playerColor) {
+                        //System.out.println("En passant string: " + board.getEnPassantString() + " rank: " + board.getEnPassRank() + " file. " + board.getEnPassFile());
+                        boolean temp = validateMoveAndToMoveList(board, moveList, new Move(rank, file, board.getEnPassRank(), board.getEnPassFile(), false, true, false, false, false, false, playerColor), doTheKing);
+                        if (temp) {
+                            System.out.println("tmp: " + temp);
+                        }
+                    }
                 }
             }
         }
@@ -243,8 +252,8 @@ public class MoveGen {
                 return false;
             } else if (fromRank == 1 && rowDiff == -2 && board.getPiece(fromRank + 1, fromFile) != null) {
                 return false;
-            } else if (fromRank == 1 && rowDiff == -2) { //doble move forward
-                board.setEnpassantPiece(toRank, toFile - 1);
+            } else if (fromRank == 1 && toRank == 3 && colDiff == 0) { //doble move forward
+                board.setEnpassantPiece(2, toFile, true);
                 return true;
             } else {
                 return true;
@@ -269,8 +278,8 @@ public class MoveGen {
                 return false;
             } else if (fromRank == 6 && rowDiff == 2 && board.getPiece(fromRank - 1, fromFile) != null) {
                 return false;
-            } else if (fromRank == 6 && rowDiff == 2) { //doble move forward
-                board.setEnpassantPiece(toRank, toFile + 1);
+            } else if (fromRank == 6 && toFile == 4 && colDiff == 0) { //doble move forward
+                board.setEnpassantPiece(5, toFile, false);
                 return true;
             } else {
                 return true;

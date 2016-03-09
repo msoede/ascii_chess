@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @date
  */
 public class Board {
-    
+
     private final Piece board[][];
     private boolean side;
     private final Player playerWhite;
@@ -44,7 +44,8 @@ public class Board {
     private boolean castlingBlackKing;
     private boolean castlingBlackQueen;
     private int[] enPassantPiece;
-    
+    private boolean enPassantColor;
+
     public Board() {
         this.enPassantPiece = new int[2];  // enPassantPiece[0] = rank      enPassantPiece[1] = file
         this.enPassantPiece[0] = -1;  // off board value
@@ -67,15 +68,28 @@ public class Board {
             }
         }
     }
-    
-    public void setEnpassantPiece(int rank, int file) {
+
+    public void setEnpassantPiece(int rank, int file, boolean color) {
         this.enPassantPiece[0] = rank;
         this.enPassantPiece[1] = file;
+        this.enPassantColor = color;
     }
-    
+
+    public boolean isEnPassantColor() {
+        return enPassantColor;
+    }
+
     public void clearEnpassantPiece() {
         this.enPassantPiece[0] = -1;  // off board value
         this.enPassantPiece[1] = -1;  // off board value
+    }
+
+    public int getEnPassRank() {
+        return this.enPassantPiece[0];
+    }
+
+    public int getEnPassFile() {
+        return this.enPassantPiece[1];
     }
 
     /**
@@ -86,7 +100,7 @@ public class Board {
     public boolean isEnpassantPieceSat() {
         return !(this.enPassantPiece[0] == -1 && this.enPassantPiece[1] == -1);
     }
-    
+
     public String getEnPassantString() {
         if (isEnpassantPieceSat()) {
             char[] file = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
@@ -127,22 +141,22 @@ public class Board {
         this.startTime = (System.currentTimeMillis());
         this.endTime = (System.currentTimeMillis() + (searchTime * 1000));
     }
-    
+
     public long getStartTime() {
         return startTime;
     }
-    
+
     public boolean isKingSideCastlingAllowed(boolean side) {
         int startRank = side ? 0 : 7;
         char kingChar = side ? 'K' : 'k';
         char rookChar = side ? 'R' : 'r';
         Piece pieceKing = getPiece(startRank, 4);
         Piece pieceRookRight = getPiece(startRank, 7);
-        
+
         boolean king = !(pieceKing == null);
         boolean rookRigth = !(pieceRookRight == null);
         boolean piecesOnTheRight = getPiece(startRank, 6) == null && getPiece(startRank, 5) == null;
-        
+
         if (king && rookRigth && piecesOnTheRight) {
             if (pieceKing.getType() == kingChar && pieceRookRight.getType() == rookChar) {
                 return true;
@@ -167,7 +181,7 @@ public class Board {
         boolean king = !(pieceKing == null);
         boolean rookLeft = !(pieceRookLeft == null);
         boolean piecesOnTheLeft = getPiece(startRank, 1) == null && getPiece(startRank, 2) == null && getPiece(startRank, 3) == null;
-        
+
         if (king && rookLeft && piecesOnTheLeft) {
             if (pieceKing.getType() == kingChar && pieceRookLeft.getType() == rookChar) {
                 return true;
@@ -175,107 +189,107 @@ public class Board {
         }
         return false;
     }
-    
+
     public void setCastlingWhite(boolean castlingWhite) {
         this.castlingWhite = castlingWhite;
     }
-    
+
     public void setCastlingBlack(boolean castlingBlack) {
         this.castlingBlack = castlingBlack;
     }
-    
+
     public boolean isCastlingWhite() {
         return castlingWhite;
     }
-    
+
     public boolean isCastlingBlack() {
         return castlingBlack;
     }
-    
+
     public boolean isTimeOver() {
         return timeOver;
     }
-    
+
     public void setTimeOver(boolean timeOver) {
         this.timeOver = timeOver;
     }
-    
+
     public boolean isGameOver() {
         return isGameOver;
     }
-    
+
     public void setGameOver(boolean gameOver) {
         this.isGameOver = gameOver;
     }
-    
+
     public long getEndTime() {
         return endTime;
     }
-    
+
     public boolean isHumanPlayer() {
         return humanPlayer;
     }
-    
+
     public void setHumanPlayer(String humanPlayerSide) {
         this.humanPlayer = humanPlayerSide.equals("white");
     }
-    
+
     public boolean isSide() {
         return side;
     }
-    
+
     public void setSide(boolean side) {
         this.side = side;
     }
-    
+
     public int getSearchTime() {
         return searchTime;
     }
-    
+
     public void setSearchTime(int searchTime) {
         this.searchTime = searchTime;
     }
-    
+
     public int getSearchDepth() {
         return searchDepth;
     }
-    
+
     public void setSearchDepth(int searchDepth) {
         this.searchDepth = searchDepth;
     }
-    
+
     public void switchSide() {
         side = !side;
     }
-    
+
     public boolean getSide() {
         return side;
     }
-    
+
     public Player getPlayerWhite() {
         return playerWhite;
     }
-    
+
     public Player getPlayerBlack() {
         return playerBlack;
     }
-    
+
     public Piece getPiece(int rank, int file) {
         return board[rank][file];
     }
-    
+
     public void setPiece(int rank, int file, Piece piece) {
         board[rank][file] = piece;
     }
-    
+
     public int getHafMoves() {
         return hafMoves;
     }
-    
+
     public Player getCurrentPlayer() {
         return side ? playerWhite : playerBlack;
     }
-    
+
     public void undoLastMove() {
         int size = moveHistory.size();
         if (size > 0) {
@@ -286,14 +300,14 @@ public class Board {
             System.out.println("unable to undo last move: history is empty");
         }
     }
-    
+
     private void undoMove(Move m) {
-        
+
         int toRank = m.gtr();
         int fromRank = m.gfr();
         int toFile = m.gtf();
         int fromFile = m.gff();
-        Player playerSide = !m.isPlayerColor() ? playerWhite : playerBlack;
+        Player playerSide = m.isPlayerColor() ? playerWhite : playerBlack;
         setPiece(fromRank, fromFile, getPiece(toRank, toFile));
         if (m.isCastleWhiteKing()) { //castle white king
             setPiece(0, 7, getPiece(0, 5));
@@ -323,11 +337,11 @@ public class Board {
             int enPassRank = (!m.isPlayerColor()) ? toRank - 1 : toRank + 1;
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
-            setPiece(enPassRank, fromFile, new Piece("Pawn", playerSide));
-            this.setEnpassantPiece(fromRank, toFile);
+            setPiece(fromRank, fromFile, new Piece("Pawn", playerSide));
+            this.setEnpassantPiece(fromRank, toFile, !m.isPlayerColor());
             System.out.println("enPassant undo ");
         }
-        
+
         if (m.isCaputreMove()) { //capture move
             setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSide));
         } else if (m.isPromoted()) {
@@ -346,15 +360,15 @@ public class Board {
      * @return true when move is done
      */
     public boolean makeMove(Move move) {
-        
+
         hafMoves++;
         int fromFile = move.getFromFile();
         int fromRank = move.getFromRank();
         int toFile = move.getToFile();
         int toRank = move.getToRank();
-        
+
         boolean currentPlayer = side;
-        
+
         if (getPiece(toRank, toFile) != null && getPiece(toRank, toFile).getPlayer().isColor() != currentPlayer && move.isPromoted() == false) { // capture move
             move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
@@ -408,7 +422,7 @@ public class Board {
             return true;
         }
     }
-    
+
     public String getMOveHistoryString() {
         String output = "";
         for (int i = 0; i < moveHistory.size(); i++) {
@@ -431,19 +445,19 @@ public class Board {
                 }
             }
         }
-        
+
         int size = moveHistory.size();
         String lastMoveString = "";
         if (size > 0) {
             Move lastMove = moveHistory.get(size - 1);
             lastMoveString = lastMove.getMoveString();
         }
-        
+
         String castlingString = "W: " + (castlingWhite ? "1" : "0") + "  B: " + (castlingBlack ? "1" : "0");
         String[][] fill = new String[8][4];
-        
+
         Evaluation evaluation = new Evaluation();
-        
+
         fill[7][0] = "+------------------+-------------+";
         fill[7][1] = "| Board infomation |    value    |";
         fill[7][2] = "+------------------+-------------+";
@@ -460,7 +474,7 @@ public class Board {
         fill[4][1] = "| EnPassant piece  | " + String.format("%-11s", getEnPassantString()) + " |";
         fill[4][2] = "| Score            | " + String.format("%-11d", evaluation.evaluateBoard(this)) + " |";
         fill[4][3] = "+------------------+-------------+";
-        
+
         fill[3][0] = "";
         fill[3][1] = "";
         fill[3][2] = "";
@@ -477,7 +491,7 @@ public class Board {
         fill[0][1] = "| Queen  | Q     | q     |";
         fill[0][2] = "| King   | K     | k     |";
         fill[0][3] = "+--------+-------+-------+";
-        
+
         System.out.println("");
         System.out.println("      A     B     C     D     E     F     G     H   ");
         for (int i = 7; i >= 0; i--) {
@@ -488,6 +502,6 @@ public class Board {
         }
         System.out.println("   #################################################");
         System.out.println("      A     B     C     D     E     F     G     H   ");
-        
+
     }
 }
