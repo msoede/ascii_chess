@@ -32,8 +32,9 @@ public class Move {
     private final boolean playerColor;
     private boolean caputreMove;
     private String caputrePiece;
+    private boolean enPassantMove;
 
-    public Move(int fromRank, int fromFile, int toRank, int toFile, boolean promoted, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean playerColor) {
+    public Move(int fromRank, int fromFile, int toRank, int toFile, boolean promoted, boolean enPassant, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean playerColor) {
         this.fromRank = fromRank;
         this.toRank = toRank;
         this.fromFile = fromFile;
@@ -44,6 +45,15 @@ public class Move {
         this.castleWhiteQueen = castleWhiteQueen;
         this.castleBlackQueen = castleBlackQueen;
         this.playerColor = playerColor;
+        this.enPassantMove = enPassant;
+    }
+
+    public boolean isEnPassantMove() {
+        return enPassantMove;
+    }
+
+    public void setEnPassantMove(boolean enPassantMove) {
+        this.enPassantMove = enPassantMove;
     }
 
     public void setCaputreMove(String input) {

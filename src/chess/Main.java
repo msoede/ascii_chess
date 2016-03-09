@@ -61,7 +61,6 @@ public class Main {
                         System.out.println("Move valid now it is the other player");
                     }
                 }
-                System.out.println("Evo: " + evaluation.evaluateBoard(board));
             } else { // computer move
                 alfaBetaSearch.FindBedstMove(board);
             }

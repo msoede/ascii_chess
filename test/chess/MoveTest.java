@@ -51,16 +51,16 @@ public class MoveTest {
     @Test
     public void testCompareMove() {
         System.out.println("compareMove");
-        Move move1 = new Move(1, 1, 0, 0, true, true, true, true, true, false);
-        Move move5 = new Move(1, 1, 0, 0, true, true, true, true, true, false);
-        Move move2 = new Move(1, 1, 0, 0, true, true, true, true, true, true);
-        Move move3 = new Move(0, 0, 1, 0, true, true, true, true, true, true);
-        Move move4 = new Move(0, 0, 0, 2, false, true, true, true, true, true);
+        Move move1 = new Move(1, 1, 0, 0, true, false, true, true, true, true, false);
+        Move move5 = new Move(1, 1, 0, 0, true, false, true, true, true, true, false);
+        Move move2 = new Move(1, 1, 0, 0, true, false, true, true, true, true, true);
+        Move move3 = new Move(0, 0, 1, 0, true, false, true, true, true, true, true);
+        Move move4 = new Move(0, 0, 0, 2, false, false, true, true, true, true, true);
 
         assertEquals(true, move1.compareMove(move5));
         assertEquals(false, move1.compareMove(move2));
-        assertEquals(false,move1.compareMove(move3));
-        assertEquals(false,move1.compareMove(move4));
-        assertEquals(true,move2.compareMove(move2));
+        assertEquals(false, move1.compareMove(move3));
+        assertEquals(false, move1.compareMove(move4));
+        assertEquals(true, move2.compareMove(move2));
     }
 }

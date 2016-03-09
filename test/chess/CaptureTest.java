@@ -61,7 +61,7 @@ public class CaptureTest {
     @Test
     public void testCapureMove() {
         String fenString = "8/1n4N1/2k5/8/8/5K2/1N4n1/8 w - - 0 1 ";
-        Move attackMove = new Move(2, 5, 1, 6, false, false, false, false, false, false);
+        Move attackMove = new Move(2, 5, 1, 6, false, false, false, false, false, false, false);
         attackMove.setCaputreMove(board.getPiece(6, 1).getName());
         fen.loadFen(fenString, board);
         System.out.println("before capture move");

@@ -20,7 +20,6 @@ package chess.Objects;
  */
 public class Fen {
 
-    
     /**
      * e.g. rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
      *
@@ -110,7 +109,7 @@ public class Fen {
         //castling???
         castling = "-";
         //enpassant
-        enPassant = "-";
+        enPassant = board.getEnPassantString();
 
         hafMoves = "" + board.getHafMoves();
         fullMoves = "" + (board.getHafMoves() * 2);
