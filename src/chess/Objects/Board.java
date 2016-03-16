@@ -336,12 +336,11 @@ public class Board {
             setPiece(7, 2, null);
             castlingBlack = true;
         } else if (m.isEnPassantMove()) {
+            int oldPawnRank = side ? toRank + 1 : toRank - 1;
             setPiece(fromRank, fromFile, getPiece(toRank, toFile));
-            int enPassRank = (!m.isPlayerColor()) ? toRank - 1 : toRank + 1;
-            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
-            setPiece(fromRank, fromFile, null);
-            setPiece(fromRank, fromFile, new Piece("Pawn", playerSide));
-            this.setEnpassantPiece(fromRank, toFile, !m.isPlayerColor());
+            setPiece(toRank, toFile, null);
+            setPiece(oldPawnRank, toFile, new Piece("Pawn", side ? playerWhite : playerBlack));
+            //this.setEnpassantPiece(fromRank, toFile, !m.isPlayerColor());
         } else if (m.isCaputreMove()) { //capture move
             setPiece(fromRank, fromFile, getPiece(toRank, toFile));
             setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSideOpponent));
@@ -378,17 +377,20 @@ public class Board {
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
         } else if (move.isDoublePawnMove()) {
+            System.out.println("move.isDoublePawnMove() == true");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
-            int enPassantFile = side ? toFile : -toFile;
-            System.out.println("set enPassant file: " + enPassantFile);
-            setEnpassantPiece(toRank, enPassantFile, side);
+            int toRankEnPassant = side ? toRank - 1 : toRank + 1;
+            setEnpassantPiece(toFile, toRankEnPassant, side);
         } else if (move.isEnPassantMove()) { //enPassant attack move
             System.out.println("Make move: enPassant move");
             int enPassRank = currentPlayer ? toRank - 1 : toRank + 1;
+            System.out.println("(" + toRank + "," + toFile + ") = " + getPiece(fromRank, fromFile).toString());
+            System.out.println("(" + fromRank + "," + fromFile + ") = null");
+            System.out.println("(" + enPassRank + "," + toFile + ") = null");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
-            setPiece(enPassRank, fromFile, null); //remove attacked pawn
+            setPiece(enPassRank, toFile, null); //remove attacked pawn
             //setEnpassantPiece(toRank, toFile, side);
         } else if (move.isCastling() == false && move.isPromoted() == false) {  // normal move
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
