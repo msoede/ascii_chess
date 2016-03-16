@@ -179,13 +179,13 @@ public class MoveGen {
 
                     }
                     //check every piece for enpassant attack
-                    if (board.isEnpassantPieceSat() && board.isEnPassantColor() != playerColor) {
-                        //System.out.println("En passant string: " + board.getEnPassantString() + " rank: " + board.getEnPassRank() + " file. " + board.getEnPassFile());
-                        boolean temp = validateMoveAndToMoveList(board, moveList, new Move(rank, file, board.getEnPassRank(), board.getEnPassFile(), false, true, false, false, false, false, playerColor), doTheKing);
-                        if (temp) {
-                            System.out.println("tmp: " + temp);
-                        }
-                    }
+//                    if (board.isEnpassantPieceSat() && board.isEnPassantColor() != playerColor) {
+//                        //System.out.println("En passant string: " + board.getEnPassantString() + " rank: " + board.getEnPassRank() + " file. " + board.getEnPassFile());
+//                        boolean temp = validateMoveAndToMoveList(board, moveList, new Move(rank, file, board.getEnPassRank(), board.getEnPassFile(), false, true, false, false, false, false, playerColor), doTheKing);
+//                        if (temp) {
+//                            System.out.println("tmp: " + temp);
+//                        }
+//                    }
                 }
             }
         }

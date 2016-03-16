@@ -128,6 +128,6 @@ public class Piece {
 
     @Override
     public String toString() {
-        return "Piece{" + "name=" + name + ", type= " + getType() + ", player=" + player.getName() + '}';
+        return "Piece{" + "name=\"" + name + "\", type= \'" + getType() + "\', player=\"" + player.getName() + "\"}";
     }
 }

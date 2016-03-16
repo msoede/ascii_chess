@@ -38,8 +38,4 @@ public class EnPassantTest {
     public void tearDown() {
     }
     
-    
-
-   
-    
 }

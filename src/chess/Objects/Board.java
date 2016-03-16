@@ -308,48 +308,51 @@ public class Board {
         int toFile = m.gtf();
         int fromFile = m.gff();
         Player playerSide = m.isPlayerColor() ? playerWhite : playerBlack;
-        setPiece(fromRank, fromFile, getPiece(toRank, toFile));
+        Player playerSideOpponent = m.isPlayerColor() ? playerBlack : playerWhite;
+
         if (m.isCastleWhiteKing()) { //castle white king
             setPiece(0, 7, getPiece(0, 5));
-            setPiece(0, 5, null);
             setPiece(0, 4, getPiece(0, 6));
+            setPiece(0, 5, null);
             setPiece(0, 6, null);
             castlingWhite = true;
         } else if (m.isCastleWhiteQueen()) {//castle white queen
             setPiece(0, 0, getPiece(0, 3));
-            setPiece(0, 3, null);
             setPiece(0, 4, getPiece(0, 2));
+            setPiece(0, 3, null);
             setPiece(0, 2, null);
             castlingWhite = true;
         } else if (m.isCastleBlackKing()) { //castle black king
             setPiece(7, 7, getPiece(7, 5));
-            setPiece(7, 5, null);
             setPiece(7, 4, getPiece(7, 6));
+            setPiece(7, 5, null);
             setPiece(7, 6, null);
             castlingBlack = true;
         } else if (m.isCastleBlackQueen()) { //castle black queen
+            System.out.println("isCastleBlackQueen" + getPiece(7, 2).toString());
+            setPiece(7, 4, getPiece(7, 2));
             setPiece(7, 0, getPiece(7, 3));
             setPiece(7, 3, null);
-            setPiece(7, 4, getPiece(7, 2));
             setPiece(7, 2, null);
             castlingBlack = true;
         } else if (m.isEnPassantMove()) {
+            setPiece(fromRank, fromFile, getPiece(toRank, toFile));
             int enPassRank = (!m.isPlayerColor()) ? toRank - 1 : toRank + 1;
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             setPiece(fromRank, fromFile, new Piece("Pawn", playerSide));
             this.setEnpassantPiece(fromRank, toFile, !m.isPlayerColor());
-            System.out.println("enPassant undo ");
-        }
-
-        if (m.isCaputreMove()) { //capture move
-            setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSide));
+        } else if (m.isCaputreMove()) { //capture move
+            setPiece(fromRank, fromFile, getPiece(toRank, toFile));
+            setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSideOpponent));
         } else if (m.isPromoted()) {
             setPiece(toRank, toFile, null);
             setPiece(fromRank, fromFile, new Piece("Pawn", playerSide));
         } else {
+            setPiece(fromRank, fromFile, getPiece(toRank, toFile));
             setPiece(toRank, toFile, null); // non capture move(normal move)
         }
+
         hafMoves--;
         switchSide();
     }
@@ -373,54 +376,49 @@ public class Board {
             move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
-            moveHistory.add(move);
-            switchSide();
-            return true;
-        } else {
-            if (move.isCastling() == false && move.isPromoted() == false) {  // normal move
-                setPiece(toRank, toFile, getPiece(fromRank, fromFile));
-                setPiece(fromRank, fromFile, null);
-            } else if (move.isPromoted()) { // promotion move
-                setPiece(fromRank, fromFile, null);
-                setPiece(toRank, toFile, new Piece("Queen", getCurrentPlayer()));
-            } else if (move.isCastleWhiteKing() && castlingWhite) { //castle white king
-                setPiece(0, 5, getPiece(0, 7));
-                setPiece(0, 7, null);
-                setPiece(0, 6, getPiece(0, 4));
-                setPiece(0, 4, null);
-                castlingWhite = false;
-            } else if (move.isCastleWhiteQueen() && castlingWhite) {//castle white queen
-                setPiece(0, 3, getPiece(0, 0));
-                setPiece(0, 0, null);
-                setPiece(0, 2, getPiece(0, 4));
-                setPiece(0, 4, null);
-                castlingWhite = false;
-            } else if (move.isCastleBlackKing() && castlingBlack) { //castle black king
-                setPiece(7, 5, getPiece(7, 7));
-                setPiece(7, 7, null);
-                setPiece(7, 6, getPiece(7, 4));
-                setPiece(7, 4, null);
-                castlingBlack = false;
-            } else if (move.isCastleBlackQueen() && castlingBlack) { //castle black queen
-                setPiece(7, 3, getPiece(7, 0));
-                setPiece(7, 0, null);
-                setPiece(7, 2, getPiece(7, 4));
-                setPiece(7, 4, null);
-                castlingBlack = false;
-            } else if (move.isEnPassantMove()) { //enPassant
-                System.out.println("Make move: enPassant move");
-                int enPassRank = currentPlayer ? toRank - 1 : toRank + 1;
-                setPiece(toRank, toFile, getPiece(fromRank, fromFile));
-                setPiece(fromRank, fromFile, null);
-                setPiece(enPassRank, fromFile, null); //remove attacked pawn
-                clearEnpassantPiece();
-            } else {    // error with move
-                System.out.println("ERROR in board.makeMove() moveinfo: " + move.toString());
-            }
-            moveHistory.add(move);
-            switchSide();
-            return true;
+        } else if (move.isCastling() == false && move.isPromoted() == false) {  // normal move
+            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+            setPiece(fromRank, fromFile, null);
+        } else if (move.isPromoted()) { // promotion move
+            setPiece(fromRank, fromFile, null);
+            setPiece(toRank, toFile, new Piece("Queen", getCurrentPlayer()));
+        } else if (move.isCastleWhiteKing() && castlingWhite) { //castle white king
+            setPiece(0, 5, getPiece(0, 7));
+            setPiece(0, 7, null);
+            setPiece(0, 6, getPiece(0, 4));
+            setPiece(0, 4, null);
+            castlingWhite = false;
+        } else if (move.isCastleWhiteQueen() && castlingWhite) {//castle white queen
+            setPiece(0, 3, getPiece(0, 0));
+            setPiece(0, 0, null);
+            setPiece(0, 2, getPiece(0, 4));
+            setPiece(0, 4, null);
+            castlingWhite = false;
+        } else if (move.isCastleBlackKing() && castlingBlack) { //castle black king
+            setPiece(7, 5, getPiece(7, 7));
+            setPiece(7, 7, null);
+            setPiece(7, 6, getPiece(7, 4));
+            setPiece(7, 4, null);
+            castlingBlack = false;
+        } else if (move.isCastleBlackQueen() && castlingBlack) { //castle black queen
+            setPiece(7, 3, getPiece(7, 0));
+            setPiece(7, 0, null);
+            setPiece(7, 2, getPiece(7, 4));
+            setPiece(7, 4, null);
+            castlingBlack = false;
+        } else if (move.isEnPassantMove()) { //enPassant
+            System.out.println("Make move: enPassant move");
+            int enPassRank = currentPlayer ? toRank - 1 : toRank + 1;
+            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+            setPiece(fromRank, fromFile, null);
+            setPiece(enPassRank, fromFile, null); //remove attacked pawn
+            clearEnpassantPiece();
+        } else {    // error with move
+            System.out.println("ERROR in board.makeMove() moveinfo: " + move.toString());
         }
+        moveHistory.add(move);
+        switchSide();
+        return true;
     }
 
     public String getMOveHistoryString() {
