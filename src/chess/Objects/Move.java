@@ -33,8 +33,9 @@ public class Move {
     private boolean caputreMove;
     private String caputrePiece;
     private boolean enPassantMove;
+    private boolean doublePawnMove;
 
-    public Move(int fromRank, int fromFile, int toRank, int toFile, boolean promoted, boolean enPassant, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean playerColor) {
+    public Move(int fromRank, int fromFile, int toRank, int toFile, boolean promoted, boolean enPassant, boolean castleWhiteKing, boolean castleBlackKing, boolean castleWhiteQueen, boolean castleBlackQueen, boolean doublePawnMove, boolean playerColor) {
         this.fromRank = fromRank;
         this.toRank = toRank;
         this.fromFile = fromFile;
@@ -46,6 +47,11 @@ public class Move {
         this.castleBlackQueen = castleBlackQueen;
         this.playerColor = playerColor;
         this.enPassantMove = enPassant;
+        this.doublePawnMove = doublePawnMove;
+    }
+
+    public boolean isDoublePawnMove() {
+        return doublePawnMove;
     }
 
     public boolean isEnPassantMove() {

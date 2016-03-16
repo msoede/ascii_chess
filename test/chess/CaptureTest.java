@@ -62,7 +62,7 @@ public class CaptureTest {
     public void testCapureMove() {
         System.out.println("testCapureMove KNIGHT");
         String fenString = "8/1n4N1/2k5/8/8/5K2/1N4n1/8 w - - 0 1";
-        Move attackMove = new Move(2, 5, 1, 6, false, false, false, false, false, false, true);
+        Move attackMove = new Move(2, 5, 1, 6, false, false, false, false, false, false, false, true);
         fen.loadFen(fenString, board);
         attackMove.setCaputreMove(board.getPiece(1, 6).getName());
         System.out.println("before capture move :\"" + board.getPiece(1, 6).getName() + "\"");
@@ -89,7 +89,7 @@ public class CaptureTest {
     public void testCapureMovePawn() {
         System.out.println("testCapureMovePawn");
         String fenString = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq";
-        Move attackMove = new Move(1, 6, 2, 7, false, false, false, false, false, false, true);
+        Move attackMove = new Move(1, 6, 2, 7, false, false, false, false, false, false, false, true);
         fen.loadFen(fenString, board);
         attackMove.setCaputreMove(board.getPiece(1, 6).getName());
 
@@ -114,10 +114,11 @@ public class CaptureTest {
         System.out.println("Pawn test done");
     }
 
+    @Test
     public void testCapureMovePawnBlack() {
         System.out.println("testCapureMovePawnBlack");
         String fenString = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq";
-        Move attackMove = new Move(2, 7, 1, 6, false, false, false, false, false, false, false);
+        Move attackMove = new Move(2, 7, 1, 6, false, false, false, false, false, false, false, false);
         fen.loadFen(fenString, board);
         attackMove.setCaputreMove(board.getPiece(2, 7).getName());
 

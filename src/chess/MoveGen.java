@@ -43,6 +43,7 @@ public class MoveGen {
 
         ArrayList<Move> moveList = new ArrayList<>();
         boolean playerColor = board.getSide();
+        boolean pawnDoubleMove = true;
 
         for (int rank = 0; rank < 8; rank++) {
             for (int file = 0; file < 8; file++) {
@@ -51,63 +52,62 @@ public class MoveGen {
                     if (p.getType() == 'p' && !board.isSide()) { //white side
                         //promotion
                         if ((rank - 1) == 0) {
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file, true, false, false, false, false, false, playerColor), true);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file, true, false, false, false, false, false, false, playerColor), true);
                             continue;
                         }
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 2, file, false, false, false, false, false, false, pawnDoubleMove, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false, false, playerColor), true);
 
                     } else if (p.getType() == 'P' && board.isSide()) { //white side
                         //promotion
                         if ((rank + 1) == 7) {
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file, true, false, false, false, false, false, playerColor), true);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file, true, false, false, false, false, false, false, playerColor), true);
                             continue;
                         }
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false, playerColor), true); //normal move forward
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false, playerColor), true); //doobelt move forward
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false, playerColor), true); //attack move forward
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, playerColor), true); //attach move forward
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, playerColor), true); //attach move forward
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false, false, playerColor), true); //normal move forward
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file, false, false, false, false, false, false, pawnDoubleMove, playerColor), true); //doobelt move forward
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false, false, playerColor), true); //attack move forward
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, false, playerColor), true); //attach move forward
                     } else if (p.getType() == 'N' || p.getType() == 'n') {
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 2, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file + 2, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file - 2, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 2, file + 1, false, false, false, false, false, false, playerColor), true);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 2, file - 1, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 2, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 2, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file + 1, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 2, file - 1, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file + 2, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file - 2, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 2, file + 1, false, false, false, false, false, false, false, playerColor), true);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 2, file - 1, false, false, false, false, false, false, false, playerColor), true);
                     } else if (p.getType() == 'R' || p.getType() == 'r') {
                         for (int i = 0; i < 8; i++) {
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, i, file, false, false, false, false, false, false, playerColor), true);
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, i, false, false, false, false, false, false, playerColor), true);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, i, file, false, false, false, false, false, false, false, playerColor), true);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, i, false, false, false, false, false, false, false, playerColor), true);
                         }
                     } else if (p.getType() == 'B' || p.getType() == 'b') {
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank + i) >= 8 || (file + i) >= 8 || res == false) {
                                 break;
                             }
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank - i) <= 0 || (file - i) <= 0 || res == false) {
                                 break;
                             }
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank - i) <= 0 || (file + i) >= 8 || res == false) {
                                 break;
                             }
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank + i) >= 8 || (file - i) <= 0 || res == false) {
                                 break;
                             }
@@ -116,20 +116,20 @@ public class MoveGen {
                     } else if (p.getType() == 'Q' || p.getType() == 'q') {
                         //horicontial and verical
                         for (int i = 0; i < 8; i++) {
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, i, file, false, false, false, false, false, false, playerColor), true);
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, i, false, false, false, false, false, false, playerColor), true);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, i, file, false, false, false, false, false, false, false, playerColor), true);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, i, false, false, false, false, false, false, false, playerColor), true);
                         }
 
                         //diagonal
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file + i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank + i) >= 8 || (file + i) >= 8 || res == false) {
                                 break;
                             }
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank - i) <= 0 || (file - i) <= 0 || res == false) {
                                 break;
                                 /**
@@ -143,14 +143,14 @@ public class MoveGen {
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file + i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank - i) <= 0 || (file + i) >= 8 || res == false) {
                                 break;
                             }
                         }
 
                         for (int i = 1; i < 8; i++) {
-                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false, playerColor), true);
+                            boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank + i), (file - i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank + i) >= 8 || (file - i) <= 0 || res == false) {
                                 break;
                             }
@@ -158,22 +158,22 @@ public class MoveGen {
                     } else if ((p.getType() == 'K' || p.getType() == 'k')) {
 
                         //Normal moves:
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file - 1, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file + 1, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false, playerColor), doTheKing);
-                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file + 1, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file - 1, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file + 1, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank + 1, file - 1, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file - 1, false, false, false, false, false, false, false, playerColor), doTheKing);
+                        validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank - 1, file + 1, false, false, false, false, false, false, false, playerColor), doTheKing);
 
                         if (p.getType() == 'K') {  //Castling Moves white
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file + 2, false, false, true, false, false, false, playerColor), doTheKing);
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file - 2, false, false, false, false, true, false, playerColor), doTheKing);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file + 2, false, false, true, false, false, false, false, playerColor), doTheKing);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file - 2, false, false, false, false, true, false, false, playerColor), doTheKing);
                         } //Castling Moves black
                         else {
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file + 2, false, false, false, true, false, false, playerColor), doTheKing);
-                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file - 2, false, false, false, false, false, true, playerColor), doTheKing);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file + 2, false, false, false, true, false, false, false, playerColor), doTheKing);
+                            validateMoveAndToMoveList(board, moveList, new Move(rank, file, rank, file - 2, false, false, false, false, false, true, false, playerColor), doTheKing);
 
                         }
 
@@ -201,7 +201,7 @@ public class MoveGen {
         int toRank = moveTomake.getToRank();
         int toFile = moveTomake.getToFile();
 
-        if (fromRank < 0 || fromRank >= 8 || fromFile < 0 || fromFile >= 8 || toRank < 0 || toRank >= 8 || toFile < 0 || toFile >= 8) {
+        if (fromRank < 0 || fromRank >= 8 || fromFile < 0 || fromFile >= 8 || toRank < 0 || toRank >= 8 || toFile < 0 || toFile >= 8) { 
             return false;
         }
 
@@ -253,7 +253,7 @@ public class MoveGen {
             } else if (fromRank == 1 && rowDiff == -2 && board.getPiece(fromRank + 1, fromFile) != null) {
                 return false;
             } else if (fromRank == 1 && toRank == 3 && colDiff == 0) { //doble move forward
-                board.setEnpassantPiece(2, toFile, true);
+                //board.setEnpassantPiece(2, toFile, true);
                 return true;
             } else {
                 return true;
@@ -487,7 +487,7 @@ public class MoveGen {
             }
         }
 
-        Move moveTomake = new Move(fromRank, fromFile, toRank, toFile, false, false, false, false, false, false, false);
+        Move moveTomake = new Move(fromRank, fromFile, toRank, toFile, false, false, false, false, false, false, false, false);
 
         if (validateMove(moveTomake, board, true)) {
             board.makeMove(moveTomake);

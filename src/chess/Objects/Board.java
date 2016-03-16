@@ -369,6 +369,7 @@ public class Board {
         int fromRank = move.getFromRank();
         int toFile = move.getToFile();
         int toRank = move.getToRank();
+        clearEnpassantPiece();
 
         boolean currentPlayer = side;
 
@@ -376,6 +377,19 @@ public class Board {
             move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
+        } else if (move.isDoublePawnMove()) {
+            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+            setPiece(fromRank, fromFile, null);
+            int enPassantFile = side ? toFile : -toFile;
+            System.out.println("set enPassant file: " + enPassantFile);
+            setEnpassantPiece(toRank, enPassantFile, side);
+        } else if (move.isEnPassantMove()) { //enPassant attack move
+            System.out.println("Make move: enPassant move");
+            int enPassRank = currentPlayer ? toRank - 1 : toRank + 1;
+            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
+            setPiece(fromRank, fromFile, null);
+            setPiece(enPassRank, fromFile, null); //remove attacked pawn
+            //setEnpassantPiece(toRank, toFile, side);
         } else if (move.isCastling() == false && move.isPromoted() == false) {  // normal move
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
@@ -406,13 +420,6 @@ public class Board {
             setPiece(7, 2, getPiece(7, 4));
             setPiece(7, 4, null);
             castlingBlack = false;
-        } else if (move.isEnPassantMove()) { //enPassant
-            System.out.println("Make move: enPassant move");
-            int enPassRank = currentPlayer ? toRank - 1 : toRank + 1;
-            setPiece(toRank, toFile, getPiece(fromRank, fromFile));
-            setPiece(fromRank, fromFile, null);
-            setPiece(enPassRank, fromFile, null); //remove attacked pawn
-            clearEnpassantPiece();
         } else {    // error with move
             System.out.println("ERROR in board.makeMove() moveinfo: " + move.toString());
         }
