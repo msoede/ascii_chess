@@ -40,7 +40,6 @@ public class MoveGen {
     }
 
     private ArrayList<Move> generateAllMoves(Board board, boolean doTheKing) {
-
         ArrayList<Move> moveList = new ArrayList<>();
         boolean playerColor = board.getSide();
         boolean pawnDoubleMove = true;
@@ -132,13 +131,6 @@ public class MoveGen {
                             boolean res = validateMoveAndToMoveList(board, moveList, new Move(rank, file, (rank - i), (file - i), false, false, false, false, false, false, false, playerColor), true);
                             if ((rank - i) <= 0 || (file - i) <= 0 || res == false) {
                                 break;
-                                /**
-                                 * generate all possible moves from a given
-                                 * position
-                                 *
-                                 * @param board
-                                 * @return
-                                 */
                             }
                         }
 
@@ -178,14 +170,6 @@ public class MoveGen {
                         }
 
                     }
-                    //check every piece for enpassant attack
-//                    if (board.isEnpassantPieceSat() && board.isEnPassantColor() != playerColor) {
-//                        //System.out.println("En passant string: " + board.getEnPassantString() + " rank: " + board.getEnPassRank() + " file. " + board.getEnPassFile());
-//                        boolean temp = validateMoveAndToMoveList(board, moveList, new Move(rank, file, board.getEnPassRank(), board.getEnPassFile(), false, true, false, false, false, false, playerColor), doTheKing);
-//                        if (temp) {
-//                            System.out.println("tmp: " + temp);
-//                        }
-//                    }
                 }
             }
         }
@@ -201,7 +185,7 @@ public class MoveGen {
         int toRank = moveTomake.getToRank();
         int toFile = moveTomake.getToFile();
 
-        if (fromRank < 0 || fromRank >= 8 || fromFile < 0 || fromFile >= 8 || toRank < 0 || toRank >= 8 || toFile < 0 || toFile >= 8) { 
+        if (fromRank < 0 || fromRank >= 8 || fromFile < 0 || fromFile >= 8 || toRank < 0 || toRank >= 8 || toFile < 0 || toFile >= 8) {
             return false;
         }
 
@@ -233,56 +217,25 @@ public class MoveGen {
         }
 
         //WHITE PAWN
-        if (fromPieceName.equals("Pawn") && currentPlayer) {
-            if (fromRank != 1 && rowDiff <= -2) {
-                return false;
-            } else if (moveTomake.isPromoted() && toRank == 7) { //promotion
-                return true;
-            } else if (fromRank == 1 && rowDiff < -2) { //first move to long
-                return false;
-            } else if (rowDiff >= 0) { //move worng direction
-                return false;
-            } else if (absColDiff > 1) { //move left or right
-                return false;
-            } else if (absColDiff == 1 && rowDiff == -1 && toPiece == null) {
-                return false;
-            } else if (rowDiff == -1 && colDiff == 0 && toPiece != null && toPiece.getPlayerColor() == !currentPlayer) {
-                return false;
-            } else if (fromRank == 1 && rowDiff == -2 && toPiece != null) {
-                return false;
-            } else if (fromRank == 1 && rowDiff == -2 && board.getPiece(fromRank + 1, fromFile) != null) {
-                return false;
-            } else if (fromRank == 1 && toRank == 3 && colDiff == 0) { //doble move forward
-                //board.setEnpassantPiece(2, toFile, true);
-                return true;
+        if (fromPieceName.equals("Pawn")) {
+            //new pawn validater
+
+            int pawnStartFromRank = currentPlayer ? 1 : 6;
+            int pawnStartToRank = currentPlayer ? 3 : 4;
+            int pawnPromotionRank = currentPlayer ? 7 : 1;
+
+            if (fromRank == pawnStartFromRank && toRank == pawnStartToRank && colDiff == 0) {
+                return true; //doble move forward 
+            } else if (moveTomake.isPromoted() && toRank == pawnPromotionRank) {
+                return true; //Promotion 
+            } else if (absRowDiff == 1 && colDiff == 0) {
+                return true; //move forward
+            } else if (absRowDiff == 1 && absColDiff == 1 && toPiece != null && toPiece.getPlayerColor() == !currentPlayer) {
+                return true; //attack move
+            } else if (absRowDiff == 1 && absColDiff == 1 && toPiece == null && board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) {
+                return true; //attack enPassant square move
             } else {
-                return true;
-            }
-        } //PAWN BLACK
-        else if (fromPieceName.equals("Pawn") && !currentPlayer) {
-            if (fromRank != 6 && rowDiff >= 2) {
-                return false;
-            } else if (moveTomake.isPromoted() && toRank == 0) {
-                return true;
-            } else if (fromRank == 6 && rowDiff > 2) {
-                return false;
-            } else if (rowDiff <= 0) {
-                return false;
-            } else if (absColDiff > 1) {
-                return false;
-            } else if (absColDiff == 1 && rowDiff == 1 && toPiece == null) {
-                return false;
-            } else if (rowDiff == 1 && colDiff == 0 && toPiece != null && toPiece.getPlayerColor() == !currentPlayer) {
-                return false;
-            } else if (fromRank == 6 && rowDiff == 2 && toPiece != null) {
-                return false;
-            } else if (fromRank == 6 && rowDiff == 2 && board.getPiece(fromRank - 1, fromFile) != null) {
-                return false;
-            } else if (fromRank == 6 && toFile == 4 && colDiff == 0) { //doble move forward
-                board.setEnpassantPiece(5, toFile, false);
-                return true;
-            } else {
-                return true;
+                return false; //defualt value
             }
         } else if (fromPieceName.equals("King")) {
             boolean isKingAllowedToMove = true;
@@ -299,6 +252,9 @@ public class MoveGen {
                 return true;
             } else if (absRowDiff > 1 || absColDiff > 1) { // moved to far
                 return false;
+            } else if ((absRowDiff == 1 || absColDiff == 1) && board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) { // normal king move attack enPassant
+                moveTomake.setEnPassantMove(true);
+                return isKingAllowedToMove;
             } else { //normal move make sure the pice is not in check
                 return isKingAllowedToMove;
             }
@@ -363,8 +319,20 @@ public class MoveGen {
                     }
                 }
             }
+
+            if (board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) {
+                board.printBoard();
+                System.out.println(board.getEnPassFile() + "==" + toFile + "&&" + board.getEnPassRank() + "==" + toRank);
+                moveTomake.setEnPassantMove(true);
+                return true;
+            }
+
             return true;
         } else if (fromPieceName.equals("Knight")) {
+            if ((absRowDiff * absColDiff == 2) && board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) {
+                moveTomake.setEnPassantMove(true);
+                return true;
+            }
             return absRowDiff * absColDiff == 2;
         } else if (fromPieceName.equals("Bishop")) {
             if (absRowDiff != absColDiff) {
@@ -403,6 +371,12 @@ public class MoveGen {
                     f--;
                 }
             }
+
+            if (board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) {
+                moveTomake.setEnPassantMove(true);
+                return true;
+            }
+
             return true;
         } else if (fromPieceName.equals("Rook")) {
             if (rowDiff != 0 && colDiff != 0) {
@@ -434,6 +408,12 @@ public class MoveGen {
                     }
                 }
             }
+
+            if (board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) {
+                moveTomake.setEnPassantMove(true);
+                return true;
+            }
+
             return true;
         }
         return false; // default value

@@ -48,6 +48,7 @@ public class Move {
         this.playerColor = playerColor;
         this.enPassantMove = enPassant;
         this.doublePawnMove = doublePawnMove;
+
     }
 
     public boolean isDoublePawnMove() {
@@ -166,6 +167,10 @@ public class Move {
 
     public char getType() {
         char value = ' ';
+        if (caputrePiece == null) {
+            return value;
+        }
+
         switch (caputrePiece) {
             case "Pawn":
                 value = 'P';
@@ -204,8 +209,7 @@ public class Move {
         String cbk = castleBlackKing ? "k" : "-";
         String cbq = castleBlackQueen ? "q" : "-";
         String castling = cwk + cwq + cbk + cbq;
-
-        return "Move " + getMoveString() + "  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + '}';
+        return "Move " + getMoveString() + "  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + ", Dobble Pawn move=" + doublePawnMove + ", isEnPassantMove=" + isEnPassantMove() + "}";
     }
 
     /**

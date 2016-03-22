@@ -85,11 +85,11 @@ public class Board {
     }
 
     public int getEnPassRank() {
-        return this.enPassantPiece[0];
+        return this.enPassantPiece[1];
     }
 
     public int getEnPassFile() {
-        return this.enPassantPiece[1];
+        return this.enPassantPiece[0];
     }
 
     /**
@@ -105,7 +105,7 @@ public class Board {
         if (isEnpassantPieceSat()) {
             char[] file = new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
             char[] rank = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-            return rank[enPassantPiece[0]] + "" + file[enPassantPiece[1]];
+            return rank[enPassantPiece[0]] + "" + file[enPassantPiece[1]] + " (" + enPassantPiece[0] + "," + enPassantPiece[1] + ")";
         } else {
             return "-";
         }
@@ -337,8 +337,21 @@ public class Board {
             castlingBlack = true;
         } else if (m.isEnPassantMove()) {
             int oldPawnRank = side ? toRank + 1 : toRank - 1;
+            if (oldPawnRank == 8) {
+                System.out.println("enPassant move 1 move to make: " + m.toString());
+                printBoard();
+            }
             setPiece(fromRank, fromFile, getPiece(toRank, toFile));
+            if (oldPawnRank == 8) {
+                System.out.println("enPassant move 2");
+                printBoard();
+            }
             setPiece(toRank, toFile, null);
+            if (oldPawnRank == 8) {
+                System.out.println("enPassant move 3");
+                printBoard();
+            }
+            System.out.println("side " + side + " oldPawnRank: " + oldPawnRank);
             setPiece(oldPawnRank, toFile, new Piece("Pawn", side ? playerWhite : playerBlack));
             //this.setEnpassantPiece(fromRank, toFile, !m.isPlayerColor());
         } else if (m.isCaputreMove()) { //capture move
@@ -377,7 +390,6 @@ public class Board {
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
         } else if (move.isDoublePawnMove()) {
-            System.out.println("move.isDoublePawnMove() == true");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             int toRankEnPassant = side ? toRank - 1 : toRank + 1;
@@ -427,6 +439,7 @@ public class Board {
         }
         moveHistory.add(move);
         switchSide();
+
         return true;
     }
 
