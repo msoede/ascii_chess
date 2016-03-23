@@ -121,7 +121,9 @@ public class AlfaBetaSearch {
         System.out.println("+-------+--------------+-------+---------+");
         for (currentDepth = 1; currentDepth < maxDepth; currentDepth++) {
             if (board.isGameOver()) {
+                System.out.println("+----------------------------------------+");
                 System.out.println("|           !!GAME IS OVER!!             |");
+                System.out.println("+----------------------------------------+");
                 break;
             } else {
                 clearForSearch();
@@ -152,7 +154,9 @@ public class AlfaBetaSearch {
     private void checkForTimeIsUp(Board board) {
 
         if (board.getEndTime() <= System.currentTimeMillis() && !board.isTimeOver()) {
+            System.out.println("+----------------------------------------+");
             System.out.println("|             Time is up                 |");
+            System.out.println("+----------------------------------------+");
             board.setTimeOver(true);
         }
     }

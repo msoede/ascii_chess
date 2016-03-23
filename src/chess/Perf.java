@@ -61,7 +61,7 @@ public class Perf {
         for (Move childMove : moveList) {
             System.out.println("move(" + total + "," + depth + ") " + childMove.toString());
             board.makeMove(childMove);
-            //board.printBoard();
+            board.printBoard();
             perf1(depth - 1, board);
             board.undoLastMove();
         }
@@ -73,19 +73,17 @@ public class Perf {
         for (Move childMove : moveList) {
             System.out.println(total + " : " + childMove.toString());
             board.makeMove(childMove);
-            // board.printBoard();
+            board.printBoard();
             perf1(depth - 1, board);
             board.undoLastMove();
-//            if (debugMode) {
-//                System.out.println("move[" + i + "]: " + childMove.toString());
-//                i++;
-//            }
         }
     }
 
     public boolean makeTest(String fenString, int expRes, int seachDepth) {
+        
         total = 0;
         fen.loadFen(fenString, board);
+        board.printBoard();
         int movesTotal = generateAllForDepth(board, seachDepth);
 
         boolean resualt = movesTotal == expRes;

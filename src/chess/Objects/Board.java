@@ -45,6 +45,8 @@ public class Board {
     private boolean castlingBlackQueen;
     private int[] enPassantPiece;
     private boolean enPassantColor;
+    private int fityMoveCounter;
+    private int fityTmpMoveCounter;
 
     public Board() {
         this.enPassantPiece = new int[2];  // enPassantPiece[0] = rank      enPassantPiece[1] = file
@@ -90,6 +92,22 @@ public class Board {
 
     public int getEnPassFile() {
         return this.enPassantPiece[0];
+    }
+
+    public void addTo50MoveCounter() {
+        fityMoveCounter++;
+    }
+
+    public void derementTo50MoveCounter() {
+        fityMoveCounter--;
+    }
+
+    public int get50MoveCounter() {
+        return fityMoveCounter;
+    }
+
+    public void clear50MoveCounter() {
+        fityMoveCounter = 0;
     }
 
     /**
@@ -309,6 +327,7 @@ public class Board {
         int fromFile = m.gff();
         Player playerSide = m.isPlayerColor() ? playerWhite : playerBlack;
         Player playerSideOpponent = m.isPlayerColor() ? playerBlack : playerWhite;
+        derementTo50MoveCounter();
 
         if (m.isCastleWhiteKing()) { //castle white king
             setPiece(0, 7, getPiece(0, 5));
@@ -329,7 +348,7 @@ public class Board {
             setPiece(7, 6, null);
             castlingBlack = true;
         } else if (m.isCastleBlackQueen()) { //castle black queen
-            System.out.println("isCastleBlackQueen" + getPiece(7, 2).toString());
+//            System.out.println("isCastleBlackQueen" + getPiece(7, 2).toString());
             setPiece(7, 4, getPiece(7, 2));
             setPiece(7, 0, getPiece(7, 3));
             setPiece(7, 3, null);
@@ -337,24 +356,25 @@ public class Board {
             castlingBlack = true;
         } else if (m.isEnPassantMove()) {
             int oldPawnRank = side ? toRank + 1 : toRank - 1;
-            if (oldPawnRank == 8) {
-                System.out.println("enPassant move 1 move to make: " + m.toString());
-                printBoard();
-            }
+//            if (oldPawnRank == 8) {
+//                System.out.println("enPassant move 1 move to make: " + m.toString());
+//                printBoard();
+//            }
             setPiece(fromRank, fromFile, getPiece(toRank, toFile));
-            if (oldPawnRank == 8) {
-                System.out.println("enPassant move 2");
-                printBoard();
-            }
+//            if (oldPawnRank == 8) {
+//                System.out.println("enPassant move 2");
+//                printBoard();
+//            }
             setPiece(toRank, toFile, null);
-            if (oldPawnRank == 8) {
-                System.out.println("enPassant move 3");
-                printBoard();
-            }
-            System.out.println("side " + side + " oldPawnRank: " + oldPawnRank);
+//            if (oldPawnRank == 8) {
+//                System.out.println("enPassant move 3");
+//                printBoard();
+//            }
+//            System.out.println("side " + side + " oldPawnRank: " + oldPawnRank);
             setPiece(oldPawnRank, toFile, new Piece("Pawn", side ? playerWhite : playerBlack));
             //this.setEnpassantPiece(fromRank, toFile, !m.isPlayerColor());
         } else if (m.isCaputreMove()) { //capture move
+            fityMoveCounter = fityTmpMoveCounter;
             setPiece(fromRank, fromFile, getPiece(toRank, toFile));
             setPiece(toRank, toFile, new Piece(m.getCaputrePiece(), playerSideOpponent));
         } else if (m.isPromoted()) {
@@ -376,6 +396,7 @@ public class Board {
      */
     public boolean makeMove(Move move) {
 
+        addTo50MoveCounter();
         hafMoves++;
         int fromFile = move.getFromFile();
         int fromRank = move.getFromRank();
@@ -389,17 +410,19 @@ public class Board {
             move.setCaputreMove(getPiece(toRank, toFile).getName());
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
+            fityTmpMoveCounter = fityMoveCounter;
+            clear50MoveCounter();
         } else if (move.isDoublePawnMove()) {
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             int toRankEnPassant = side ? toRank - 1 : toRank + 1;
             setEnpassantPiece(toFile, toRankEnPassant, side);
         } else if (move.isEnPassantMove()) { //enPassant attack move
-            System.out.println("Make move: enPassant move");
+//            System.out.println("Make move: enPassant move");
             int enPassRank = currentPlayer ? toRank - 1 : toRank + 1;
-            System.out.println("(" + toRank + "," + toFile + ") = " + getPiece(fromRank, fromFile).toString());
-            System.out.println("(" + fromRank + "," + fromFile + ") = null");
-            System.out.println("(" + enPassRank + "," + toFile + ") = null");
+//            System.out.println("(" + toRank + "," + toFile + ") = " + getPiece(fromRank, fromFile).toString());
+//            System.out.println("(" + fromRank + "," + fromFile + ") = null");
+//            System.out.println("(" + enPassRank + "," + toFile + ") = null");
             setPiece(toRank, toFile, getPiece(fromRank, fromFile));
             setPiece(fromRank, fromFile, null);
             setPiece(enPassRank, toFile, null); //remove attacked pawn
@@ -482,7 +505,7 @@ public class Board {
         fill[7][1] = "| Board infomation |    value    |";
         fill[7][2] = "+------------------+-------------+";
         fill[7][3] = "| Turn             | " + String.format("%-11s", getCurrentPlayer().getName()) + " |";
-        fill[6][0] = "| 50 move rule     | ??          |";
+        fill[6][0] = "| 50 move rule     | " + String.format("%-11s", get50MoveCounter()) + " |"; // 
         fill[6][1] = "| Castling         | " + String.format("%-11s", castlingString) + " |";
         fill[6][2] = "| move his size    | " + String.format("%-11d", moveHistory.size()) + " |";
         fill[6][3] = "| Search depth     | " + String.format("%-11d", getSearchDepth()) + " |";

@@ -73,11 +73,13 @@ public class EnPassantTest {
         //make enpassant move
         board.makeMove(move);
 
-
         System.out.println("double pawn move");
         board.printBoard();
         System.out.println("En passant square: " + board.getEnPassantString());
-        assertEquals("a3", board.getEnPassantString());
+        //verify the enpassant square 
+        assertEquals(0, board.getEnPassFile());
+        assertEquals(2, board.getEnPassRank());
+        
         //make sure the pawn has moved
         assertEquals('P', board.getPiece(3, 0).getType());
         assertEquals(null, board.getPiece(2, 0));
@@ -112,6 +114,7 @@ public class EnPassantTest {
         assertEquals('p', board.getPiece(3, 1).getType());
         System.out.println("Pawn test done");
     }
+
     @Test
     public void testEnpassantBlackPawn() {
         System.out.println("testEnpassantBlackPawn");
@@ -140,7 +143,10 @@ public class EnPassantTest {
         System.out.println("after capture move");
         board.printBoard();
         System.out.println("En passant square: " + board.getEnPassantString());
-        assertEquals("a6", board.getEnPassantString());
+        //verify the enpassant square 
+        assertEquals(0, board.getEnPassFile());
+        assertEquals(5, board.getEnPassRank());
+
         //make sure the pawn has moved
         assertEquals(null, board.getPiece(6, 0));
         assertEquals(null, board.getPiece(5, 0));

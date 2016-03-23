@@ -287,8 +287,8 @@ public class Evaluation {
                 //System.out.println("Score(" + i + "," + j + ") piece: " + pieceName + "\t    color: " + pieceColor + " \tscore:" + tempScore + " total score: " + score);
             }
         }
-//        int whoToMove = board.isSide() ? 1 : -1;
-        int whoToMove = 1;
+        int whoToMove = board.isSide() ? 1 : -1;
+//        int whoToMove = 1;
 
         materialScore = kingValue * (wk - bk)
                 + queenValue * (wq - bq)
@@ -296,6 +296,6 @@ public class Evaluation {
                 + knightValue * (wn - bn)
                 + bishopValue * (wb - bb)
                 + pawnValue * (wp - bp);
-        return (materialScore + score) * whoToMove;
+        return ((materialScore * 1) + score*100) * whoToMove;
     }
 }

@@ -48,23 +48,24 @@ public class PerfTest {
         perf.clearBoard();
     }
 
-//    @Test
-//    public void testPerf1() {
-//        //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ;D1 20 ;D2 400 ;D3 8902 ;D4 197281 ;D5 4865609 ;D6 119060324
-//        assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 20, 1), true);
+    @Test
+    public void testPerf1() {
+        //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ;D1 20 ;D2 400 ;D3 8902 ;D4 197281 ;D5 4865609 ;D6 119060324
+       assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 20, 1), true);
+//      perf.clearBoard();
 //        assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 400, 2), true);
 //        assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8902, 3), true);
 //        assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 197281, 4), true);
 //        assertEquals(perf.makeTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 4865609, 5), true);
-//    }
-    @Test
-    public void testPerf2() {
-        //r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ;D1 48 ;D2 2039 ;D3 97862 ;D4 4085603 ;D5 193690690 ;D6 8031647685
-        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 48, 1), true);
-//        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 2039, 2), true);
-//        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 97862, 3), true);
-//        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 4085603, 4), true);
     }
+//    @Test
+//    public void testPerf2() {
+//        //r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ;D1 48 ;D2 2039 ;D3 97862 ;D4 4085603 ;D5 193690690 ;D6 8031647685
+////        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 48, 1), true);
+////        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 2039, 2), true);
+//        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 97862, 3), true);
+////        assertEquals(perf.makeTest("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq", 4085603, 4), true);
+//    }
 //
 //    @Test
 //    public void testPerf3() {
@@ -73,7 +74,7 @@ public class PerfTest {
 //        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 15, 1), true);
 //        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 66, 2), true);
 //        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 1197, 3), true);
-////        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 7059, 4), true);
+//        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/4K2R w K - 0 1", 7059, 4), true);
 //    }
 //
 //    @Test
@@ -81,7 +82,7 @@ public class PerfTest {
 //        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 16, 1), true);
 //        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 71, 2), true);
 //        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 1287, 3), true);
-////        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 7626, 4), true);
+//        assertEquals(perf.makeTest("4k3/8/8/8/8/8/8/R3K3 w Q - 0 1", 7626, 4), true);
 //    }
 //
 //    @Test
@@ -254,7 +255,11 @@ public class PerfTest {
 //
 //    @Test
 //    public void testPerf38() {
-//        assertEquals(perf.makeTest("8/1k6/8/5N2/8/4n3/8/2K5 w - - 0 1", 11, 1), true);
+//        //8/1k6/8/5N2/8/4n3/8/2K5 w - - 0 1 ;D1 11 ;D2 156 ;D3 1636 ;D4 20534 ;D5 223507 ;D6 2594412
+////        assertEquals(perf.makeTest("8/1k6/8/5N2/8/4n3/8/2K5 w - - 0 1", 11, 1), true);
+////        assertEquals(perf.makeTest("8/1k6/8/5N2/8/4n3/8/2K5 w - - 0 1", 156, 2), true);
+//        assertEquals(perf.makeTest("8/1k6/8/5N2/8/4n3/8/2K5 w - - 0 1", 1636, 3), true);
+////        assertEquals(perf.makeTest("8/1k6/8/5N2/8/4n3/8/2K5 w - - 0 1", 20534, 4), true);
 //    }
 //
 //    @Test

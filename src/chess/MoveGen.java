@@ -224,11 +224,11 @@ public class MoveGen {
             int pawnStartToRank = currentPlayer ? 3 : 4;
             int pawnPromotionRank = currentPlayer ? 7 : 1;
 
-            if (fromRank == pawnStartFromRank && toRank == pawnStartToRank && colDiff == 0) {
+            if (fromRank == pawnStartFromRank && toRank == pawnStartToRank && colDiff == 0 && toPiece == null && board.getPiece(currentPlayer ? toRank - 1 : toRank + 1, toFile) == null) {
                 return true; //doble move forward 
-            } else if (moveTomake.isPromoted() && toRank == pawnPromotionRank) {
+            } else if (moveTomake.isPromoted() && toRank == pawnPromotionRank && toPiece == null) {
                 return true; //Promotion 
-            } else if (absRowDiff == 1 && colDiff == 0) {
+            } else if (absRowDiff == 1 && colDiff == 0 && toPiece == null) {
                 return true; //move forward
             } else if (absRowDiff == 1 && absColDiff == 1 && toPiece != null && toPiece.getPlayerColor() == !currentPlayer) {
                 return true; //attack move
@@ -321,8 +321,6 @@ public class MoveGen {
             }
 
             if (board.getEnPassFile() == toFile && board.getEnPassRank() == toRank) {
-                board.printBoard();
-                System.out.println(board.getEnPassFile() + "==" + toFile + "&&" + board.getEnPassRank() + "==" + toRank);
                 moveTomake.setEnPassantMove(true);
                 return true;
             }
