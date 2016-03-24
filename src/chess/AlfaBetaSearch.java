@@ -83,7 +83,7 @@ public class AlfaBetaSearch {
 
         if (depthleft == 0) {
             nodes++;
-            return evaluation.evaluateBoard(board);
+            return -evaluation.evaluateBoard(board);
         }
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
         for (Move childMove : moveList) {
