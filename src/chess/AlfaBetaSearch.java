@@ -116,14 +116,14 @@ public class AlfaBetaSearch {
         board.setStartTime();
 
         System.out.println("Iterative deepening max depth:" + board.getSearchDepth() + " search time: " + board.getSearchTime());
-        System.out.println("+-------+--------------+-------+---------+");
-        System.out.println("| depth |     time     | score |  nodes  | movestring");
-        System.out.println("+-------+--------------+-------+---------+");
+        System.out.println("+-------+--------------+-------------+---------+");
+        System.out.println("| depth |     time     |    score    |  nodes  | movestring");
+        System.out.println("+-------+--------------+-------------+---------+");
         for (currentDepth = 1; currentDepth < maxDepth; currentDepth++) {
             if (board.isGameOver()) {
-                System.out.println("+----------------------------------------+");
-                System.out.println("|           !!GAME IS OVER!!             |");
-                System.out.println("+----------------------------------------+");
+                System.out.println("+----------------------------------------------+");
+                System.out.println("|              !!GAME IS OVER!!                |");
+                System.out.println("+----------------------------------------------+");
                 break;
             } else {
                 clearForSearch();
@@ -133,12 +133,12 @@ public class AlfaBetaSearch {
             String bedstMoveString = bestMove == null ? "NONE BEST MOVE " : bestMove.toString();
 
             double now = (((double) (System.currentTimeMillis() - board.getStartTime())) / 1000); // get now time in millis
-            System.out.format("| %5d | %8s sec |  %4d | %07d | %s\n", currentDepth, now, bestScore, nodes, bedstMoveString);
+            System.out.format("| %5d | %8s sec |  %10d | %07d | %s\n", currentDepth, now, bestScore, nodes, bedstMoveString);
             if (board.isTimeOver()) {
                 break;
             }
         }
-        System.out.println("+-------+--------------+-------+---------+");
+        System.out.println("+-------+--------------+-------------+---------+");
         System.out.println("best Move:" + bestMove.toString());
         board.makeMove(bestMove);
     }
@@ -154,9 +154,9 @@ public class AlfaBetaSearch {
     private void checkForTimeIsUp(Board board) {
 
         if (board.getEndTime() <= System.currentTimeMillis() && !board.isTimeOver()) {
-            System.out.println("+----------------------------------------+");
-            System.out.println("|             Time is up                 |");
-            System.out.println("+----------------------------------------+");
+            System.out.println("+----------------------------------------------+");
+            System.out.println("|                Time is up                    |");
+            System.out.println("+----------------------------------------------+");
             board.setTimeOver(true);
         }
     }
