@@ -467,10 +467,13 @@ public class Board {
     }
 
     public String getMOveHistoryString() {
-        String output = "";
+        String output = "+-----+------+\n";
+        output += "| nr  | move |\n";
+        output += "+-----+------+\n";
         for (int i = 0; i < moveHistory.size(); i++) {
-            output += moveHistory.get(i).getMoveString() + "\n";
+            output += "| "+ String.format("%3d", i)+" | " + moveHistory.get(i).getMoveString() + " |\n";
         }
+        output += "+-----+------+\n";
         return output;
     }
 

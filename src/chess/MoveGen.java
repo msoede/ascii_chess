@@ -456,6 +456,12 @@ public class MoveGen {
         int toFile = 0;
         int toRank = move.charAt(3) - '1';
 
+        boolean wkc = false;
+        boolean wqc = false;
+        boolean bkc = false;
+        boolean bqc = false;
+        
+        
         for (int i = 0; i < 8; i++) {
             if (move.charAt(0) == ('a' + i)) {
                 fromFile = i;
@@ -465,6 +471,10 @@ public class MoveGen {
             }
         }
 
+        
+        
+        
+        
         Move moveTomake = new Move(fromRank, fromFile, toRank, toFile, false, false, false, false, false, false, false, false);
 
         if (validateMove(moveTomake, board, true)) {

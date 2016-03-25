@@ -282,20 +282,17 @@ public class Evaluation {
                         }
                         break;
                 }
-                //score += pieceColor ? tempScore : -tempScore;
                 score += tempScore;
-                //System.out.println("Score(" + i + "," + j + ") piece: " + pieceName + "\t    color: " + pieceColor + " \tscore:" + tempScore + " total score: " + score);
             }
         }
-        int whoToMove = board.isSide() ? 1 : -1;
-//        int whoToMove = 1;
+        int whoToMove = 1;
 
-        materialScore = kingValue * (wk - bk)
-                + queenValue * (wq - bq)
-                + rookValue * (wr - br)
-                + knightValue * (wn - bn)
-                + bishopValue * (wb - bb)
-                + pawnValue * (wp - bp);
-        return ((materialScore * 1) + score*100) * whoToMove;
+        materialScore = kingValue * (bk - wk)
+                + queenValue * (bq - wq)
+                + rookValue * (br - wr)
+                + knightValue * (bn - wn)
+                + bishopValue * (bb - wb)
+                + pawnValue * (bp - wp);
+        return (materialScore + score) * whoToMove;
     }
 }

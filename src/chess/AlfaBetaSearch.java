@@ -45,7 +45,7 @@ public class AlfaBetaSearch {
         if ((nodes % 1024) == 0) {
             checkForTimeIsUp(board);
         }
-        if (board.isGameOver() && board.isTimeOver()) {
+        if (board.isGameOver() || board.isTimeOver()) {
             return 0;
         }
 
@@ -77,7 +77,7 @@ public class AlfaBetaSearch {
         if ((nodes % 1024) == 0) {
             checkForTimeIsUp(board);
         }
-        if (board.isGameOver() && board.isTimeOver()) {
+        if (board.isGameOver() || board.isTimeOver()) {
             return 0;
         }
 
