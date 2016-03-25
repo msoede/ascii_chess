@@ -105,7 +105,6 @@ public class Main {
                 System.out.println("Undo move");
                 board.undoLastMove(); //undo computer move
                 board.undoLastMove(); //undo human move
-                board.printBoard();
                 return true;
             case "move":
                 System.out.println("Find bedst move");
