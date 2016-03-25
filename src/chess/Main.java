@@ -103,7 +103,8 @@ public class Main {
                 return true;
             case "undo":
                 System.out.println("Undo move");
-                board.undoLastMove();
+                board.undoLastMove(); //undo computer move
+                board.undoLastMove(); //undo human move
                 board.printBoard();
                 return true;
             case "move":
