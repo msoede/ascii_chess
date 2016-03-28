@@ -460,8 +460,7 @@ public class MoveGen {
         boolean wqc = false;
         boolean bkc = false;
         boolean bqc = false;
-        
-        
+
         for (int i = 0; i < 8; i++) {
             if (move.charAt(0) == ('a' + i)) {
                 fromFile = i;
@@ -471,11 +470,23 @@ public class MoveGen {
             }
         }
 
-        
-        
-        
-        
-        Move moveTomake = new Move(fromRank, fromFile, toRank, toFile, false, false, false, false, false, false, false, false);
+        if (move.charAt(0) == 'e' && move.charAt(1) == '1' && move.charAt(2) == 'g' && move.charAt(3) == '1') {
+            wkc = true;
+        }
+
+        if (move.charAt(0) == 'e' && move.charAt(1) == '1' && move.charAt(2) == 'c' && move.charAt(3) == '1') {
+            wqc = true;
+        }
+
+        if (move.charAt(0) == 'e' && move.charAt(1) == '8' && move.charAt(2) == 'g' && move.charAt(3) == '8') {
+            bkc = true;
+        }
+
+        if (move.charAt(0) == 'e' && move.charAt(1) == '8' && move.charAt(2) == 'c' && move.charAt(3) == '8') {
+            bqc = true;
+        }
+
+        Move moveTomake = new Move(fromRank, fromFile, toRank, toFile, false, false, wkc, bkc, wqc, bqc, false, false);
 
         if (validateMove(moveTomake, board, true)) {
             board.makeMove(moveTomake);

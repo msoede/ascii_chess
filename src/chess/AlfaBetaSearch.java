@@ -41,7 +41,7 @@ public class AlfaBetaSearch {
         this.bestMove = null;
     }
 
-    public int alphaBetaMax(int alpha, int beta, int depthleft, Board board) {
+    public int alphaBeta(int alpha, int beta, int depthleft, Board board) {
         if ((nodes % 1024) == 0) {
             checkForTimeIsUp(board);
         }
@@ -53,67 +53,121 @@ public class AlfaBetaSearch {
             nodes++;
             return evaluation.evaluateBoard(board);
         }
-        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
 
-        for (Move childMove : moveList) {
-            board.makeMove(childMove);
-            int score = alphaBetaMin(alpha, beta, depthleft - 1, board);
-            board.undoLastMove();
-            if (score > alpha) {
-                if (board.isHumanPlayer() == true && depthleft == currentDepth) {
-                    bestMove = childMove; //black best move
+        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+        if (board.isSide()) {
+            int v = -infinite;
+            for (Move childMove : moveList) {
+                board.makeMove(childMove);
+                int score = alphaBeta(alpha, beta, depthleft - 1, board);
+                v = max(v, score);
+                board.undoLastMove();
+                alpha = max(alpha, v);
+
+//                if (alpha == est) { //update of alpha
+////                    if (board.isHumanPlayer() == false && depthleft == currentDepth) {
+//                    bestMove = childMove; //black best move
+////                    System.out.println("update bedst depth: " + depthleft + " move node: " + nodes + " move.toSting(): " + childMove.toString());
+////                    }
+//                }
+                if (beta <= alpha) {
+                    break; // cut-off
                 }
-                alpha = score; // alpha acts like max in MiniMax
             }
-            if (score >= beta) {
-                return beta;   // fail hard beta-cutoff
+            return v;
+        } else { //minimizing player
+            int v = infinite;
+            for (Move childMove : moveList) {
+                board.makeMove(childMove);
+                int score = alphaBeta(alpha, beta, depthleft - 1, board);
+                v = min(v, score);
+                board.undoLastMove();
+                beta = min(beta, v);
+                if (beta == score) { //update of alpha
+//                    System.out.println("update "+est+" bedst depth: " + depthleft + " move node: " + nodes + " move.toSting(): " + childMove.toString());
+                    bestMove = childMove;
+                }
+                if (beta <= alpha) {
+                    break; // cut-off
+                }
             }
+            return v;
         }
-        return alpha;
     }
 
-    public int alphaBetaMin(int alpha, int beta, int depthleft, Board board) {
-
-        if ((nodes % 1024) == 0) {
-            checkForTimeIsUp(board);
-        }
-        if (board.isGameOver() || board.isTimeOver()) {
-            return 0;
-        }
-
-        if (depthleft == 0) {
-            nodes++;
-            return -evaluation.evaluateBoard(board);
-        }
-        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-        for (Move childMove : moveList) {
-            board.makeMove(childMove);
-            int score = alphaBetaMax(alpha, beta, depthleft - 1, board);
-            board.undoLastMove();
-            if (score < beta) {
-                if (board.isHumanPlayer() == false && depthleft == currentDepth) {
-                    bestMove = childMove; //white best move
-                }
-                beta = score; // beta acts like min in MiniMax
-            }
-            if (score <= alpha) {
-                return alpha; // fail hard alpha-cutoff
-            }
-        }
-        return beta;
-    }
-
-    /**
-     * iterative deepening
-     *
-     * @param board
-     */
+//    public int alphaBetaMax(int alpha, int beta, int depthleft, Board board) {
+//        if ((nodes % 1024) == 0) {
+//            checkForTimeIsUp(board);
+//        }
+//        if (board.isGameOver() || board.isTimeOver()) {
+//            return 0;
+//        }
+//
+//        if (depthleft == 0) {
+//            nodes++;
+//            return -evaluation.evaluateBoard(board);
+//        }
+//
+//        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+//
+//        for (Move childMove : moveList) {
+//            board.makeMove(childMove);
+//            int score = alphaBetaMin(alpha, beta, depthleft - 1, board);
+//            board.undoLastMove();
+//            if (score > alpha) {
+//                if (board.isHumanPlayer() == true && depthleft == currentDepth) {
+//                    bestMove = childMove; //black best move
+//                }
+//                alpha = score; // alpha acts like max in MiniMax
+//            }
+//            if (score >= beta) {
+//                return beta;   // fail hard beta-cutoff
+//            }
+//        }
+//        return alpha;
+//    }
+//    public int alphaBetaMin(int alpha, int beta, int depthleft, Board board) {
+//
+//        if ((nodes % 1024) == 0) {
+//            checkForTimeIsUp(board);
+//        }
+//        if (board.isGameOver() || board.isTimeOver()) {
+//            return 0;
+//        }
+//
+//        if (depthleft == 0) {
+//            nodes++;
+//            return evaluation.evaluateBoard(board);
+//        }
+//        ArrayList<Move> moveList = moveGen.generateAllMoves(board);
+//        for (Move childMove : moveList) {
+//            board.makeMove(childMove);
+//            int score = alphaBetaMax(alpha, beta, depthleft - 1, board);
+//            board.undoLastMove();
+//            if (score < beta) {
+//                if (board.isHumanPlayer() == false && depthleft == currentDepth) {
+//                    bestMove = childMove; //white best move
+//                }
+//                beta = score; // beta acts like min in MiniMax
+//            }
+//            if (score <= alpha) {
+//                return alpha; // fail hard alpha-cutoff
+//            }
+//        }
+//        return beta;
+//    }
+//
+//    /**
+//     * iterative deepening
+//     *
+//     * @param board
+//     */
     public void FindBedstMove(Board board) {
         int maxDepth = board.getSearchDepth();
-        board.setSearchTime(5);
         board.setGameOver(false);
         board.setTimeOver(false);
         board.setStartTime();
+        Move oldBestMove = null;
 
         System.out.println("Iterative deepening max depth:" + board.getSearchDepth() + " search time: " + board.getSearchTime());
         System.out.println("+-------+--------------+-------------+---------+");
@@ -128,18 +182,23 @@ public class AlfaBetaSearch {
             } else {
                 clearForSearch();
             }
-            int bestScore = alphaBetaMax(-infinite, infinite, currentDepth, board);
+//            int bestScore = alphaBetaMax(-infinite, infinite, currentDepth, board);
+            int bestScore = alphaBeta(-infinite, infinite, currentDepth, board);
 
             String bedstMoveString = bestMove == null ? "NONE BEST MOVE " : bestMove.toString();
+            bedstMoveString = board.isTimeOver() ? "Did not finish in time" : bedstMoveString;
 
             double now = (((double) (System.currentTimeMillis() - board.getStartTime())) / 1000); // get now time in millis
             System.out.format("| %5d | %8s sec |  %10d | %07d | %s\n", currentDepth, now, bestScore, nodes, bedstMoveString);
             if (board.isTimeOver()) {
+                bestMove = oldBestMove;
                 break;
+            } else {
+                oldBestMove = bestMove;
             }
         }
         System.out.println("+-------+--------------+-------------+---------+");
-        System.out.println("best Move:" + bestMove.toString());
+        System.out.println("best Move computer move:" + bestMove.getMoveString());
         board.makeMove(bestMove);
     }
 

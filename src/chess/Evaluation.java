@@ -207,24 +207,29 @@ public class Evaluation {
      */
     public int evaluateBoard(Board board) {
 
-        int wp = 0;
-        int bp = 0;
-        int wr = 0;
-        int br = 0;
-        int wb = 0;
-        int bb = 0;
-        int wn = 0;
-        int bn = 0;
-        int wq = 0;
-        int bq = 0;
-        int wk = 0;
-        int bk = 0;
+        int nrWhitePawns = 0;
+        int nrBlackPawns = 0;
+        int nrWhiteRook = 0;
+        int nrBlackRook = 0;
+        int nrWhiteBishop = 0;
+        int nrBlackBishop = 0;
+        int nrWhiteKnight = 0;
+        int nrBlackKnight = 0;
+        int nrWhiteQueen = 0;
+        int nrBlackQueen = 0;
+        int nrWhiteKing = 0;
+        int nrBlackKing = 0;
 
         int materialScore;
 
+        int i_t = 8;
+        int j_t = 8;
+
         int score = 0;
         for (int i = 0; i < 8; i++) {
+            i_t--;
             for (int j = 0; j < 8; j++) {
+                j_t--;
                 Piece tempPiece = board.getPiece(i, j);
                 if (board.getPiece(i, j) == null) {
                     continue; // empty piece
@@ -234,65 +239,75 @@ public class Evaluation {
                 int tempScore = 0;
                 switch (pieceName) {
                     case "Pawn":
-                        tempScore = pawnScore[i][j];
+//                        System.out.println("(" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " pawnScore:" + pawnScore[i_t][j_t]);
+                        tempScore = pawnScore[i_t][j_t];
                         if (pieceColor) {
-                            wp++;
+                            nrWhitePawns++;
                         } else {
-                            bp++;
+                            nrBlackPawns++;
                         }
                         break;
                     case "Queen":
-                        tempScore = queenScore[i][j];
+//                        System.out.println("queen (" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " pawnScore:" + queenScore[i_t][j_t]);
+                        tempScore = queenScore[i_t][j_t];
                         if (pieceColor) {
-                            wq++;
+                            nrWhiteQueen++;
                         } else {
-                            bq++;
+                            nrBlackQueen++;
                         }
                         break;
                     case "King":
-                        tempScore = kingScore[i][j];
+                        tempScore = kingScore[i_t][j_t];
                         if (pieceColor) {
-                            wk++;
+                            nrWhiteKing++;
                         } else {
-                            bk++;
+                            nrBlackKing++;
                         }
                         break;
                     case "Bishop":
-                        tempScore = bishopScore[i][j];
+                        tempScore = bishopScore[i_t][j];
                         if (pieceColor) {
-                            wb++;
+                            nrWhiteBishop++;
                         } else {
-                            bb++;
+                            nrBlackBishop++;
                         }
                         break;
                     case "Knight":
-                        tempScore = knightScore[i][j];
+                        tempScore = knightScore[i_t][j_t];
                         if (pieceColor) {
-                            wn++;
+                            nrWhiteKnight++;
                         } else {
-                            bn++;
+                            nrBlackKnight++;
                         }
                         break;
                     case "Rook":
-                        tempScore = rookScore[i][j];
+                        tempScore = rookScore[i_t][j_t];
                         if (pieceColor) {
-                            wr++;
+                            nrWhiteRook++;
                         } else {
-                            br++;
+                            nrBlackRook++;
                         }
                         break;
                 }
                 score += tempScore;
             }
+            j_t = 8;
         }
-        int whoToMove = 1;
+//        int whoToMove = 1;
+        int whoToMove = board.isSide() ? 1 : -1;
 
-        materialScore = kingValue * (bk - wk)
-                + queenValue * (bq - wq)
-                + rookValue * (br - wr)
-                + knightValue * (bn - wn)
-                + bishopValue * (bb - wb)
-                + pawnValue * (bp - wp);
+//        materialScore = kingValue * (nrBlackKing - nrWhiteKing)
+//                + queenValue * (nrBlackQueen - nrWhiteQueen)
+//                + rookValue * (nrBlackRook - nrWhiteRook)
+//                + knightValue * (nrBlackKnight - nrWhiteKnight)
+//                + bishopValue * (nrBlackBishop - nrWhiteBishop)
+//                + pawnValue * (nrBlackPawns - nrWhitePawns);
+        materialScore = kingValue * (nrWhiteKing - nrBlackKing)
+                + queenValue * (nrWhiteQueen - nrBlackQueen)
+                + rookValue * (nrWhiteRook - nrBlackRook)
+                + knightValue * (nrWhiteKnight - nrBlackKnight)
+                + bishopValue * (nrWhiteBishop - nrBlackBishop)
+                + pawnValue * (nrWhitePawns - nrBlackPawns);
         return (materialScore + score) * whoToMove;
     }
 }

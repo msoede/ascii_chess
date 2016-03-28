@@ -209,7 +209,7 @@ public class Move {
         String cbk = castleBlackKing ? "k" : "-";
         String cbq = castleBlackQueen ? "q" : "-";
         String castling = cwk + cwq + cbk + cbq;
-        return "Move " + getMoveString() + "  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " playerColor=" + (playerColor ? "White" : "Black") + ", Dobble Pawn move=" + doublePawnMove + ", isEnPassantMove=" + isEnPassantMove() + "}";
+        return "Move " + getMoveString() + "  {(" + fromRank + "," + fromFile + ") to (" + toRank + "," + toFile + ") prom=" + (promoted ? "1" : "0") + " castling: " + castling + " player=" + (playerColor ? "White" : "Black") + ", Dobble Pawn=" + (doublePawnMove ? "1":"0") + ", enPassant=" + (isEnPassantMove()? "1":"0") + "}";
     }
 
     /**

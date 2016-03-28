@@ -92,7 +92,6 @@ public class Main {
                 System.out.println("| q    | quite               |");
                 System.out.println("| fen  | get fen string      |");
                 System.out.println("| undo | undo last move      |");
-                System.out.println("| move | find next best move |");
                 System.out.println("+------+---------------------+");
                 return true;
             case "fen":
@@ -106,10 +105,6 @@ public class Main {
                 board.undoLastMove(); //undo computer move
                 board.undoLastMove(); //undo human move
                 return true;
-            case "move":
-                System.out.println("Find bedst move");
-                System.out.println("Not implemnted YET!!");
-                return true;
             case "list":
                 System.out.println("Movelist");
                 System.out.println(board.getMOveHistoryString());
@@ -117,12 +112,13 @@ public class Main {
             case "movelist":
                 MoveGen moveGen = new MoveGen();
                 ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-                System.out.println("Movelist");
                 int i = 1;
+                System.out.println("+-----+------+");
                 for (Move childMove : moveList) {
-                    System.out.format("%03d : %s\n", i, childMove.getMoveString());
+                    System.out.format("| %03d | %s |\n", i, childMove.getMoveString());
                     i++;
                 }
+                System.out.println("+-----+------+");
                 return true;
             default:
                 return validateMoveString(input);
