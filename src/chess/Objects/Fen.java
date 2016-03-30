@@ -58,10 +58,23 @@ public class Fen {
         i++;
         board.setSide((fen.charAt(i) == 'w'));
 //        board.printBoard();
+        i++;
 
-        //castling???
+        for (int j = 0; j < 4; j++) {
+            if (fen.charAt(i + j) == ' ') {
+                break;
+            } else if (fen.charAt(i + j) == 'K') {
+                board.setCastlingWhite(true);
+            } else if (fen.charAt(i + j) == 'Q') {
+                board.setCastlingWhite(true);
+            } else if (fen.charAt(i + j) == 'k') {
+                board.setCastlingBlack(true);
+            } else if (fen.charAt(i + j) == 'q') {
+                board.setCastlingBlack(true);
+            }
+        }
+
         //enpassant
-        //turns
         getFen(board);
         return board;
     }
