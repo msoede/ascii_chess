@@ -216,7 +216,6 @@ public class Evaluation {
      * @return
      */
     public int evaluateBoard(Board board) {
-
         int nrWhitePawns = 0;
         int nrBlackPawns = 0;
         int nrWhiteRook = 0;
@@ -229,17 +228,13 @@ public class Evaluation {
         int nrBlackQueen = 0;
         int nrWhiteKing = 0;
         int nrBlackKing = 0;
-
         int materialScore;
-
         int i_t = 8;
-        int j_t = 8;
 
         int score = 0;
         for (int i = 0; i < 8; i++) {
             i_t--;
             for (int j = 0; j < 8; j++) {
-                j_t--;
                 Piece tempPiece = board.getPiece(i, j);
                 if (board.getPiece(i, j) == null) {
                     continue; // empty piece
@@ -251,22 +246,18 @@ public class Evaluation {
                 switch (pieceName) {
                     case "Pawn":
                         if (pieceColor) {
-//                            System.out.println("(" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " pawnScore:" + pawnScore[i][j]);
                             tempScore = pawnScore[i][j];
                             nrWhitePawns++;
                         } else {
-//                            System.out.println("(" + i_t + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " pawnScore:" + pawnScore[i_t][j]);
                             tempScore = -pawnScore[i_t][j];
                             nrBlackPawns++;
                         }
                         break;
                     case "Queen":
                         if (pieceColor) {
-//                            System.out.println("queen (" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " queenScore:" + queenScore[i][j]);
                             tempScore = queenScore[i][j];
                             nrWhiteQueen++;
                         } else {
-//                            System.out.println("queen (" + i_t + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " queenScore:" + queenScore[i_t][j]);
                             tempScore = -queenScore[i_t][j];
                             nrBlackQueen++;
                         }
@@ -282,42 +273,34 @@ public class Evaluation {
                         break;
                     case "Bishop":
                         if (pieceColor) {
-//                            System.out.println("bishop (" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " bishopscore:" + bishopScore[i][j]);
                             tempScore = bishopScore[i][j];
                             nrWhiteBishop++;
                         } else {
-//                            System.out.println("bishop (" + i_t + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " bishopscore:" + bishopScore[i_t][j]);
                             tempScore = -bishopScore[i_t][j];
                             nrBlackBishop++;
                         }
                         break;
                     case "Knight":
                         if (pieceColor) {
-//                            System.out.println("knight (" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " knightScore:" + knightScore[i][j]);
                             tempScore = knightScore[i][j];
                             nrWhiteKnight++;
                         } else {
-//                            System.out.println("knight (" + i_t + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " knightScore:" + knightScore[i_t][j]);
                             tempScore = -knightScore[i_t][j];
                             nrBlackKnight++;
                         }
                         break;
                     case "Rook":
                         if (pieceColor) {
-//                            System.out.println("rook (" + i + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " rookscore:" + rookScore[i][j]);
                             tempScore = rookScore[i][j];
                             nrWhiteRook++;
                         } else {
-//                            System.out.println("rook (" + i_t + "," + j + ") " + tempPiece.getName() + " color: " + tempPiece.getColorString() + " rookscore:" + rookScore[i_t][j]);
                             tempScore = -rookScore[i_t][j];
                             nrBlackRook++;
                         }
                         break;
                 }
-//                System.out.println(score + "+" + tempScore + "=" + (tempScore + score)+"  piece: "+pieceName+" "+pieceColor);
                 score += tempScore;
             }
-            j_t = 8;
         }
         int whoToMove = board.isSide() ? 1 : 1;
 

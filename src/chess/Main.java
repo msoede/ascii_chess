@@ -126,7 +126,6 @@ public class Main {
     }
 
     /**
-     *
      * @param input
      * @return true if the string is a valid move string return false if the
      * string is not a valid move string
@@ -155,7 +154,6 @@ public class Main {
     }
 
     /**
-     *
      * @param input
      * @return true if the char is an letter from a to h
      * @return false if the char is NOT an letter from a to h

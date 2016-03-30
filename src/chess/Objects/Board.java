@@ -471,7 +471,7 @@ public class Board {
         output += "| nr  | move |\n";
         output += "+-----+------+\n";
         for (int i = 0; i < moveHistory.size(); i++) {
-            output += "| "+ String.format("%3d", i)+" | " + moveHistory.get(i).getMoveString() + " |\n";
+            output += "| " + String.format("%3d", i) + " | " + moveHistory.get(i).getMoveString() + " |\n";
         }
         output += "+-----+------+\n";
         return output;
