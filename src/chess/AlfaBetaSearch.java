@@ -55,7 +55,6 @@ public class AlfaBetaSearch {
         }
 
         ArrayList<Move> moveList = moveGen.generateAllMoves(board);
-
         for (Move childMove : moveList) {
             board.makeMove(childMove);
             int score = alphaBetaMin(alpha, beta, depthleft - 1, board);
